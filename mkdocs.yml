@@ -1,0 +1,54 @@
+site_name: KI7MT Sovereign AI Lab
+site_description: IONIS — Ionospheric Neural Inference System Documentation
+site_author: Greg Beam, KI7MT
+repo_url: https://github.com/KI7MT/ki7mt-ai-lab-docs
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+    - toc.integrate
+
+markdown_extensions:
+  - tables
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Architecture:
+    - IONIS V10 Model: architecture/model_v10.md
+    - Monotonic Sidecars: architecture/sidecars.md
+  - Methodology:
+    - Data Pipeline: methodology/data_pipeline.md
+    - Training: methodology/training.md
+  - Validation:
+    - Overview: validation/index.md
+  - Roadmap:
+    - Phase 11: roadmap/phase_11.md
