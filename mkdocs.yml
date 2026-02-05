@@ -49,6 +49,7 @@ nav:
   - Methodology:
     - Data Pipeline: methodology/data_pipeline.md
     - Training: methodology/training.md
+    - "Step F: Aggregated Signatures": methodology/step_f_signatures.md
   - Validation:
     - Overview: validation/index.md
     - Polar Tests:
