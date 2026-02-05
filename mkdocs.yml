@@ -42,6 +42,7 @@ markdown_extensions:
 
 nav:
   - Home: index.md
+  - Ethos: ethos.md
   - Architecture:
     - IONIS V10 Model: architecture/model_v10.md
     - Monotonic Sidecars: architecture/sidecars.md
