@@ -56,4 +56,5 @@ nav:
     - Frequency Tests:
       - "FREQ-01: Frequency-Response Audit": validation/frequency_tests/IONIS-V10-FREQ-01.md
   - Roadmap:
-    - Phase 11: roadmap/phase_11.md
+    - "D to Z: Digital Twin Roadmap": roadmap/d_to_z.md
+    - Phase 11 (Legacy): roadmap/phase_11.md
