@@ -29,23 +29,25 @@ Two small MonotonicMLP networks enforce physics constraints that the DNN cannot 
 | fc2.bias | Learnable (-10.65) | Relief valve for calibration |
 | Initial fc2.bias | -10.0 | Defibrillator jump-start |
 
-## Physics Verification
+## Physics Verification (V12)
 
-| Test | Condition | Result | Status |
-|------|-----------|--------|--------|
-| Sun Test | SFI 70 → 200 | +0.48 dB benefit | PASS |
-| Storm Test | Kp 0 → 9 | +1.12 dB cost | PASS |
+| Test | Condition | V10 Result | V12 Result | Grade |
+|------|-----------|------------|------------|-------|
+| Sun Test | SFI 70 → 200 | +0.48 dB | **+2.1 dB** | B |
+| Storm Test | Kp 0 → 9 | +1.12 dB | **+4.0 dB** | A |
+| Polar Storm | Kp 2 → 8 (polar) | — | +2.5 dB | B |
+| D-Layer | 80m vs 20m noon | — | +0.0 dB | C |
 
-## SFI × Kp Matrix
+V12 trained on aggregated signatures shows 4x stronger physics response than V10 on raw spots.
 
-Reference path: FN31 → JO21 (5,900 km, 20m WSPR)
+## SFI × Kp Matrix (V12)
 
-| SFI \ Kp | Kp=0 | Kp=2 | Kp=4 | Kp=6 | Kp=8 |
-|----------|------|------|------|------|------|
-| SFI 80 | -21.2 | -21.5 | -21.7 | -22.0 | -22.2 |
-| SFI 120 | -21.1 | -21.3 | -21.6 | -21.8 | -22.1 |
-| SFI 150 | -20.9 | -21.2 | -21.5 | -21.7 | -22.0 |
-| SFI 200 | -20.7 | -21.0 | -21.3 | -21.5 | -21.8 |
-| SFI 250 | -20.6 | -20.8 | -21.1 | -21.3 | -21.6 |
+Reference path: W3 → G (5,900 km, 20m)
+
+| SFI \ Kp | Kp=0 | Kp=2 | Kp=5 | Kp=9 |
+|----------|------|------|------|------|
+| SFI 70 | -20.0 | -21.1 | -22.0 | -24.0 |
+| SFI 150 | -19.0 | -20.0 | -21.0 | -23.0 |
+| SFI 200 | -18.0 | -19.0 | -20.0 | -22.0 |
 
 Down = higher SFI = better. Right = higher Kp = worse. Correct physics.

@@ -1,8 +1,12 @@
-# IONIS V11 "Gatekeeper" — Design Intent
+# IONIS V11/V12 "Gatekeeper" — Architecture
 
-!!! info "Status: Design Proposal"
-    This document describes the V11 architecture proposal. No training has been performed yet.
-    The PyTorch module is available for review at `ki7mt-ai-lab-training/scripts/ionis_v11_gate.py`.
+!!! success "Status: COMPLETE"
+    V11 trained and validated. V12 (production) trained on aggregated signatures.
+
+    - **V12 RMSE**: 2.05 dB
+    - **V12 Pearson**: +0.3051
+    - **Physics Score**: 76.7/100 (Grade B)
+    - **Test Suite**: 35/35 PASS
 
 ## Problem Statement
 

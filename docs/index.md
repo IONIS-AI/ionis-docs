@@ -4,16 +4,17 @@
 
 Self-hosted data center for HF radio propagation prediction using 10.8B WSPR spots, solar indices, and GPU-accelerated ML. No cloud dependencies.
 
-## Current Model: IONIS V10
+## Current Model: IONIS V12 Signatures
 
 | Metric | Value |
 |--------|-------|
-| **Architecture** | IonisDualMono (170,547 params) |
-| **RMSE** | 2.48 dB |
-| **Pearson** | +0.2395 |
-| **SFI 70→200 benefit** | +0.48 dB |
-| **Kp 0→9 storm cost** | +1.12 dB |
-| **Kp Inversion** | SOLVED |
+| **Architecture** | IonisV12Gate (203,573 params) |
+| **RMSE** | 2.05 dB |
+| **Pearson** | +0.3051 |
+| **Physics Score** | 76.7/100 (Grade B) |
+| **Test Suite** | 35/35 PASS |
+| **SFI 70→200 benefit** | +2.1 dB |
+| **Kp 0→9 storm cost** | +4.0 dB |
 
 ## Infrastructure
 
@@ -27,5 +28,5 @@ Self-hosted data center for HF radio propagation prediction using 10.8B WSPR spo
 
 - [Architecture](architecture/model_v10.md) — Model specs, sidecars, parameter counts
 - [Methodology](methodology/data_pipeline.md) — Ingestion, feature engineering, training
-- [Validation](validation/index.md) — Automated test reports
-- [Roadmap](roadmap/phase_11.md) — Phase 11 planning
+- [Validation](validation/index.md) — V12 test specification (35 automated tests)
+- [Roadmap](roadmap/d_to_z.md) — D-to-Z Digital Twin roadmap

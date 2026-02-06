@@ -6,18 +6,18 @@ repo_url: https://github.com/KI7MT/ki7mt-ai-lab-docs
 theme:
   name: material
   palette:
-    - scheme: slate
-      primary: deep purple
-      accent: amber
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
     - scheme: default
-      primary: deep purple
+      primary: indigo
       accent: amber
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
   features:
     - navigation.tabs
     - navigation.sections
@@ -44,20 +44,16 @@ nav:
   - Home: index.md
   - Ethos: ethos.md
   - Architecture:
-    - IONIS V10 Model: architecture/model_v10.md
+    - "V11/V12 Gatekeeper": architecture/v11_design_intent.md
     - Monotonic Sidecars: architecture/sidecars.md
-    - V11 Design Intent: architecture/v11_design_intent.md
+    - "V10 (Historical)": architecture/model_v10.md
   - Methodology:
     - Data Pipeline: methodology/data_pipeline.md
     - Training: methodology/training.md
-    - "Step F: Aggregated Signatures": methodology/step_f_signatures.md
+    - "Aggregated Signatures": methodology/step_f_signatures.md
   - Validation:
     - Overview: validation/index.md
     - "V12 Test Specification": validation/v12_test_specification.md
-    - Polar Tests:
-      - "POL-01: Polar Challenge": validation/polar_tests/IONIS-V10-POL-01.md
-    - Frequency Tests:
-      - "FREQ-01: Frequency-Response Audit": validation/frequency_tests/IONIS-V10-FREQ-01.md
   - Roadmap:
     - "D to Z: Digital Twin Roadmap": roadmap/d_to_z.md
-    - Phase 11 (Legacy): roadmap/phase_11.md
+    - "Phase 11 (Legacy)": roadmap/phase_11.md

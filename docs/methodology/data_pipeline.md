@@ -69,11 +69,15 @@ Three pillars of propagation truth, each on a dedicated ZFS dataset:
 - **Format**: CSV, 13 columns: `callsign, de_pfx, de_cont, freq, band, dx, dx_pfx, dx_cont, mode, db, date, speed, tx_mode`
 - **Limitation**: No grid squares — needs callsign-to-grid mapping
 
-### CQ Contest Logs (Cabrillo)
+### Contest Logs (Cabrillo)
 
-- **Sources**: CQ WW, CQ WPX, CQ WW RTTY, CQ WPX RTTY, CQ 160, WW Digi
-- **Range**: 2005-2025 (varies by contest)
-- **Format**: Cabrillo v2 and v3 (parser must handle both)
+| Source | Contests | Years | Est. Logs |
+|--------|----------|-------|-----------|
+| **CQ** | WW, WPX, RTTY, 160, Digi | 2005-2025 | ~120 sets |
+| **ARRL** | DX, SS, 10m, 160, RTTY, etc. | 2018-2025 | ~200K+ |
+
+- **Format**: Cabrillo v2 and v3 (parser handles both)
+- **Bonus**: Many ARRL logs include `HQ-GRID-LOCATOR` header — free grid squares
 - **Limitation**: Signal reports useless (always 59/599) except digi (real SNR)
 
 ### PSK Reporter (Future — Forward Collection Only)

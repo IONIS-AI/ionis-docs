@@ -1,8 +1,13 @@
 # Phase 11: Production Validation & Expansion
 
-## Overview
+!!! warning "Legacy Document"
+    This phase planning document has been superseded by the [D-to-Z Digital Twin Roadmap](d_to_z.md).
 
-Phase 10 resolved the Kp Inversion Problem through Dual Monotonic Sidecars. Phase 11 focuses on quantifying V10 performance across diverse global conditions and preparing for V11.
+    V11 and V12 have been trained and validated. Current work is on Steps F–I.
+
+## Overview (Historical)
+
+Phase 10 resolved the Kp Inversion Problem through Dual Monotonic Sidecars. Phase 11 focused on quantifying V10 performance across diverse global conditions and preparing for V11.
 
 ## V10 Stress Testing
 
