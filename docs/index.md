@@ -4,7 +4,7 @@
 
 *The open-source HF propagation prediction engine.*
 
-IONIS predicts HF propagation using 10.8B real-world observations — not 1960s ionosonde models. Self-hosted. No cloud dependencies.
+HF propagation prediction for the 21st century — built on 10.8B real-world observations. Self-hosted. No cloud dependencies.
 
 | Data Source | Volume | Purpose |
 |-------------|--------|---------|
