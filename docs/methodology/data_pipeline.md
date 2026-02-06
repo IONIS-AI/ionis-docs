@@ -59,6 +59,7 @@ Three pillars of propagation truth, each on a dedicated ZFS dataset:
 | **WSPR** | `wspr-turbo` | 10.8B spots | WSPR only | 4-char Maidenhead |
 | **RBN** | `rbn-download` | ~2.2B spots | CW, RTTY | DXCC prefix only |
 | **CQ Contests** | `contest-download` | ~120 log sets | CW/SSB/RTTY/Digi | Callsign lookup needed |
+| **ARRL Contests** | `contest-download` | ~200K+ logs | CW/SSB/RTTY/Digi | HQ-GRID-LOCATOR in Cabrillo |
 | **PSK Reporter** | `pskr-collector` (planned) | ~30-50M/day | FT8/FT4/CW | 6-8 char Maidenhead |
 
 ### RBN (Reverse Beacon Network)
@@ -80,6 +81,15 @@ Three pillars of propagation truth, each on a dedicated ZFS dataset:
 - **Bonus**: Many ARRL logs include `HQ-GRID-LOCATOR` header — free grid squares
 - **Limitation**: Signal reports useless (always 59/599) except digi (real SNR)
 
+### ARRL Contest Logs (Cabrillo)
+
+- **Sources**: ARRL DX CW/Phone, ARRL 10m, ARRL 160m, ARRL SS CW/Phone, ARRL RTTY Roundup, ARRL Digital, IARU HF
+- **Portal**: `https://contests.arrl.org/publiclogs.php`
+- **Range**: 2018-2025 (9 HF contests, 65 year-combinations, ~200K+ logs)
+- **Format**: Cabrillo v3.0 (includes `HQ-GRID-LOCATOR` in headers — free grid squares)
+- **Download pattern**: Hash-based URLs (`showpubliclog.php?q=HASH`), requires index scraping
+- **Limitation**: Same as CQ — signal reports useless except digital contests
+
 ### PSK Reporter (Future — Forward Collection Only)
 
 - **No bulk archive exists** — 24-hour API lookback max
@@ -95,8 +105,9 @@ Three pillars of propagation truth, each on a dedicated ZFS dataset:
 
 | Dataset | Mountpoint | Compression | Purpose |
 |---------|------------|-------------|---------|
-| `archive-pool` | `/mnt/wspr-archive` | zstd | WSPR raw CSV archives |
-| `archive-pool/contest-logs` | `/mnt/contest-logs` | zstd-9 | CQ contest Cabrillo logs |
+| `archive-pool` | `/mnt/archive-pool` | — | Pool root (unused) |
+| `archive-pool/wspr-data` | `/mnt/wspr-data` | lz4 | WSPR raw CSV archives (.csv.gz) |
+| `archive-pool/contest-logs` | `/mnt/contest-logs` | zstd-9 | CQ + ARRL Cabrillo logs |
 | `archive-pool/rbn-data` | `/mnt/rbn-data` | lz4 | RBN daily ZIP archives |
 | `archive-pool/pskr-data` | `/mnt/pskr-data` | zstd-9 | PSK Reporter MQTT collection |
 
@@ -119,6 +130,8 @@ Each dataset can be independently snapshotted, replicated (`zfs send`), and quot
 | Table | Rows | Size | Purpose |
 |-------|------|------|---------|
 | `wspr.spots_raw` | 10.8B | 191 GiB | Raw WSPR spots |
-| `wspr.model_features` | 4.4B | 41 GiB | CUDA embeddings |
-| `wspr.training_continuous` | 10M | — | IFW-weighted training set |
-| `solar.indices_raw` | 76K | — | SSN, SFI, Kp daily/3-hourly |
+| `wspr.model_features` | 4.4B | 41 GiB | CUDA float4 embeddings |
+| `wspr.signatures_v1` | 93.8M | 2.3 GiB | Aggregated signatures (V12 training source) |
+| `wspr.training_continuous` | 10M | 218 MiB | IFW-weighted training set |
+| `wspr.training_stratified` | 10M | 167 MiB | SSN-stratified training set |
+| `solar.indices_raw` | 76K | 868 KiB | SSN, SFI, Kp daily/3-hourly |
