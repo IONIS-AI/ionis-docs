@@ -51,26 +51,59 @@ What's not working:
 
 **Status: COMPLETE** (2026-02-05)
 
-Trained V11 Gatekeeper from scratch. 100 epochs, 10M rows, ~12 min on M3 Ultra.
-Results: RMSE 2.48 dB, Pearson +0.2376. All physics tests passed.
+Trained V12 Signatures model on 20M aggregated signature rows from `wspr.signatures_v1`.
+100 epochs, ~15 min on M3 Ultra. Full NASA-style test suite with physics scoring.
+
+**Results:**
+
+| Metric | Value |
+|--------|-------|
+| RMSE | 2.05 dB |
+| Pearson | +0.3051 |
+| Physics Score | 76.7/100 (Grade B) |
+| Test Suite | 35/35 PASS |
+
+**Physics Test Grades:**
+
+| Test | Description | Result | Grade |
+|------|-------------|--------|-------|
+| TST-201 | SFI 70→200 | +2.1 dB | B |
+| TST-202 | Kp 0→9 storm cost | +4.0 dB | A |
+| TST-203 | D-layer absorption | +0.0 dB | C |
+| TST-204 | Polar storm | +2.5 dB | B |
+| TST-205 | 10m SFI sensitivity | +2.0 dB | C |
+| TST-206 | Grey line twilight | +0.2 dB | C |
 
 **Scripts:**
 
-- `scripts/train_v11_final.py` — training (100 epochs, ~12 min on M3 Ultra)
-- `scripts/test_v11_final.py` — sensitivity analysis with gate decomposition
-- `scripts/verify_v11_final.py` — physics pass/fail verification
+- `scripts/train_v12_signatures.py` — training on aggregated signatures
+- `scripts/test_v12_signatures.py` — sensitivity analysis with gate decomposition
+- `scripts/verify_v12_signatures.py` — physics pass/fail verification
+- `scripts/oracle_v12.py` — production inference + 35-test suite
 
-**Results:** See `IONIS_V11_FINAL_REPORT.md` for full model card.
+**Artifacts:**
+
+- Checkpoint: `models/ionis_v12_signatures.pth`
+- Test Spec: `docs/V12_TEST_SPECIFICATION.md`
 
 **Pass criteria:**
 
-- [x] SFI 70 to 200 benefit: +0.96 dB (positive — correct physics)
-- [x] Kp 0 to 9 storm cost: +2.84 dB (positive — correct physics)
-- [x] Gates within [0.5, 2.0] on all inputs (verified on 1000 random samples)
-- [x] Decomposition math: base + sun_contrib + storm_contrib = predicted (exact)
-- [x] Pearson +0.2376 (>= +0.24 threshold — effectively equivalent to V10)
+- [x] SFI 70→200 benefit: +2.1 dB (positive — correct physics)
+- [x] Kp 0→9 storm cost: +4.0 dB (positive — correct physics)
+- [x] Gates within [0.5, 2.0] on all inputs
+- [x] Pearson +0.3051 (29% improvement over V11's +0.2376)
+- [x] RMSE 2.05 dB (17% improvement over V11's 2.48 dB)
+- [x] All 35 automated tests pass
+- [x] No geographic bias (EU vs Africa: 0.0 dB difference)
+- [x] Zero variance on reproducibility test (100 runs)
 
-**Does not break:** Nothing before this — fresh training from scratch.
+**V13 Improvement Targets (Grade C items):**
+
+- D-layer absorption: need frequency-aware sun sidecar
+- 10m SFI sensitivity: need band×SFI interaction term
+- Grey line twilight: need hour×longitude feature engineering
+
+**Does not break:** V10/V11 checkpoints preserved. V12 is new production model.
 
 ---
 

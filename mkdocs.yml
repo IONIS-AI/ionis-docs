@@ -53,6 +53,7 @@ nav:
     - "Step F: Aggregated Signatures": methodology/step_f_signatures.md
   - Validation:
     - Overview: validation/index.md
+    - "V12 Test Specification": validation/v12_test_specification.md
     - Polar Tests:
       - "POL-01: Polar Challenge": validation/polar_tests/IONIS-V10-POL-01.md
     - Frequency Tests:
