@@ -2,7 +2,9 @@
 
 **IONIS** — Ionospheric Neural Inference System
 
-Self-hosted data center for HF radio propagation prediction. No cloud dependencies.
+*The open-source HF propagation prediction engine.*
+
+IONIS predicts HF propagation using 10.8B real-world observations — not 1960s ionosonde models. Self-hosted. No cloud dependencies.
 
 | Data Source | Volume | Purpose |
 |-------------|--------|---------|
