@@ -54,6 +54,8 @@ nav:
   - Validation:
     - Overview: validation/index.md
     - "V12 Test Specification": validation/v12_test_specification.md
+    - "V10 Frequency Audit": validation/frequency_tests/IONIS-V10-FREQ-01.md
+    - "V10 Polar Challenge": validation/polar_tests/IONIS-V10-POL-01.md
   - Roadmap:
     - "D to Z: Digital Twin Roadmap": roadmap/d_to_z.md
     - "Phase 11 (Legacy)": roadmap/phase_11.md
