@@ -2,7 +2,15 @@
 
 **IONIS** — Ionospheric Neural Inference System
 
-Self-hosted data center for HF radio propagation prediction using 10.8B WSPR spots, solar indices, and GPU-accelerated ML. No cloud dependencies.
+Self-hosted data center for HF radio propagation prediction. No cloud dependencies.
+
+| Data Source | Volume | Purpose |
+|-------------|--------|---------|
+| WSPR Spots | 10.8B | Signal floor, raw attenuation |
+| Aggregated Signatures | 93.8M | Noise-filtered training targets |
+| Solar Indices | 76K rows (2000–2026) | SFI, Kp, SSN conditions |
+| Contest Logs | ~200K (ARRL + CQ) | Ground truth validation |
+| RBN | ~2.2B spots | CW/RTTY traffic density |
 
 ## Current Model: IONIS V12 Signatures
 
