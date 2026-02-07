@@ -47,6 +47,28 @@ Our research must yield tangible value for the operator at the key.
 * **Actionable Intelligence:** We strive to move beyond "average" predictions (VOACAP) to real-time, data-driven insights that help operators make contacts.
 * **Bridge Building:** We actively work to bridge the gap between distinct data silos (e.g., mapping Machine spots from WSPR to Human logs from Contests) to create a unified view of propagation.
 
+## Statement of Intent
+
+This is real research, built to serve the amateur radio community. There is no
+commercial motive. There is no monetization plan. There is no startup behind this.
+There is no angle in it for anyone.
+
+IONIS exists because the amateur radio community deserves a propagation prediction
+tool that actually learns from real observations — not one running on frozen
+coefficients from ionosonde measurements taken before most of us were born. The
+data has been sitting there for decades. The compute is cheap. What was missing
+was someone willing to do the curation work honestly, document the landmines,
+credit the sources, and give it all away.
+
+Everything we build is open source (GPLv3). Everything we learn is shared back.
+Every data source is credited. We redistribute tools and models, never raw data.
+We have zero interest in personal data — only the propagation paths it represents.
+
+If grants or donations come along to fund the continual improvement of this
+project, they will be accepted — but funding is not the goal. It sustains the
+work; it does not drive it. The project existed before any grant application
+and will continue regardless.
+
 ---
 *Adopted: February 2026*
 *Status: Living Document*

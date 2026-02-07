@@ -43,6 +43,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Ethos: ethos.md
+  - "Data Privacy & GDPR": data-privacy.md
   - Architecture:
     - "V11/V12 Gatekeeper": architecture/v11_design_intent.md
     - Monotonic Sidecars: architecture/sidecars.md
