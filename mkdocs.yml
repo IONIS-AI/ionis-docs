@@ -51,6 +51,8 @@ nav:
   - Methodology:
     - Data Pipeline: methodology/data_pipeline.md
     - "Bronze Stack": methodology/bronze_stack.md
+    - "Silver Layer": methodology/silver_layer.md
+    - "Gold Layer": methodology/gold_layer.md
     - Training: methodology/training.md
     - "Aggregated Signatures": methodology/step_f_signatures.md
   - Validation:

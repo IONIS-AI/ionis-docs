@@ -132,4 +132,4 @@ SETTINGS
 
 ## DDL Location
 
-`ki7mt-ai-lab-core/src/08-signatures_v1.sql`
+`/usr/share/ki7mt-ai-lab-core/ddl/12-signatures_v1.sql`

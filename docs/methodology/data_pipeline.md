@@ -139,10 +139,11 @@ Each dataset can be independently snapshotted, replicated (`zfs send`), and quot
 |-------|------|------|---------|
 | `wspr.bronze` | 10.8B | 191 GiB | Raw WSPR spots |
 | `rbn.bronze` | 2.18B | 45.3 GiB | Raw RBN CW/RTTY spots |
-| `contest.bronze` | 232.6M | 4.1 GiB | Parsed contest QSOs (15 contests) |
+| `contest.bronze` | 234.3M | 4.1 GiB | Parsed contest QSOs (15 contests) |
 | `wspr.silver` | 4.4B | 41 GiB | CUDA float4 embeddings |
-| `wspr.signatures_v1` | 93.8M | 2.3 GiB | Aggregated signatures (V12 training source) |
-| `wspr.callsign_grid` | 38.5K | — | Rosetta Stone: callsign → grid lookup |
+| `wspr.signatures_v1` | 93.4M | 2.3 GiB | Aggregated signatures (V12 training source) |
+| `wspr.callsign_grid` | 38.6K | — | Rosetta Stone: callsign → grid lookup |
 | `wspr.gold_continuous` | 10M | 218 MiB | IFW-weighted training set |
 | `wspr.gold_stratified` | 10M | 167 MiB | SSN-stratified training set |
+| `wspr.gold_v6` | 10M | 240 MiB | V6 training set (continuous + kp_penalty) |
 | `solar.bronze` | 17.8K | 868 KiB | SSN, SFI, Kp daily/3-hourly |
