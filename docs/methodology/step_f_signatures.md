@@ -68,8 +68,8 @@ All 13 IONIS V11 features are derivable from the signature table:
 
 ## Aggregation Method
 
-Per-band `INSERT INTO ... SELECT` from `wspr.spots_raw` joined with
-`solar.indices_raw` on date + 3-hour Kp bucket. Processing is sequential
+Per-band `INSERT INTO ... SELECT` from `wspr.bronze` joined with
+`solar.bronze` on date + 3-hour Kp bucket. Processing is sequential
 by band to stay within memory limits (quantile computation stores all values
 per group).
 
