@@ -50,6 +50,7 @@ nav:
     - "V10 (Historical)": architecture/model_v10.md
   - Methodology:
     - Data Pipeline: methodology/data_pipeline.md
+    - "Bronze Stack": methodology/bronze_stack.md
     - Training: methodology/training.md
     - "Aggregated Signatures": methodology/step_f_signatures.md
   - Validation:
