@@ -146,23 +146,6 @@ wanting the source data should download it from the original providers.
 
 ---
 
-## Attribution
-
-We credit every data source in our publications and documentation:
-
-- **WSPRNet** (wsprnet.org) — K1JT and the WSPR community
-- **Reverse Beacon Network** (reversebeacon.net) — N4ZR, PY1NB, VE3NEA, and
-  the global skimmer operator network
-- **CQ Contest Logs** — World Wide Radio Operators Foundation (WWROF)
-- **ARRL Contest Logs** — American Radio Relay League
-- **GFZ Potsdam** — Solar and geomagnetic indices (SSN, SFI, Kp)
-
-When we publish results, we share our findings with the data providers and the
-amateur radio community — including the RBN community, who have asked that
-researchers share their analysis back. We are happy to do so.
-
----
-
 ## Contact
 
 Questions about our data handling practices can be directed to:
@@ -172,5 +155,5 @@ Questions about our data handling practices can be directed to:
 
 ---
 
-*Last updated: 2026-02-07*
+*Last updated: 2026-02-08*
 *Status: Living Document*

@@ -63,3 +63,4 @@ nav:
   - Roadmap:
     - "D to Z: Digital Twin Roadmap": roadmap/d_to_z.md
     - "Phase 11 (Legacy)": roadmap/phase_11.md
+  - Credits: credits.md
