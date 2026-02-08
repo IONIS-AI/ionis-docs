@@ -218,6 +218,10 @@ says "closed" when a contact was made, the model is wrong.
 These steps are not yet defined. They depend on what we learn at Steps F
 through I. Possible directions:
 
+- **Coverage Analysis**: Map observation density across all 32,400 possible
+  Maidenhead grids. Quantify permanent gaps (ocean, uninhabited), sparse regions,
+  and high-density coverage. Use interpolation distance as a confidence metric.
+  See [Coverage & Confidence](../methodology/coverage.md).
 - **Feature expansion**: geomagnetic latitude, MUF proxy, ionospheric tilt
 - **RBN/PSK Reporter ingest**: FT8 and CW skimmer data for denser coverage
 - **Temporal refinement**: 15-minute prediction windows instead of hourly

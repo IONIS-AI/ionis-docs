@@ -55,6 +55,7 @@ nav:
     - "Gold Layer": methodology/gold_layer.md
     - Training: methodology/training.md
     - "Aggregated Signatures": methodology/step_f_signatures.md
+    - "Coverage & Confidence": methodology/coverage.md
   - Tools:
     - Overview: tools/index.md
     - WSPR Ingestion: tools/wspr.md
