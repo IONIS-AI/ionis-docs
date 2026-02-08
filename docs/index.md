@@ -8,16 +8,15 @@ The ionosphere is chaotic. Traditional tools like VOACAP rely on monthly median 
 
 IONIS takes a different approach: learn from billions of actual radio contacts to predict what the bands will do next.
 
-## The Problem with Traditional Prediction
+## Building on Traditional Prediction
 
-VOACAP and similar tools have fundamental limitations:
+Tools like VOACAP represent decades of ionospheric research and remain valuable references. But they have inherent limitations:
 
-- **Static models**: Based on historical averages, never updated
-- **No ground truth**: No way to verify predictions against reality
-- **Coarse resolution**: Monthly medians miss daily and hourly variations
-- **No learning**: Same prediction today as 20 years ago
+- **Static models**: Based on historical averages, updated infrequently
+- **Limited validation**: Difficult to verify predictions against real-world results
+- **Coarse resolution**: Monthly medians can miss daily and hourly variations
 
-Amateur radio operators know this intuitively. The bands don't behave like the textbooks say — but nobody has quantified *how* they differ or built tools that learn from experience.
+IONIS aims to complement these tools by adding what they lack: continuous learning from real-world observations. The two approaches validate each other — physics models provide theoretical grounding, while observational data reveals what actually happens.
 
 ## The IONIS Approach
 
@@ -27,7 +26,7 @@ IONIS is built on three pillars:
 2. **Neural network with physics constraints**: The model can't violate known ionospheric physics
 3. **Continuous learning**: New data flows in every 2 minutes, forever
 
-The goal: beat VOACAP on real-world accuracy by learning patterns that physics-first models miss.
+The goal: improve real-world accuracy by learning patterns that physics-first models can miss, while using traditional tools like VOACAP for validation and comparison.
 
 ## Current Status
 
@@ -70,7 +69,7 @@ Self-hosted, no cloud dependencies:
 - [Architecture](architecture/model_v10.md) — Model design, sidecars, gated physics
 - [Methodology](methodology/data_pipeline.md) — Data ingestion and training process
 - [Validation](validation/index.md) — 35-test automated verification suite
-- [Roadmap](roadmap/d_to_z.md) — D-to-Z path to beating VOACAP
+- [Roadmap](roadmap/d_to_z.md) — D-to-Z path to production validation
 - [Data Privacy](data-privacy.md) — GDPR compliance, data authorization
 - [Ethos](ethos.md) — Core principles and statement of intent
 
