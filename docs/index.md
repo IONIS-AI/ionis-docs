@@ -1,5 +1,11 @@
 # KI7MT Sovereign AI Lab
 
+> *"The logs have been speaking for decades, but nobody is listening."*
+
+Every day, millions of radio contacts are logged — WSPR beacons, RBN spots, contest QSOs. They contain the ground truth of HF propagation: what actually worked, when, and under what conditions. Until now, that data sat in archives, unused.
+
+---
+
 ## What is IONIS?
 
 **IONIS** (Ionospheric Neural Inference System) is a machine learning engine that predicts HF radio propagation using real-world observations instead of theoretical models.
@@ -30,7 +36,7 @@ The goal: improve real-world accuracy by learning patterns that physics-first mo
 
 ## Current Status
 
-IONIS V12 is trained on 20M aggregated WSPR signatures covering 2020–2026. It correctly predicts:
+IONIS V12 is trained on 20M aggregated WSPR signatures covering 2008–2026. It correctly predicts:
 
 - Higher solar flux (SFI) improves propagation
 - Geomagnetic storms (Kp) degrade propagation
