@@ -55,6 +55,13 @@ nav:
     - "Gold Layer": methodology/gold_layer.md
     - Training: methodology/training.md
     - "Aggregated Signatures": methodology/step_f_signatures.md
+  - Tools:
+    - Overview: tools/index.md
+    - WSPR Ingestion: tools/wspr.md
+    - Solar Pipeline: tools/solar.md
+    - "Contest & RBN": tools/contest.md
+    - Database: tools/database.md
+    - CUDA Engine: tools/cuda.md
   - Validation:
     - Overview: validation/index.md
     - "V12 Test Specification": validation/v12_test_specification.md
