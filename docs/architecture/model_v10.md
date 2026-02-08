@@ -65,5 +65,11 @@ Input (13 features)
 ## Model Lineage
 
 ```
-v2 → v6_monotonic → v7_lobotomy → v8_sidecar → v9_dual_mono → v10_final
+v2 → v6_monotonic → v7_lobotomy → v8_sidecar → v9_dual_mono → v10_final → v11_gate → v12_signatures
 ```
+
+- **V10** (`ionis_v10_final.pth`): Dual monotonic sidecars, Nuclear Option. RMSE 2.48 dB, Pearson +0.2395.
+- **V11** (`ionis_v11_gate.pth`): Added gated multiplicative interaction between sidecars and DNN.
+- **V12** (`ionis_v12_signatures.pth`): Trained on aggregated signatures (93.8M buckets). RMSE 2.05 dB, Pearson +0.3051. 35/35 physics tests. **Current production model.**
+
+See [V11/V12 Gatekeeper](v11_design_intent.md) for architecture details.

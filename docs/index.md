@@ -4,15 +4,15 @@
 
 *The open-source HF propagation prediction engine.*
 
-HF propagation prediction for the 21st century — built on 10.8B real-world observations. Self-hosted. No cloud dependencies.
+HF propagation prediction for the 21st century — built on 13.2B real-world observations. Self-hosted. No cloud dependencies.
 
 | Data Source | Volume | Purpose |
 |-------------|--------|---------|
 | WSPR Spots | 10.8B | Signal floor, raw attenuation |
+| RBN Spots | 2.18B | CW/RTTY traffic density |
+| Contest Logs | 459K files (15 contests) | Ground truth validation |
 | Aggregated Signatures | 93.8M | Noise-filtered training targets |
 | Solar Indices | 76K rows (2000–2026) | SFI, Kp, SSN conditions |
-| Contest Logs | ~200K (ARRL + CQ) | Ground truth validation |
-| RBN | ~2.2B spots | CW/RTTY traffic density |
 
 ## Current Model: IONIS V12 Signatures
 
@@ -40,3 +40,5 @@ HF propagation prediction for the 21st century — built on 10.8B real-world obs
 - [Methodology](methodology/data_pipeline.md) — Ingestion, feature engineering, training
 - [Validation](validation/index.md) — V12 test specification (35 automated tests)
 - [Roadmap](roadmap/d_to_z.md) — D-to-Z Digital Twin roadmap
+- [Data Privacy & GDPR](data-privacy.md) — Data authorization, GDPR compliance, attribution
+- [Ethos](ethos.md) — Core principles, statement of intent
