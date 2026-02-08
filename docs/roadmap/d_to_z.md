@@ -11,7 +11,7 @@ measure the signature, search the library, reconstruct what you can't see.
 | # | Advantage | VOACAP Equivalent |
 |---|-----------|-------------------|
 | 1 | **13.2B real observations** (WSPR + RBN + contests) — not theory | Monthly median ionosonde models from the 1960s |
-| 2 | **195M contest QSOs** — proof the band delivered | Nothing — VOACAP has no ground truth |
+| 2 | **225.7M contest QSOs** — proof the band delivered | Nothing — VOACAP has no ground truth |
 | 3 | **Continuous ingest** — new data every 2 minutes, forever | Frozen. Never learns. |
 
 ## Data Layers
@@ -20,7 +20,7 @@ measure the signature, search the library, reconstruct what you can't see.
 |--------|------|-------------|--------|
 | **WSPR** | Signal floor, raw attenuation | Diffraction signature (metrology) | 10.8B spots |
 | **RBN** | Traffic density, CW/RTTY coverage | Intermediate inspection | 2.18B spots |
-| **Contest Logs** | Binary proof: band was usable | Yield measurement | 195M QSOs (459K files) |
+| **Contest Logs** | Binary proof: band was usable | Yield measurement | 225.7M QSOs (475K files) |
 | **Solar Indices** | Environmental conditions | Chamber conditions (temp, pressure) | 76K rows, 2000-2026 |
 
 ---
@@ -41,7 +41,7 @@ What's built:
 What was not yet working (at time of Step D completion):
 
 - Signature library has no search layer
-- No contest log data ingested — **now 195M QSOs in `contest.qsos` (Step H)**
+- No contest log data ingested — **now 225.7M QSOs in `contest.qsos` (Step H)**
 - No RBN data ingested — **now 2.18B spots in `rbn.spots_raw`**
 - Two complementary pieces aren't connected
 
@@ -168,9 +168,9 @@ complete. QSOs stored in `contest.qsos` (ClickHouse).
 
 **What's done:**
 
-- `contest-download`: 459K Cabrillo files downloaded across 15 contests (3.3 GB)
+- `contest-download`: 475K Cabrillo files downloaded across 15 contests (3.4 GB)
 - `contest-ingest`: V3 parser handles Cabrillo v2 and v3 formats
-- 195M QSOs parsed into `contest.qsos` (3.4 GiB in ClickHouse)
+- 225.7M QSOs parsed into `contest.qsos` (3.9 GiB in ClickHouse)
 - 98.5% of ARRL logs include `HQ-GRID-LOCATOR` headers
 - Rate-limited downloads (2-3s delays, max 3 concurrent ARRL streams)
 - 15 contests: CQ WW, WPX, WW-RTTY, WPX-RTTY, 160, WW-Digi + ARRL DX CW/Ph, SS CW/Ph, 10m, 160m, RTTY, Digi, IARU HF

@@ -68,19 +68,19 @@ Generates float4 embeddings from WSPR+solar data:
 
 ## Contest Log Ingestion
 
-**Source**: 459K Cabrillo log files across 15 contests (CQ + ARRL, 2005-2025)
+**Source**: 475K Cabrillo log files across 15 contests (CQ + ARRL, 2005-2025)
 
 | Tool | Method | Throughput |
 |------|--------|------------|
-| `contest-download` | Index scrape + hash-based download → `/mnt/contest-logs` | 459K files, 3.3 GB |
-| `contest-ingest` | Cabrillo V2/V3 parser → ClickHouse (`contest.qsos`) | 195M QSOs |
+| `contest-download` | Index scrape + hash-based download → `/mnt/contest-logs` | 475K files, 3.4 GB |
+| `contest-ingest` | Cabrillo V2/V3 parser → ClickHouse (`contest.qsos`) | 225.7M QSOs |
 
 ### Contests Downloaded
 
 | Source | Contests | Years | Files |
 |--------|----------|-------|-------|
 | **CQ** | WW, WPX, WPX-RTTY, WW-RTTY, 160, WW-Digi | 2005-2025 | ~120 log sets |
-| **ARRL** | DX CW/Ph, SS CW/Ph, 10m, 160m, RTTY, Digi, IARU HF | 2018-2025 | ~459K logs |
+| **ARRL** | DX CW/Ph, SS CW/Ph, 10m, 160m, RTTY, Digi, IARU HF | 2018-2025 | ~475K logs |
 
 - **Format**: Cabrillo v2 and v3 (parser handles both)
 - **Bonus**: 98.5% of ARRL logs include `HQ-GRID-LOCATOR` header — free grid squares
@@ -95,7 +95,7 @@ Three pillars of propagation truth, each on a dedicated ZFS dataset:
 |--------|------|--------|-------|-------------|
 | **WSPR** | `wspr-turbo` | 10.8B spots | WSPR only | 4-char Maidenhead |
 | **RBN** | `rbn-ingest` | 2.18B spots | CW, RTTY | DXCC prefix only (24% geocoded via Rosetta Stone) |
-| **Contest Logs** | `contest-ingest` | 195M QSOs (459K files) | CW/SSB/RTTY/Digi | HQ-GRID-LOCATOR (98.5% ARRL) + callsign lookup |
+| **Contest Logs** | `contest-ingest` | 225.7M QSOs (475K files) | CW/SSB/RTTY/Digi | HQ-GRID-LOCATOR (98.5% ARRL) + callsign lookup |
 | **PSK Reporter** | `pskr-collector` (planned) | ~30-50M/day | FT8/FT4/CW | 6-8 char Maidenhead |
 
 ### PSK Reporter (Future — Forward Collection Only)
@@ -139,7 +139,7 @@ Each dataset can be independently snapshotted, replicated (`zfs send`), and quot
 |-------|------|------|---------|
 | `wspr.spots_raw` | 10.8B | 191 GiB | Raw WSPR spots |
 | `rbn.spots_raw` | 2.18B | 45.3 GiB | Raw RBN CW/RTTY spots |
-| `contest.qsos` | 195M | 3.4 GiB | Parsed contest QSOs (15 contests) |
+| `contest.qsos` | 225.7M | 3.9 GiB | Parsed contest QSOs (15 contests) |
 | `wspr.model_features` | 4.4B | 41 GiB | CUDA float4 embeddings |
 | `wspr.signatures_v1` | 93.8M | 2.3 GiB | Aggregated signatures (V12 training source) |
 | `wspr.callsign_grid` | 3.6M | 58 MiB | Rosetta Stone: callsign → grid lookup |

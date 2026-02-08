@@ -10,7 +10,7 @@ HF propagation prediction for the 21st century — built on 13.2B real-world obs
 |-------------|--------|---------|
 | WSPR Spots | 10.8B | Signal floor, raw attenuation |
 | RBN Spots | 2.18B | CW/RTTY traffic density |
-| Contest Logs | 459K files (15 contests) | Ground truth validation |
+| Contest Logs | 475K files (225.7M QSOs) | Ground truth validation |
 | Aggregated Signatures | 93.8M | Noise-filtered training targets |
 | Solar Indices | 76K rows (2000–2026) | SFI, Kp, SSN conditions |
 
