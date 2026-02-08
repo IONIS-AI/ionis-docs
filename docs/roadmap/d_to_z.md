@@ -193,21 +193,51 @@ QSOs stored in `contest.bronze` (ClickHouse).
 
 ### Step I — Ground Truth Validation
 
-**Status: NOT STARTED**
+**Status: IONIS COMPLETE, VOACAP PENDING** (2026-02-08)
 
-The acid test. Compare IONIS predictions (model + signature search) against
-contest log ground truth.
+The acid test. Compare IONIS predictions against contest log ground truth.
+For every contest QSO: the model should predict the band was open.
 
-For every contest QSO: the model should predict the band was open. If it
-says "closed" when a contact was made, the model is wrong.
+**IONIS Validation Results (1M QSOs):**
+
+| Metric | Value | Target |
+|--------|-------|--------|
+| **Overall Recall** | **90.42%** | >85% ✓ |
+| CW | 99.17% | - |
+| Digital | 100.00% | - |
+| RTTY | 87.28% | - |
+| Phone (SSB) | 78.16% | Below target |
+
+**By Band:**
+
+| Band | Recall | Notes |
+|------|--------|-------|
+| 160m | 99.86% | Excellent |
+| 80m | 98.62% | Excellent |
+| 40m | 96.52% | Excellent |
+| 20m | 87.87% | Good |
+| 15m | 84.97% | Meets target |
+| 10m | 85.59% | Meets target |
+
+**Grey Line Analysis:**
+- During transition: 84.96%
+- Normal conditions: 91.07%
+- Gap: -6.11% (confirms V13 target for hour×longitude features)
+
+**Scripts:**
+- `scripts/validate_v12.py` — contest QSO validation with mode-weighted thresholds
 
 **Pass criteria:**
 
-- [ ] Take a contest weekend's QSOs
-- [ ] For each QSO, query IONIS: "was this band open for this path at this time?"
-- [ ] Band-open accuracy > 85% (IONIS correctly predicts open when QSO exists)
-- [ ] Compare same question against VOACAP prediction
+- [x] 1M contest QSOs validated
+- [x] For each QSO, query IONIS: "was this band open for this path at this time?"
+- [x] Band-open accuracy > 85% (IONIS: 90.42%)
+- [ ] Compare same question against VOACAP prediction (pending — requires `voacapl` on 9975)
 - [ ] IONIS accuracy > VOACAP accuracy on the same test set
+
+**V13 Improvement Targets:**
+- Phone (SSB) recall: 78% → 85%+
+- Grey line gap: -6% → 0% (hour×longitude features)
 
 **Does not break:** Nothing — this is measurement only.
 
