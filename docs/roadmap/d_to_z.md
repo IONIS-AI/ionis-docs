@@ -193,47 +193,62 @@ QSOs stored in `contest.bronze` (ClickHouse).
 
 ### Step I — Ground Truth Validation
 
-**Status: IONIS COMPLETE, VOACAP PENDING** (2026-02-08)
+**Status: COMPLETE** (2026-02-08)
 
-The acid test. Compare IONIS predictions against contest log ground truth.
+The acid test. Compare IONIS and VOACAP predictions against contest log ground truth.
 For every contest QSO: the model should predict the band was open.
 
-**IONIS Validation Results (1M QSOs):**
+**Head-to-Head Results (1M QSOs):**
 
-| Metric | Value | Target |
-|--------|-------|--------|
-| **Overall Recall** | **90.42%** | >85% ✓ |
-| CW | 99.17% | - |
-| Digital | 100.00% | - |
-| RTTY | 87.28% | - |
-| Phone (SSB) | 78.16% | Below target |
+| Model | Recall | Delta |
+|-------|--------|-------|
+| **IONIS** | **90.42%** | — |
+| VOACAP | 75.98% | -14.4 pts |
 
-**By Band:**
+**IONIS by Mode:**
 
-| Band | Recall | Notes |
-|------|--------|-------|
-| 160m | 99.86% | Excellent |
-| 80m | 98.62% | Excellent |
-| 40m | 96.52% | Excellent |
-| 20m | 87.87% | Good |
-| 15m | 84.97% | Meets target |
-| 10m | 85.59% | Meets target |
+| Mode | Recall |
+|------|--------|
+| CW | 99.17% |
+| Digital | 100.00% |
+| RTTY | 87.28% |
+| Phone (SSB) | 78.16% |
+
+**IONIS by Band:**
+
+| Band | IONIS | VOACAP | Notes |
+|------|-------|--------|-------|
+| 160m | 99.86% | 45.13% | VOACAP misses NVIS/ground-wave |
+| 80m | 98.62% | 74.98% | |
+| 40m | 96.52% | 84.71% | |
+| 20m | 87.87% | 86.71% | VOACAP's best band (F2 physics) |
+| 15m | 84.97% | 72.09% | |
+| 10m | 85.59% | 60.46% | VOACAP misses sporadic-E |
 
 **Grey Line Analysis:**
 - During transition: 84.96%
 - Normal conditions: 91.07%
 - Gap: -6.11% (confirms V13 target for hour×longitude features)
 
+**Key Insight:** VOACAP excels at classic F2 propagation (20m). IONIS captures
+NVIS (160m) and sporadic-E (10m) because the training data includes those openings.
+Complementary strengths — different physics models.
+
 **Scripts:**
-- `scripts/validate_v12.py` — contest QSO validation with mode-weighted thresholds
+- `scripts/validate_v12.py` — IONIS validation with mode-weighted thresholds
+- `scripts/voacap_batch_runner.py` — VOACAP batch processing (9975)
+
+**Data:**
+- `validation.step_i_paths` — 1M test paths with IONIS predictions
+- `validation.step_i_voacap` — VOACAP predictions for same paths
 
 **Pass criteria:**
 
 - [x] 1M contest QSOs validated
 - [x] For each QSO, query IONIS: "was this band open for this path at this time?"
 - [x] Band-open accuracy > 85% (IONIS: 90.42%)
-- [ ] Compare same question against VOACAP prediction (pending — requires `voacapl` on 9975)
-- [ ] IONIS accuracy > VOACAP accuracy on the same test set
+- [x] Compare same question against VOACAP prediction (VOACAP: 75.98%)
+- [x] Measure where each tool excels (VOACAP: 20m F2 | IONIS: 160m NVIS, 10m Es)
 
 **V13 Improvement Targets:**
 - Phone (SSB) recall: 78% → 85%+
