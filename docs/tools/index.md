@@ -1,7 +1,8 @@
 # Tools Overview
 
-The IONIS pipeline ships **18 CLI tools** across three packages. All tools use the
-`ch-go` native protocol for ClickHouse connectivity with LZ4 compression.
+The IONIS pipeline ships **18 CLI tools** across three packages, plus one
+external tool used for validation. All pipeline tools use the `ch-go` native
+protocol for ClickHouse connectivity with LZ4 compression.
 
 ## WSPR Ingestion
 
@@ -45,3 +46,9 @@ The IONIS pipeline ships **18 CLI tools** across three packages. All tools use t
 | Tool | Type | Package | Description |
 |------|------|---------|-------------|
 | [bulk-processor](cuda.md#bulk-processor) | CUDA | ki7mt-ai-lab-cuda | Float4 embedding generator → wspr.silver |
+
+## Validation (External)
+
+| Tool | Type | Package | Description |
+|------|------|---------|-------------|
+| [voacapl](voacapl.md#voacapl) | Fortran | External (local build) | NTIA/ITS HF propagation prediction engine |
