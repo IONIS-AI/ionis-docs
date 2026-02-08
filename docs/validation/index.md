@@ -2,6 +2,15 @@
 
 Automated test results from IONIS model evaluations.
 
+## Step I: IONIS vs VOACAP (2026-02-08)
+
+!!! success "IONIS 90.42% vs VOACAP 75.98% — 1M Contest QSOs"
+    Head-to-head comparison on 1,000,000 real contest QSO paths.
+    IONIS V12 outperforms VOACAP by **+14.4 percentage points**.
+
+    See [Step I: IONIS vs VOACAP](step_i_voacap_comparison.md) for
+    full results by mode, band, and methodology.
+
 ## Current Status: V12 Complete
 
 !!! success "35/35 Tests Passing"
@@ -39,4 +48,5 @@ Grade C items are V13 improvement targets.
 
 ## Documentation
 
+- [Step I: IONIS vs VOACAP](step_i_voacap_comparison.md) — 1M path head-to-head comparison
 - [V12 Test Specification](v12_test_specification.md) — NASA-style test documentation

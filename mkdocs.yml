@@ -66,6 +66,7 @@ nav:
     - "VOACAP (External)": tools/voacapl.md
   - Validation:
     - Overview: validation/index.md
+    - "Step I: IONIS vs VOACAP": validation/step_i_voacap_comparison.md
     - "V12 Test Specification": validation/v12_test_specification.md
     - "V10 Frequency Audit": validation/frequency_tests/IONIS-V10-FREQ-01.md
     - "V10 Polar Challenge": validation/polar_tests/IONIS-V10-POL-01.md

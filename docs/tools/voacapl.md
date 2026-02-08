@@ -61,10 +61,16 @@ directory at runtime.
 **Point-to-point prediction:**
 
 ```bash
-voacapl ~/itshfbc                              # default input/output
+voacapl ~/itshfbc                              # default (voacapx.dat -> voacapx.out)
 voacapl ~/itshfbc input.dat output.out         # custom files
-voacapl ~/itshfbc batch                        # batch mode
+voacapl ~/itshfbc batch                        # batch mode (reads voacap.cir)
 ```
+
+!!! warning "File arguments are relative to `run/`"
+    The input and output filenames are resolved relative to the `run/`
+    subdirectory inside the itshfbc root. So `voacapl ~/itshfbc input.dat output.out`
+    reads `~/itshfbc/run/input.dat` and writes `~/itshfbc/run/output.out`.
+    This is a Fortran heritage detail — the engine always operates inside `run/`.
 
 **Options:**
 
@@ -106,8 +112,8 @@ QUIT
 | MONTH | Year and month (mm.dd format) |
 | SUNSPOT | Smoothed sunspot number for the prediction period |
 | CIRCUIT | TX lat/lon, RX lat/lon, path type (S=short) |
-| SYSTEM | Min angle, required reliability, power, SNR threshold |
-| ANTENNA | TX/RX antenna model files and gain |
+| SYSTEM | Power(kW), noise(dBW), min angle, req reliability(%), req SNR, MP tol, delay tol |
+| ANTENNA | TX/RX antenna model, beam direction, and transmit power (kW) |
 | FREQUENCY | Up to 11 frequencies in MHz |
 | METHOD | Prediction method (30 = complete system performance) |
 
@@ -130,12 +136,58 @@ VOACAP produces hourly predictions. Fields used for IONIS comparison:
 Both systems predict whether an HF path is open for a given band, time, and
 solar condition. The comparison methodology:
 
-1. Export the 1M contest QSO paths from `validate_v12.py`
-2. Convert each path to VOACAP input format (grid → lat/lon, band → freq,
-   date → month + SSN from `solar.bronze`)
-3. Run through `voacapl` in batch mode
-4. Score recall: did VOACAP predict "band open" when a real QSO occurred?
-5. Compare VOACAP recall against IONIS recall (90.42%)
+1. Load the 1M contest QSO paths from `validation.step_i_paths` (ClickHouse)
+2. Group by unique circuit (TX, RX, freq, year, month, SSN) — ~965K circuits
+3. Generate VOACAP input cards (one per circuit, all 24 hours)
+4. Run `voacapl` in parallel (32 workers, each with its own `itshfbc/` copy)
+5. Parse SNR/REL/MUFday from Method 30 output
+6. Apply mode thresholds: DG/CW = -22 dB, RY/PH = -21 dB
+7. INSERT results into `validation.step_i_voacap` (ClickHouse)
+8. Compare: `SELECT ... FROM step_i_paths p JOIN step_i_voacap v USING (...)`
+
+### Batch Runner
+
+The script `voacap_batch_runner.py` automates the full VOACAP validation run.
+
+**Location:** `ki7mt-ai-lab-training/scripts/voacap_batch_runner.py`
+
+**Prerequisites:**
+
+- `voacapl` installed at `/usr/local/bin/voacapl`
+- `~/itshfbc/` initialized via `makeitshfbc`
+- `validation.step_i_paths` loaded in ClickHouse (1M rows)
+- `validation.step_i_voacap` table created (DDL: `16-validation_step_i.sql`)
+
+**Run a small test (1000 rows, dry run):**
+
+```bash
+python3 voacap_batch_runner.py --sample 1000 --workers 8 --dry-run
+```
+
+**Full 1M run (32 workers):**
+
+```bash
+python3 voacap_batch_runner.py --workers 32
+```
+
+**Options:**
+
+```text
+  --workers N    Parallel workers (default: 32)
+  --host HOST    ClickHouse host (default: localhost)
+  --port PORT    ClickHouse native port (default: 9000)
+  --sample N     Process only N rows (0 = all)
+  --dry-run      Skip ClickHouse INSERT
+  --work-dir DIR Worker directory base (default: /tmp/voacap_work)
+```
+
+**How parallelization works:**
+
+Each worker gets its own `itshfbc/` directory tree. Large read-only directories
+(`coeffs/`, `antennas/`) are symlinked; writable directories (`run/`, `database/`)
+are copied. Each worker writes its input card to `run/voacapx.dat`, invokes
+`voacapl`, and parses `run/voacapx.out` independently. On the 9975WX (32C/64T),
+this achieves ~370 circuits/sec — the full 965K circuits complete in ~43 minutes.
 
 ### Limitations
 
