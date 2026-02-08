@@ -10,8 +10,8 @@ HF propagation prediction for the 21st century — built on 13.2B real-world obs
 |-------------|--------|---------|
 | WSPR Spots | 10.8B | Signal floor, raw attenuation |
 | RBN Spots | 2.18B | CW/RTTY traffic density |
-| Contest Logs | 475K files (225.7M QSOs) | Ground truth validation |
-| Aggregated Signatures | 93.8M | Noise-filtered training targets |
+| Contest Logs | 491K files (232.6M QSOs) | Ground truth validation |
+| Aggregated Signatures | 93.4M | Noise-filtered training targets |
 | Solar Indices | 76K rows (2000–2026) | SFI, Kp, SSN conditions |
 
 ## Current Model: IONIS V12 Signatures
@@ -19,12 +19,12 @@ HF propagation prediction for the 21st century — built on 13.2B real-world obs
 | Metric | Value |
 |--------|-------|
 | **Architecture** | IonisV12Gate (203,573 params) |
-| **RMSE** | 2.05 dB |
-| **Pearson** | +0.3051 |
-| **Physics Score** | 76.7/100 (Grade B) |
+| **RMSE** | 2.03 dB |
+| **Pearson** | +0.3153 |
+| **Physics Score** | 74.2/100 (Grade C) |
 | **Test Suite** | 35/35 PASS |
-| **SFI 70→200 benefit** | +2.1 dB |
-| **Kp 0→9 storm cost** | +4.0 dB |
+| **SFI 70→200 benefit** | +0.79 dB |
+| **Kp 0→9 storm cost** | +1.92 dB |
 
 ## Infrastructure
 

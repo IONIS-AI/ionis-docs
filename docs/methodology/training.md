@@ -9,8 +9,8 @@ This strips site-level noise and reveals the atmospheric transfer function.
 |---------|-----------------|------------------|
 | Training rows | 10M spots | 20M signatures |
 | Target | Individual SNR | Median SNR per bucket |
-| RMSE | 2.48 dB | **2.05 dB** |
-| Pearson | +0.24 | **+0.31** |
+| RMSE | 2.48 dB | **2.03 dB** |
+| Pearson | +0.24 | **+0.32** |
 
 ## Differential Learning Rate
 

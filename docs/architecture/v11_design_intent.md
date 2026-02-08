@@ -3,9 +3,9 @@
 !!! success "Status: COMPLETE"
     V11 trained and validated. V12 (production) trained on aggregated signatures.
 
-    - **V12 RMSE**: 2.05 dB
-    - **V12 Pearson**: +0.3051
-    - **Physics Score**: 76.7/100 (Grade B)
+    - **V12 RMSE**: 2.03 dB
+    - **V12 Pearson**: +0.3153
+    - **Physics Score**: 74.2/100 (Grade C)
     - **Test Suite**: 35/35 PASS
 
 ## Problem Statement
