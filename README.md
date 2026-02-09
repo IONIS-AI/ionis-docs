@@ -13,7 +13,10 @@ IONIS is a machine learning system that predicts HF radio propagation using real
 - Trained on 20M WSPR + 91K RBN DXpedition signatures
 - Bridges weak-signal digital modes with high-power CW and DXpedition activity
 - 152 rare DXCC entities covered (Bouvet, Heard Island, South Sandwich, etc.)
-- +9.5 percentage points improvement over the ITS/NTIA reference model (VOACAP)
+- **Step K Quality Test**: Pearson r +0.3675 vs VOACAP +0.0218 (IONIS wins 9/10 bands)
+- Low-band correlation delta: +0.5167 (IONIS +0.3204 vs VOACAP -0.1963)
+
+**V14-TP (Terrestrial Physics)** — in training. Uses balloon-filtered signature library (89.9M signatures, 276M contaminated spots excluded).
 
 ## Data Sources
 
@@ -23,13 +26,14 @@ IONIS is a machine learning system that predicts HF radio propagation using real
 | RBN | 2.18B spots | Complete | High-SNR transitions, DXpeditions |
 | Contest Logs | 195M QSOs | Complete | Ground truth validation |
 | Solar Indices | 76K rows | Complete | Gated physics input (SFI, Kp) |
+| DXpedition Synthesis | 2.52M paths | Complete | 152 rare DXCC entities (RBN x GDXF) |
 
 ## Documentation Sections
 
 - **Architecture** — Model design, monotonic sidecars, gated physics
 - **Methodology** — Data pipeline, bronze/silver/gold layers, training
 - **Validation** — Physics tests, reference model comparison, test specifications
-- **Roadmap** — D-to-Z path to production (current: Steps G-I complete, Step J next)
+- **Roadmap** — D-to-Z path to production (Steps D-K complete, V14-TP training in progress)
 - **Tools** — WSPR ingestion, solar pipeline, contest/RBN, CUDA engine
 
 ## Local Development
