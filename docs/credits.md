@@ -7,7 +7,8 @@ submitting a log. Without them, there is no data. Without the data, there is
 no IONIS.
 
 **To every amateur radio operator who has ever transmitted a WSPR beacon,
-worked a contest, or appeared on the Reverse Beacon Network: thank you.**
+worked a contest, appeared on the Reverse Beacon Network, or shown up on
+PSK Reporter: thank you.**
 
 ---
 
@@ -20,6 +21,12 @@ worked a contest, or appeared on the Reverse Beacon Network: thank you.**
   archives WSPR spot reports from operators worldwide.
 - **Reverse Beacon Network** (reversebeacon.net) — N4ZR, PY1NB, VE3NEA, and
   the global network of CW/RTTY skimmer operators who contribute spots.
+- **PSK Reporter** (pskreporter.info) — Created and operated by
+  **Philip Gladstone, N1DQ**. The largest real-time amateur radio reception
+  report network, with 27,000+ active monitors contributing millions of
+  FT8/FT4/WSPR spots daily. The MQTT real-time feed that powers our
+  `pskr-collector` is provided by **Tom Sevart, M0LTE** — making the
+  full firehose of reception data available to the community.
 - **CQ Contest Logs** — World Wide Radio Operators Foundation (WWROF)
 - **ARRL Contest Logs** — American Radio Relay League
 - **GFZ Potsdam** — Helmholtz Centre Potsdam, German Research Centre for

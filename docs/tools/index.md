@@ -1,8 +1,9 @@
 # Tools Overview
 
-The IONIS pipeline ships **18 CLI tools** across three packages, plus one
+The IONIS pipeline ships **19 CLI tools** across three packages, plus one
 external tool used for validation. All pipeline tools use the `ch-go` native
-protocol for ClickHouse connectivity with LZ4 compression.
+protocol for ClickHouse connectivity with LZ4 compression. The PSK Reporter
+collector uses MQTT for real-time spot streaming.
 
 ## WSPR Ingestion
 
@@ -32,6 +33,12 @@ protocol for ClickHouse connectivity with LZ4 compression.
 | [contest-ingest](contest.md#contest-ingest) | Go | ki7mt-ai-lab-apps | Cabrillo V2/V3 parser → ClickHouse with enrichment |
 | [rbn-download](contest.md#rbn-download) | Go | ki7mt-ai-lab-apps | RBN daily ZIP downloader (2009–present) |
 | [rbn-ingest](contest.md#rbn-ingest) | Go | ki7mt-ai-lab-apps | RBN ZIP → CSV → ClickHouse ingester |
+
+## PSK Reporter
+
+| Tool | Type | Package | Description |
+|------|------|---------|-------------|
+| [pskr-collector](pskr.md#pskr-collector) | Go | ki7mt-ai-lab-apps | MQTT real-time spot collector → gzip JSONL (~22M spots/day) |
 
 ## Database
 

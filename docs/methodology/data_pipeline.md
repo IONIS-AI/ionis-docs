@@ -89,21 +89,27 @@ Generates float4 embeddings from WSPR+solar data:
 
 ## Propagation Data Sources
 
-Three pillars of propagation truth, each on a dedicated ZFS dataset:
+Four pillars of propagation truth, each on a dedicated ZFS dataset:
 
 | Source | Tool | Volume | Modes | Grid Quality |
 |--------|------|--------|-------|-------------|
 | **WSPR** | `wspr-turbo` | 10.8B spots | WSPR only | 4-char Maidenhead |
 | **RBN** | `rbn-ingest` | 2.18B spots | CW, RTTY | DXCC prefix only (24% geocoded via Rosetta Stone) |
 | **Contest Logs** | `contest-ingest` | 195M QSOs (491K files) | CW/SSB/RTTY/Digi | HQ-GRID-LOCATOR (98.5% ARRL) + callsign lookup |
-| **PSK Reporter** | `pskr-collector` (planned) | ~30-50M/day | FT8/FT4/CW | 6-8 char Maidenhead |
+| **PSK Reporter** | `pskr-collector` | ~22M HF spots/day (collecting) | FT8/FT4/WSPR/JS8/CW | 4-6 char Maidenhead |
 
-### PSK Reporter (Future — Forward Collection Only)
+### PSK Reporter (Forward Collection — Active)
 
-- **No bulk archive exists** — 24-hour API lookback max
-- **MQTT firehose** at `mqtt.pskreporter.info` (~30-50M spots/day)
-- **Best data quality**: real SNR, 6-8 char grids, multi-mode
-- **Collection tool**: Go MQTT listener → ClickHouse (planned)
+Created by **Philip Gladstone, N1DQ**. MQTT feed provided by **Tom Sevart, M0LTE**.
+
+- **No bulk archive exists** — forward-only, collection started 2026-02-09
+- **MQTT firehose** at `mqtt.pskreporter.info:1883` (~22M HF spots/day)
+- **Best data quality**: machine-decoded SNR, 4-6 char grids, multi-mode
+- **Collection tool**: `pskr-collector` — Go MQTT subscriber → hourly-rotated gzip JSONL → `/mnt/pskr-data`
+- **Observed throughput**: ~250 HF spots/sec sustained, all 10 HF bands
+- **Mode mix**: 88.7% FT8, 9.1% WSPR, 1.5% FT4, 0.5% JS8
+- **Grid coverage**: 28% receiver grids, 15% sender grids (per-spot)
+- **Stage 2** (future): `pskr-ingest` JSONL → ClickHouse `pskr.bronze`
 
 ## Storage Layout (9975WX)
 
@@ -146,4 +152,5 @@ Each dataset can be independently snapshotted, replicated (`zfs send`), and quot
 | `wspr.gold_continuous` | 10M | 218 MiB | IFW-weighted training set |
 | `wspr.gold_stratified` | 10M | 167 MiB | SSN-stratified training set |
 | `wspr.gold_v6` | 10M | 240 MiB | V6 training set (continuous + kp_penalty) |
+| `pskr.bronze` | — | — | PSK Reporter reception spots (accumulating) |
 | `solar.bronze` | 17.8K | 868 KiB | SSN, SFI, Kp daily/3-hourly |

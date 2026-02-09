@@ -61,6 +61,7 @@ nav:
     - WSPR Ingestion: tools/wspr.md
     - Solar Pipeline: tools/solar.md
     - "Contest & RBN": tools/contest.md
+    - PSK Reporter: tools/pskr.md
     - Database: tools/database.md
     - CUDA Engine: tools/cuda.md
     - "VOACAP (External)": tools/voacapl.md
