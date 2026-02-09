@@ -6,29 +6,30 @@ Built with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/).
 
 ## About IONIS
 
-IONIS is a machine learning system that predicts HF radio propagation using real-world observations. Instead of relying solely on theoretical ionospheric models, IONIS learns from billions of actual radio contacts to predict what the bands will do next.
+IONIS is a machine learning system that predicts HF radio propagation using real-world observations. Instead of relying solely on theoretical ionospheric models, IONIS learns from billions of heterogeneous observations (WSPR, RBN, Contest Logs) harmonized through a Z-normalized signal-to-noise architecture.
 
-**Current Model:** IONIS V13 Combined
+**Current Model:** IONIS V13 Combined — *Multi-Source Hybrid*
 - 203,573 parameters
 - Trained on 20M WSPR + 91K RBN DXpedition signatures
-- 152 rare DXCC entities covered
-- +9.5 percentage points improvement over reference model (VOACAP)
+- Bridges weak-signal digital modes with high-power CW and DXpedition activity
+- 152 rare DXCC entities covered (Bouvet, Heard Island, South Sandwich, etc.)
+- +9.5 percentage points improvement over the ITS/NTIA reference model (VOACAP)
 
 ## Data Sources
 
-| Source | Volume | Status |
-|--------|--------|--------|
-| WSPR | 10.8B spots | Complete |
-| RBN | 2.18B spots | Complete |
-| Contest Logs | 232.6M QSOs | Complete |
-| Solar Indices | 76K rows | Complete |
+| Source | Volume | Status | Role |
+|--------|--------|--------|------|
+| WSPR | 10.8B spots | Complete | Climatology base layer |
+| RBN | 2.18B spots | Complete | High-SNR transitions, DXpeditions |
+| Contest Logs | 232.6M QSOs | Complete | Ground truth validation |
+| Solar Indices | 76K rows | Complete | Gated physics input (SFI, Kp) |
 
 ## Documentation Sections
 
 - **Architecture** — Model design, monotonic sidecars, gated physics
 - **Methodology** — Data pipeline, bronze/silver/gold layers, training
-- **Validation** — Physics tests, VOACAP comparison, test specifications
-- **Roadmap** — D-to-Z path from infrastructure to production validation
+- **Validation** — Physics tests, reference model comparison, test specifications
+- **Roadmap** — D-to-Z path to production (current: Steps G-I complete, Step J next)
 - **Tools** — WSPR ingestion, solar pipeline, contest/RBN, CUDA engine
 
 ## Local Development
