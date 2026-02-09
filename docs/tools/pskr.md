@@ -114,13 +114,31 @@ All 10 HF bands represented (160m through 10m).
 
 ### Running as a Service
 
-For continuous collection, run via `systemd` or `tmux`:
+A systemd unit file is provided in `ki7mt-ai-lab-apps/scripts/pskr-collector.service`:
 
 ```bash
-# Simple background run
-nohup pskr-collector >> /var/log/pskr-collector.log 2>&1 &
+# Install the service
+sudo cp scripts/pskr-collector.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now pskr-collector
 
-# Or via tmux for monitoring
+# Check status
+systemctl status pskr-collector
+
+# Follow logs
+journalctl -u pskr-collector -f
+
+# Stop collection
+sudo systemctl stop pskr-collector
+```
+
+The unit runs as `ki7mt:ki7mt`, restarts on failure (30s delay), uses `SIGTERM` for
+graceful shutdown (flushes buffers), and is hardened with `ProtectSystem=strict` and
+`ReadWritePaths=/mnt/pskr-data`.
+
+Alternatively, for quick testing via tmux:
+
+```bash
 tmux new-session -d -s pskr 'pskr-collector 2>&1 | tee /var/log/pskr-collector.log'
 ```
 
