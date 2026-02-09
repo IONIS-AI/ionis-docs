@@ -16,7 +16,10 @@ IONIS is a machine learning system that predicts HF radio propagation using real
 - **Step K Quality Test**: Pearson r +0.3675 vs VOACAP +0.0218 (IONIS wins 9/10 bands)
 - Low-band correlation delta: +0.5167 (IONIS +0.3204 vs VOACAP -0.1963)
 
-**V14-TP (Terrestrial Physics)** — in training. Uses balloon-filtered signature library (89.9M signatures, 276M contaminated spots excluded).
+**V14-TP (Terrestrial Physics)** — in training (epoch 49/100). Uses balloon-filtered signature library.
+- V14-TP: 89.9M signatures (V1 balloon filter — 99.7% false positives, 3.4M legitimate signatures lost)
+- V14-TP-v2: 93.3M signatures (V2 corrected filter — surgical 20K removal, 0.021%)
+- A/B comparison in progress to quantify impact of corrected balloon detection
 
 ## Data Sources
 
@@ -33,7 +36,7 @@ IONIS is a machine learning system that predicts HF radio propagation using real
 - **Architecture** — Model design, monotonic sidecars, gated physics
 - **Methodology** — Data pipeline, bronze/silver/gold layers, training
 - **Validation** — Physics tests, reference model comparison, test specifications
-- **Roadmap** — D-to-Z path to production (Steps D-K complete, V14-TP training in progress)
+- **Roadmap** — D-to-Z path to production (Steps D-L complete, Step M A/B comparison in progress)
 - **Tools** — WSPR ingestion, solar pipeline, contest/RBN, CUDA engine
 
 ## Local Development
