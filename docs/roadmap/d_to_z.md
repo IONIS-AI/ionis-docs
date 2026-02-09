@@ -1,7 +1,7 @@
 # D to Z: The Digital Twin Roadmap
 
 The mission: build a Digital Twin of the ionosphere from real-world data that
-beats VOACAP — every time, by a substantial margin.
+consistently outperforms the ITS/NTIA reference model (VOACAP).
 
 Inspired by CDS (Critical Dimension Scatterometry) in semiconductor metrology:
 measure the signature, search the library, reconstruct what you can't see.
@@ -378,7 +378,7 @@ the data is telling us.
 
 ### Step Z — The Goal
 
-IONIS beats VOACAP on a standardized test:
+IONIS consistently outperforms the reference model on a standardized test:
 
 - Take 100 real paths across multiple bands
 - Run both predictions for multiple days across different solar conditions
@@ -386,10 +386,10 @@ IONIS beats VOACAP on a standardized test:
 
 **Pass criteria:**
 
-- [ ] Pearson r (IONIS vs actual) > Pearson r (VOACAP vs actual)
-- [ ] RMSE (IONIS) < RMSE (VOACAP)
-- [ ] Band-open accuracy (IONIS) > Band-open accuracy (VOACAP)
-- [ ] IONIS wins on > 90% of test paths
+- [ ] Pearson r (IONIS vs actual) > Pearson r (reference vs actual)
+- [ ] RMSE (IONIS) < RMSE (reference)
+- [ ] Band-open accuracy (IONIS) > Band-open accuracy (reference)
+- [ ] IONIS shows improvement on > 90% of test paths
 - [ ] Results are reproducible and documented
 
 ---
