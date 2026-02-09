@@ -36,28 +36,29 @@ The goal: improve real-world accuracy by learning patterns that physics-first mo
 
 ## Current Status
 
-IONIS V12 is trained on 20M aggregated WSPR signatures covering 2008–2026. It correctly predicts:
+**IONIS V13 Combined** is trained on WSPR signatures plus RBN DXpedition data, covering 152 rare DXCC entities that WSPR alone cannot reach. It correctly predicts:
 
-- Higher solar flux (SFI) improves propagation
-- Geomagnetic storms (Kp) degrade propagation
+- Higher solar flux (SFI) improves propagation (+5.2 dB benefit)
+- Geomagnetic storms (Kp) degrade propagation (+10.4 dB cost)
 - Path geometry, time of day, and seasonal effects
 
 | Metric | Value |
 |--------|-------|
-| **RMSE** | 2.03 dB |
-| **Pearson correlation** | +0.3153 |
-| **Physics Score** | 74.2/100 |
-| **Test Suite** | 35/35 PASS |
+| **RMSE** | 0.60σ (~4.0 dB) |
+| **Pearson correlation** | +0.2865 |
+| **Physics Tests** | 4/4 PASS |
+| **Step I Recall** | 85.34% (+9.5 pp vs reference) |
 
-The model is not perfect — a Pearson of +0.32 means "right more than wrong, but not always." That's expected for ionospheric prediction. The atmosphere doesn't fully cooperate.
+V13 demonstrates consistent improvement over the ITS/NTIA reference model (VOACAP) on 1M validated contest paths, with particular gains on NVIS (160m) and sporadic-E (10m) propagation modes.
 
 ## Data Sources
 
 | Source | Volume | Purpose |
 |--------|--------|---------|
 | **WSPR** | 10.8B spots | Signal floor, path attenuation |
-| **RBN** | 2.18B spots | CW/RTTY traffic patterns |
+| **RBN** | 2.18B spots | CW/RTTY traffic, DXpedition coverage |
 | **Contest Logs** | 232.6M QSOs | Ground truth — proof the band was open |
+| **Signatures** | 93.4M buckets | Aggregated path×band×hour×month patterns |
 | **Solar Indices** | 76K rows | SFI, Kp, SSN conditions (2000–2026) |
 
 ## Infrastructure
