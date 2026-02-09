@@ -57,7 +57,7 @@ V13 demonstrates consistent improvement over the ITS/NTIA reference model (VOACA
 |--------|--------|---------|
 | **WSPR** | 10.8B spots | Signal floor, path attenuation |
 | **RBN** | 2.18B spots | CW/RTTY traffic, DXpedition coverage |
-| **Contest Logs** | 232.6M QSOs | Ground truth — proof the band was open |
+| **Contest Logs** | 195M QSOs | Ground truth — proof the band was open |
 | **Signatures** | 93.4M buckets | Aggregated path×band×hour×month patterns |
 | **Solar Indices** | 76K rows | SFI, Kp, SSN conditions (2000–2026) |
 

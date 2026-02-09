@@ -73,7 +73,7 @@ Generates float4 embeddings from WSPR+solar data:
 | Tool | Method | Throughput |
 |------|--------|------------|
 | `contest-download` | Index scrape + hash-based download → `/mnt/contest-logs` | 491K files, 3.5 GB |
-| `contest-ingest` | Cabrillo V2/V3 parser → ClickHouse (`contest.bronze`) | 232.6M QSOs |
+| `contest-ingest` | Cabrillo V2/V3 parser → ClickHouse (`contest.bronze`) | 195M QSOs |
 
 ### Contests Downloaded
 
@@ -95,7 +95,7 @@ Three pillars of propagation truth, each on a dedicated ZFS dataset:
 |--------|------|--------|-------|-------------|
 | **WSPR** | `wspr-turbo` | 10.8B spots | WSPR only | 4-char Maidenhead |
 | **RBN** | `rbn-ingest` | 2.18B spots | CW, RTTY | DXCC prefix only (24% geocoded via Rosetta Stone) |
-| **Contest Logs** | `contest-ingest` | 232.6M QSOs (491K files) | CW/SSB/RTTY/Digi | HQ-GRID-LOCATOR (98.5% ARRL) + callsign lookup |
+| **Contest Logs** | `contest-ingest` | 195M QSOs (491K files) | CW/SSB/RTTY/Digi | HQ-GRID-LOCATOR (98.5% ARRL) + callsign lookup |
 | **PSK Reporter** | `pskr-collector` (planned) | ~30-50M/day | FT8/FT4/CW | 6-8 char Maidenhead |
 
 ### PSK Reporter (Future — Forward Collection Only)

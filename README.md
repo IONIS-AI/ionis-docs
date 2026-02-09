@@ -21,7 +21,7 @@ IONIS is a machine learning system that predicts HF radio propagation using real
 |--------|--------|--------|------|
 | WSPR | 10.8B spots | Complete | Climatology base layer |
 | RBN | 2.18B spots | Complete | High-SNR transitions, DXpeditions |
-| Contest Logs | 232.6M QSOs | Complete | Ground truth validation |
+| Contest Logs | 195M QSOs | Complete | Ground truth validation |
 | Solar Indices | 76K rows | Complete | Gated physics input (SFI, Kp) |
 
 ## Documentation Sections
@@ -70,7 +70,7 @@ The site will be available at `http://127.0.0.1:8000/`.
 
 ## License
 
-Apache 2.0 — See [LICENSE](LICENSE) for details.
+GPLv3 — See [LICENSE](LICENSE) for details.
 
 ## Author
 
