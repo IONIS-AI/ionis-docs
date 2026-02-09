@@ -66,7 +66,6 @@ The site will be available at `http://127.0.0.1:8000/`.
 | [ki7mt-ai-lab-apps](https://github.com/KI7MT/ki7mt-ai-lab-apps) | Go data ingesters (WSPR, solar, contest, RBN) |
 | [ki7mt-ai-lab-core](https://github.com/KI7MT/ki7mt-ai-lab-core) | DDL schemas, SQL scripts, base configuration |
 | [ki7mt-ai-lab-cuda](https://github.com/KI7MT/ki7mt-ai-lab-cuda) | CUDA signature embedding engine |
-| [ki7mt-ai-lab-devel](https://github.com/KI7MT/ki7mt-ai-lab-devel) | Development notes and shared context |
 
 ## License
 
