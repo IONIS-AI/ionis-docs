@@ -1,9 +1,9 @@
 # Step I: IONIS vs VOACAP Head-to-Head
 
-**Date:** 2026-02-08
-**Dataset:** 1,000,000 contest QSO paths (CQ WW, CQ WPX, ARRL DX — 2005-2025)
-**IONIS Version:** V12 Signatures
-**VOACAP Version:** voacapl 0.7.5 (NTIA/ITS Method 30)
+- **Date:** 2026-02-08
+- **Dataset:** 1,000,000 contest QSO paths (CQ WW, CQ WPX, ARRL DX — 2005-2025)
+- **IONIS Version:** V12 Signatures
+- **VOACAP Version:** voacapl 0.7.5 (NTIA/ITS Method 30)
 
 ---
 

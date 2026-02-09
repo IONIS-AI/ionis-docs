@@ -139,20 +139,39 @@ aggregation approach works.
 
 ### Step G — Signature Search Layer
 
-**Status: NOT STARTED**
+**Status: COMPLETE** (2026-02-08)
 
-Build the kNN search that makes the signature library queryable.
-Given current conditions (path, band, hour, SFI, Kp), find the K nearest
-historical signatures and report what happened.
+Built kNN search over 93.4M aggregated signatures using pure SQL (no FAISS).
+Weighted distance metric: geography 60%, hour 20%, month 10%, SFI 5%, Kp 5%.
+Band is an exact match filter (can't interpolate across bands).
 
-Options: ClickHouse vector search, FAISS on GPU, or custom ANN index.
+**Results:**
+
+| Metric | Value |
+|--------|-------|
+| Query latency | 50-94 ms |
+| Physics tests | 7/7 PASS |
+
+**Physics Tests:**
+
+- Day ≥ Night: PASS (day SNR higher than night)
+- SFI positive: PASS (high SFI improves SNR)
+- D-layer absorption: PASS (160m worse than 20m)
+- Polar storm sensitivity: PASS (high lat more affected)
+- Sparse path handling: PASS (graceful degradation)
+- Query latency: PASS (<1 sec)
+- Reference validation: PASS (FN31→JO21, 20m, 14 UTC, June → -21.0 dB)
+
+**Scripts:**
+
+- `scripts/signature_search.py` — kNN search with weighted distance
 
 **Pass criteria:**
 
-- [ ] Query: "FN31 to JO21, 20m, 12 UTC, SFI 150, Kp 2" returns top-K matches
-- [ ] Results include: matched SNR values, spot count, date range of matches
-- [ ] Query latency < 1 second for single path lookup
-- [ ] Median of K-nearest SNR values is a reasonable prediction
+- [x] Query: "FN31 to JO21, 20m, 12 UTC, SFI 150, Kp 2" returns top-K matches
+- [x] Results include: matched SNR values, spot count, date range of matches
+- [x] Query latency < 1 second for single path lookup (50-94 ms achieved)
+- [x] Median of K-nearest SNR values is a reasonable prediction
 
 **Does not break:** Steps E and F — search is a new layer, not a replacement.
 
@@ -258,17 +277,94 @@ Complementary strengths — different physics models.
 
 ---
 
+### V13 Combined Model — DXpedition Synthesis
+
+**Status: COMPLETE** (2026-02-09)
+
+Addressed the coverage gap: WSPR doesn't reach rare DXCC entities. Solution:
+cross-reference GDXF Mega DXpeditions catalog (468 DXpeditions) with RBN
+skimmer data to extract real propagation signatures from rare locations.
+
+**Data Synthesis:**
+
+| Source | Signatures | Coverage |
+|--------|------------|----------|
+| WSPR | 20M (sampled from 93.4M) | Common paths |
+| RBN DXpedition | 91K × 50 (upsampled) | 152 rare DXCC entities |
+
+**Key Innovation:** Per-source per-band Z-score normalization removes the ~35 dB
+offset between WSPR weak-signal (-18 dB mean) and RBN high-power (+17 dB mean).
+Model learns relative propagation quality, not absolute power levels.
+
+**Results:**
+
+| Metric | Value |
+|--------|-------|
+| RMSE | 0.60σ (~4.0 dB) |
+| Pearson | +0.2865 |
+| SFI benefit (70→200) | +5.2 dB |
+| Kp storm cost (0→9) | +10.4 dB |
+| Storm/Sun ratio | 4.0:1 |
+
+**Physics Tests:** 4/4 PASS (storm sidecar, sun sidecar, gate range, decomposition)
+
+**Rare DXCC Coverage (examples):**
+
+- Bouvet Island (3Y)
+- Heard Island (VK0H)
+- South Sandwich (VP8)
+- Peter I Island (3Y0)
+- Navassa Island (KP1)
+
+**Scripts:**
+
+- `scripts/train_v13_combined.py` — WSPR + RBN DXpedition training
+- `scripts/test_v13_combined.py` — sensitivity analysis (Z-normalized)
+- `scripts/verify_v13_combined.py` — physics verification (4/4 pass)
+
+**Artifacts:**
+
+- Checkpoint: `models/ionis_v13_combined.pth`
+- GDXF catalog: `shared-context/gdxf/gdxf-catalog.json`
+- RBN signatures: `rbn.dxpedition_signatures` (91,301 rows)
+
+**Note:** Pearson is lower than V12 (+0.2865 vs +0.3153) — expected when
+learning from heterogeneous data with different physics regimes. The win
+is **coverage**: 152 rare DXCC entities that WSPR never reaches.
+
+**Does not break:** V12 checkpoint preserved. V13 is new production model.
+
+---
+
 ### Steps J through Y — The Long Road
 
-These steps are not yet defined. They depend on what we learn at Steps F
-through I. Possible directions:
+These steps evolve based on what we learn. Current priorities:
+
+**Step J — Unified Oracle Interface** (Next)
+
+Combine neural oracle + signature search into single prediction tool:
+
+- Single CLI/module: path + conditions → neural prediction + historical evidence
+- Confidence weighting: oracle better on unseen paths, signatures on dense paths
+- Output: combined SNR, condition, agreement score, top matching signatures
+
+**V14 Strategy — Contest + RBN Synthesis**
+
+Fill the gap between common paths (WSPR) and rare DXpeditions (RBN DX):
+
+- Contest logs have useless 599 RST reports — no SNR truth
+- RBN skimmers run at maximum speed during contests — real SNR measurements
+- Cross-reference: contest QSOs with RBN spots (same callsign, band, ±5 min)
+- Result: SNR-enriched contest QSOs for semi-rare grids (active contest stations)
+
+**Other Directions:**
 
 - **Coverage Analysis**: Map observation density across all 32,400 possible
   Maidenhead grids. Quantify permanent gaps (ocean, uninhabited), sparse regions,
   and high-density coverage. Use interpolation distance as a confidence metric.
   See [Coverage & Confidence](../methodology/coverage.md).
 - **Feature expansion**: geomagnetic latitude, MUF proxy, ionospheric tilt
-- **RBN/PSK Reporter ingest**: FT8 and CW skimmer data for denser coverage
+- **PSK Reporter ingest**: FT8 data for denser coverage (live only, no bulk historical)
 - **Temporal refinement**: 15-minute prediction windows instead of hourly
 - **Mode prediction**: not just "band open" but "open for SSB vs CW vs FT8"
 - **Edge deployment**: quantized model for offline/portable use
@@ -308,4 +404,4 @@ IONIS beats VOACAP on a standardized test:
 
 ---
 
-*Last updated: 2026-02-08*
+*Last updated: 2026-02-09*
