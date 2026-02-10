@@ -8,16 +8,16 @@ IONIS predicts signal-to-noise ratio (SNR) — a physical quantity. The operatio
 question **"Can I work this path right now, on my mode?"** is answered by applying
 mode-specific thresholds to that prediction:
 
-| Mode Family | Threshold | Recall (V15) | Interpretation |
+| Mode Family | Threshold | Recall (V16) | Interpretation |
 |-------------|-----------|--------------|----------------|
 | WSPR | -28 dB | ~97% | Model sees nearly all beacon paths |
-| FT8/FT4 | -20 dB | 96.83% | Digital modes decode deep in the noise |
-| CW | -10 dB | 91.64% | Most CW-viable paths detected |
-| RTTY | -5 dB | 83.79% | Marginal paths begin to drop |
-| SSB | +5 dB | 81.01% | Only strong paths survive for voice |
+| FT8/FT4 | -20 dB | 93.29% | Digital modes decode deep in the noise |
+| CW | -10 dB | 93.77% | Most CW-viable paths detected |
+| RTTY | -5 dB | 99.37% | Contest anchoring taught RTTY ceiling |
+| SSB | +5 dB | **98.40%** | Contest anchoring taught voice ceiling |
 
-The model isn't "worse" at SSB — it correctly predicts marginal paths that clear the
-digital thresholds but fail for voice. The physics is right; the bar is just higher.
+V16's curriculum learning: WSPR taught the floor (-28 dB), contest logs taught
+the ceiling (+10 dB). The model now knows the full dynamic range.
 
 ### VOACAP Comparison Context
 
@@ -28,11 +28,17 @@ coefficients. It has no concept of digital mode decode thresholds.
 - **For digital modes (FT8, FT4, WSPR) and CW/RTTY**, IONIS provides predictions where no comparable reference model exists
 - When FT8 operators use VOACAP and find "closed" paths that are wide open at -20 dB, that's not a VOACAP failure — it was never designed for that world
 
-## Step I: IONIS vs VOACAP (2026-02-09)
+## Step I: IONIS vs VOACAP (2026-02-11)
 
-!!! success "IONIS V15 86.89% vs VOACAP 75.82% — 1M Contest QSOs"
+!!! success "IONIS V16 96.38% vs VOACAP 75.82% — 1M Contest QSOs"
     Head-to-head comparison on 1,000,000 real contest QSO paths.
-    IONIS V15 Diamond outperforms VOACAP by **+11.07 percentage points**.
+    IONIS V16 Contest outperforms VOACAP by **+20.56 percentage points**.
+
+    | Model | Overall Recall | vs VOACAP |
+    |-------|----------------|-----------|
+    | **IONIS V16** | **96.38%** | **+20.56 pp** |
+    | IONIS V15 | 86.89% | +11.07 pp |
+    | VOACAP | 75.82% | — |
 
     See [Step I: IONIS vs VOACAP](step_i_voacap_comparison.md) for
     full results by mode, band, and methodology.
@@ -45,35 +51,46 @@ coefficients. It has no concept of digital mode decode thresholds.
 
     See [Step K: Quality Test](step_k_quality_test.md) for full band-by-band results.
 
-## Current Status: V15 Diamond
+## Current Status: V16 Contest
 
-!!! success "Physics Validated"
-    IONIS V15 Diamond — trained on balloon-filtered WSPR signatures (93.3M) +
-    RBN DXpedition synthesis (91K × 50x upsampled) covering 152 rare DXCC entities.
+!!! success "96.38% Recall — 35/35 Tests Pass"
+    IONIS V16 Contest — trained on:
+
+    - WSPR signatures (93.3M) — floor physics
+    - RBN DXpedition (91K × 50x) — rare path coverage
+    - Contest anchors (6.34M) — ceiling proof (+10 dB SSB, 0 dB RTTY)
 
 | Metric | Value |
 |--------|-------|
-| **Step I Recall** | 86.89% (VOACAP: 75.82%, +11 pp) |
-| **Step K Pearson** | +0.3675 (VOACAP: +0.0218) |
-| **SSB Recall** | 81.01% (+2 pp vs V13) |
+| **Step I Recall** | 96.38% (VOACAP: 75.82%, +20.56 pp) |
+| **SSB Recall** | 98.40% (V15: 81.01%, +17.4 pp) |
+| **Pearson** | +0.4873 |
 | **Physics Tests** | 4/4 PASS |
+| **Oracle Tests** | 35/35 PASS |
 
-**Recall by Mode (V15):**
+**Recall by Mode (V16 vs V15):**
 
-| Mode | Recall | vs VOACAP |
-|------|--------|-----------|
-| Digital | 96.83% | No comparison (VOACAP doesn't model digital) |
-| CW | 91.64% | No comparison |
-| RTTY | 83.79% | No comparison |
-| SSB | 81.01% | Fair fight — IONIS wins |
+| Mode | V16 | V15 | Delta |
+|------|-----|-----|-------|
+| SSB | **98.40%** | 81.01% | **+17.4 pp** |
+| RTTY | 99.37% | 83.79% | +15.6 pp |
+| CW | 93.77% | 91.64% | +2.1 pp |
+| Digital | 93.29% | 96.83% | -3.5 pp |
 
-## V12 Test Suite (Historical Reference)
+## Curriculum Learning
 
-!!! note "V12 Archived"
-    The V12 35-test automated suite is preserved as a reference baseline.
-    V13 validation uses Step I (recall) and Step K (quality) instead.
+V16's success comes from teaching sequence:
 
-    **Physics Score**: 74.2/100 (Grade C — targeted for improvement in V14+)
+1. **WSPR (floor)**: 10.8B observations at -28 dB — "what barely possible looks like"
+2. **RBN DXpedition (rare)**: 91K from 152 DXCC — "unusual paths exist"
+3. **Contest (ceiling)**: 6.34M proven QSOs at +10 dB — "strong signals exist"
+
+The model learned the full dynamic range. WSPR alone only taught "marginal."
+
+## V16 Test Suite
+
+!!! note "35/35 Tests Pass"
+    V16 uses the same oracle test suite as V12, updated for V16 baselines.
 
 | Group | ID Range | Tests | Purpose |
 |-------|----------|-------|---------|

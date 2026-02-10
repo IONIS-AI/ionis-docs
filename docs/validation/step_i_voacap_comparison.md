@@ -1,8 +1,8 @@
 # Step I: IONIS vs VOACAP Head-to-Head
 
-- **Date:** 2026-02-09 (V15 update)
+- **Date:** 2026-02-11 (V16 update)
 - **Dataset:** 1,000,000 contest QSO paths (CQ WW, CQ WPX, ARRL DX — 2005-2025)
-- **IONIS Version:** V15 Diamond
+- **IONIS Version:** V16 Contest
 - **VOACAP Version:** voacapl 0.7.5 (NTIA/ITS Method 30)
 
 ---
@@ -14,17 +14,29 @@ Every QSO actually happened, so the ground truth is always YES. The question
 is which model correctly predicts that.
 
 ```text
-+--------+---------+
-| Model  | Recall  |
-+--------+---------+
-| IONIS  | 86.89%  |
-| VOACAP | 75.82%  |
-+--------+---------+
-  Delta:  +11.07 pp
++------------+---------+
+| Model      | Recall  |
++------------+---------+
+| IONIS V16  | 96.38%  |
+| IONIS V15  | 86.89%  |
+| VOACAP     | 75.82%  |
++------------+---------+
+  V16 Delta: +20.56 pp vs VOACAP
+  V16 Delta: +9.49 pp vs V15
 ```
 
-IONIS V15 outperforms VOACAP by **11.07 percentage points** on real-world
+IONIS V16 outperforms VOACAP by **20.56 percentage points** on real-world
 contest QSO recall.
+
+### V16 Contest Anchoring
+
+V16 added 6.34M contest signatures with anchored SNR values:
+
+- **SSB QSOs → +10 dB anchor** (proven voice-viable paths)
+- **RTTY QSOs → 0 dB anchor** (proven digital-viable paths)
+
+This taught the model the "ceiling" of propagation — paths where voice
+communication actually succeeded. WSPR alone only teaches the "floor."
 
 ---
 
@@ -78,44 +90,51 @@ querying by either the 9975WX or M3 agent.
 
 ---
 
-## Results by Mode
+## Results by Mode (V16)
 
 ```text
-Mode      Total       IONIS TP    IONIS %    VOACAP TP   VOACAP %
-------  ---------  -----------  ---------  -----------  ---------
-CW        459,200      420,809     91.64%      340,678     74.36%
-PH        285,083      230,946     81.01%      215,717     75.83%
-RY        233,446      195,553     83.79%      183,392     78.72%
-DG         22,269       21,564     96.83%       18,397     82.84%
+Mode      Total       IONIS TP    IONIS %    VOACAP TP   VOACAP %    V16 vs VOACAP
+------  ---------  -----------  ---------  -----------  ---------   -------------
+CW        459,200      430,609     93.77%      340,678     74.36%      +19.4 pp
+PH        285,083      280,521     98.40%      215,717     75.83%      +22.6 pp
+RY        233,446      231,982     99.37%      183,392     78.72%      +20.6 pp
+DG         22,269       20,773     93.29%       18,397     82.84%      +10.4 pp
 ```
 
-IONIS leads in every mode. The gap is widest for CW (+17.3 pp). Digital mode
-recall is 96.83% — approaching the theoretical ceiling. SSB (PH) is 81.01%,
-which is +5.2 pp over VOACAP on its home turf.
+**V16 breakthrough**: SSB (PH) recall jumped from 81% (V15) to **98.40%** (V16).
+Contest anchoring taught the model what "voice-viable" actually looks like.
+
+IONIS leads in every mode. The gap is widest for SSB (+22.6 pp) — VOACAP's
+home turf, and now IONIS dominates it.
 
 ---
 
-## Results by Band
+## Results by Band (V16)
 
 ```text
-Band      Total     IONIS TP    IONIS %    VOACAP TP   VOACAP %
-------  ---------  ----------  ---------  ----------  ---------
-80m        95,350      78,350     82.16%      71,328     74.98%
-40m       205,856     188,562     91.60%     174,004     84.71%
-20m       348,712     311,056     89.20%     253,281     86.71%
-15m       199,503     151,441     75.91%     143,524     72.09%
-10m       150,579     139,504     92.65%      90,831     60.46%
+Band      Total     IONIS TP    IONIS %    VOACAP TP   VOACAP %    V16 vs VOACAP
+------  ---------  ----------  ---------  ----------  ---------   -------------
+80m        95,350      93,063     97.60%      71,328     74.98%      +22.6 pp
+40m       205,856     200,281     97.29%     174,004     84.71%      +12.6 pp
+20m       348,712     335,325     96.16%     253,281     86.71%       +9.5 pp
+15m       199,503     186,718     93.59%     143,524     72.09%      +21.5 pp
+10m       150,579     148,473     98.60%      90,831     60.46%      +38.1 pp
 ```
 
 ### Band Analysis
 
-**160m (45.13%)** — VOACAP's worst band. 160m propagation is dominated by
-NVIS (Near Vertical Incidence Skywave) and ground-wave paths under 500 km.
-VOACAP's ionospheric model doesn't capture these mechanisms well. IONIS,
-trained on real WSPR spots that include short-range 160m contacts, learns
-the actual propagation patterns.
+**10m (98.60%)** — V16's biggest improvement. VOACAP misses sporadic-E and
+day-to-day solar variability. Contest anchoring taught IONIS that 10m paths
+actually work when conditions are right.
 
-**10m (60.46%)** — VOACAP uses monthly median SSN, missing day-to-day
+**80m (97.60%)** — NVIS and ground-wave paths that VOACAP's ionospheric model
+doesn't capture. IONIS learned from real WSPR spots that include short-range
+contacts.
+
+**15m (93.59%)** — Strong improvement from V15's 75.91%. The contest ceiling
+taught the model what "open" really means on this band.
+
+**20m (96.16%)** — VOACAP uses monthly median SSN, missing day-to-day
 variability and sporadic-E openings that account for many contest QSOs on
 10m, especially at solar minimum. IONIS captures these from the training
 data distribution.
