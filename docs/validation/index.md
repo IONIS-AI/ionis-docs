@@ -28,6 +28,37 @@ coefficients. It has no concept of digital mode decode thresholds.
 - **For digital modes (FT8, FT4, WSPR) and CW/RTTY**, IONIS provides predictions where no comparable reference model exists
 - When FT8 operators use VOACAP and find "closed" paths that are wide open at -20 dB, that's not a VOACAP failure — it was never designed for that world
 
+## PSK Reporter Acid Test (2026-02-10)
+
+!!! success "84.14% Recall on Independent Data — Model Generalizes"
+    Validated against 100K spots from 16.5M PSK Reporter observations.
+    Real solar conditions (SFI=140, Kp=1.6). Data the model has never seen.
+
+    | Test | Recall | Notes |
+    |------|--------|-------|
+    | Step I (training domain) | 96.38% | Contest paths |
+    | **PSK Reporter (independent)** | **84.14%** | Acid test |
+
+    **By Mode:**
+
+    | Mode | Recall | Spots |
+    |------|--------|-------|
+    | FT8 | 83.61% | 91,682 |
+    | WSPR | 100% | 4,729 |
+    | FT4 | 82.30% | 2,729 |
+    | CW | 59.33% | 804 |
+
+    **By Band:**
+
+    | Band | Recall | Notes |
+    |------|--------|-------|
+    | 15m-10m | 94-96% | F2 mastery |
+    | 20m-17m | 81-89% | Solid |
+    | 160m-80m | 45-69% | NVIS gap |
+
+    Key insight: -3 pp drop with real SFI (140 vs 150 default) proves model
+    responds to solar conditions — physics, not memorization.
+
 ## Step I: IONIS vs VOACAP (2026-02-11)
 
 !!! success "IONIS V16 96.38% vs VOACAP 75.82% — 1M Contest QSOs"
