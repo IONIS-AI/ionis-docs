@@ -8,13 +8,13 @@ IONIS predicts signal-to-noise ratio (SNR) — a physical quantity. The operatio
 question **"Can I work this path right now, on my mode?"** is answered by applying
 mode-specific thresholds to that prediction:
 
-| Mode Family | Threshold | Recall | Interpretation |
-|-------------|-----------|--------|----------------|
-| WSPR | -28 dB | ~95%+ | Model sees nearly all beacon paths |
-| FT8/FT4 | -20 dB | ~95%+ | Digital modes decode deep in the noise |
-| CW | -10 dB | ~90% | Most CW-viable paths detected |
-| RTTY | -5 dB | ~82% | Marginal paths begin to drop |
-| SSB | +5 dB | ~78% | Only strong paths survive for voice |
+| Mode Family | Threshold | Recall (V15) | Interpretation |
+|-------------|-----------|--------------|----------------|
+| WSPR | -28 dB | ~97% | Model sees nearly all beacon paths |
+| FT8/FT4 | -20 dB | 96.83% | Digital modes decode deep in the noise |
+| CW | -10 dB | 91.64% | Most CW-viable paths detected |
+| RTTY | -5 dB | 83.79% | Marginal paths begin to drop |
+| SSB | +5 dB | 81.01% | Only strong paths survive for voice |
 
 The model isn't "worse" at SSB — it correctly predicts marginal paths that clear the
 digital thresholds but fail for voice. The physics is right; the bar is just higher.
@@ -28,11 +28,11 @@ coefficients. It has no concept of digital mode decode thresholds.
 - **For digital modes (FT8, FT4, WSPR) and CW/RTTY**, IONIS provides predictions where no comparable reference model exists
 - When FT8 operators use VOACAP and find "closed" paths that are wide open at -20 dB, that's not a VOACAP failure — it was never designed for that world
 
-## Step I: IONIS vs VOACAP (2026-02-08)
+## Step I: IONIS vs VOACAP (2026-02-09)
 
-!!! success "IONIS 85.34% vs VOACAP 75.82% — 1M Contest QSOs"
+!!! success "IONIS V15 86.89% vs VOACAP 75.82% — 1M Contest QSOs"
     Head-to-head comparison on 1,000,000 real contest QSO paths.
-    IONIS V13 outperforms VOACAP by **+9.5 percentage points**.
+    IONIS V15 Diamond outperforms VOACAP by **+11.07 percentage points**.
 
     See [Step I: IONIS vs VOACAP](step_i_voacap_comparison.md) for
     full results by mode, band, and methodology.
@@ -45,18 +45,27 @@ coefficients. It has no concept of digital mode decode thresholds.
 
     See [Step K: Quality Test](step_k_quality_test.md) for full band-by-band results.
 
-## Current Status: V13 Combined
+## Current Status: V15 Diamond
 
 !!! success "Physics Validated"
-    IONIS V13 Combined — trained on WSPR signatures + RBN DXpedition synthesis
-    covering 152 rare DXCC entities.
+    IONIS V15 Diamond — trained on balloon-filtered WSPR signatures (93.3M) +
+    RBN DXpedition synthesis (91K × 50x upsampled) covering 152 rare DXCC entities.
 
 | Metric | Value |
 |--------|-------|
-| **Step I Recall** | 85.34% (VOACAP: 75.82%) |
+| **Step I Recall** | 86.89% (VOACAP: 75.82%, +11 pp) |
 | **Step K Pearson** | +0.3675 (VOACAP: +0.0218) |
-| **Low-band delta** | +0.5167 over VOACAP |
+| **SSB Recall** | 81.01% (+2 pp vs V13) |
 | **Physics Tests** | 4/4 PASS |
+
+**Recall by Mode (V15):**
+
+| Mode | Recall | vs VOACAP |
+|------|--------|-----------|
+| Digital | 96.83% | No comparison (VOACAP doesn't model digital) |
+| CW | 91.64% | No comparison |
+| RTTY | 83.79% | No comparison |
+| SSB | 81.01% | Fair fight — IONIS wins |
 
 ## V12 Test Suite (Historical Reference)
 

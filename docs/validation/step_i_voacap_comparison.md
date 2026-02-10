@@ -1,8 +1,8 @@
 # Step I: IONIS vs VOACAP Head-to-Head
 
-- **Date:** 2026-02-08
+- **Date:** 2026-02-09 (V15 update)
 - **Dataset:** 1,000,000 contest QSO paths (CQ WW, CQ WPX, ARRL DX — 2005-2025)
-- **IONIS Version:** V12 Signatures
+- **IONIS Version:** V15 Diamond
 - **VOACAP Version:** voacapl 0.7.5 (NTIA/ITS Method 30)
 
 ---
@@ -17,13 +17,13 @@ is which model correctly predicts that.
 +--------+---------+
 | Model  | Recall  |
 +--------+---------+
-| IONIS  | 90.42%  |
-| VOACAP | 75.98%  |
+| IONIS  | 86.89%  |
+| VOACAP | 75.82%  |
 +--------+---------+
-  Delta:  +14.44 pp
+  Delta:  +11.07 pp
 ```
 
-IONIS V12 outperforms VOACAP by **14.4 percentage points** on real-world
+IONIS V15 outperforms VOACAP by **11.07 percentage points** on real-world
 contest QSO recall.
 
 ---
@@ -83,29 +83,28 @@ querying by either the 9975WX or M3 agent.
 ```text
 Mode      Total       IONIS TP    IONIS %    VOACAP TP   VOACAP %
 ------  ---------  -----------  ---------  -----------  ---------
-CW        459,200      416,780     90.76%      340,678     74.36%
-PH        285,083      253,900     89.06%      215,717     75.83%
-RY        233,446      214,476     91.87%      183,392     78.72%
-DG         22,208       20,753     93.45%       18,397     82.84%
+CW        459,200      420,809     91.64%      340,678     74.36%
+PH        285,083      230,946     81.01%      215,717     75.83%
+RY        233,446      195,553     83.79%      183,392     78.72%
+DG         22,269       21,564     96.83%       18,397     82.84%
 ```
 
-IONIS leads in every mode. The gap is widest for CW (+16.4 pp) and narrowest
-for DG (+10.6 pp). Digital modes (DG, RY) have the lowest thresholds, so both
-models find them easier to predict.
+IONIS leads in every mode. The gap is widest for CW (+17.3 pp). Digital mode
+recall is 96.83% — approaching the theoretical ceiling. SSB (PH) is 81.01%,
+which is +5.2 pp over VOACAP on its home turf.
 
 ---
 
 ## Results by Band
 
 ```text
-Band      Total     VOACAP TP   VOACAP %    Why
-------  ---------  ----------  ---------   --------------------------------
-160m       55,879      25,217     45.13%    NVIS/ground wave — VOACAP weakest
-80m        95,126      71,328     74.98%    Night-only propagation
-40m       205,415     174,004     84.71%    Reliable DX band
-20m       292,087     253,281     86.71%    VOACAP's best band
-15m       199,096     143,524     72.09%    MUF-limited, sporadic-E gaps
-10m       150,223      90,831     60.46%    Highly solar-dependent
+Band      Total     IONIS TP    IONIS %    VOACAP TP   VOACAP %
+------  ---------  ----------  ---------  ----------  ---------
+80m        95,350      78,350     82.16%      71,328     74.98%
+40m       205,856     188,562     91.60%     174,004     84.71%
+20m       348,712     311,056     89.20%     253,281     86.71%
+15m       199,503     151,441     75.91%     143,524     72.09%
+10m       150,579     139,504     92.65%      90,831     60.46%
 ```
 
 ### Band Analysis
@@ -164,7 +163,7 @@ Docs:          ki7mt-ai-lab-docs/docs/tools/voacapl.md
 ## Significance
 
 This is a direct comparison between a 1980s physics-based model (VOACAP)
-and a 2026 data-driven neural network (IONIS V12) on the same 1M paths.
+and a 2026 data-driven neural network (IONIS V15) on the same 1M paths.
 IONIS's advantage comes from:
 
 1. **Training on real propagation data** — 10.8B WSPR spots capture actual
