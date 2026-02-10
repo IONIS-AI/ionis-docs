@@ -130,6 +130,20 @@ SETTINGS
     due to `quantile(0.5)` storing all values per group. Per-band processing
     reduces peak memory to ~8 GiB per band.
 
+## Signatures V2 — Balloon-Filtered (2026-02-09)
+
+Training from V14 onward uses `wspr.signatures_v2_terrestrial` (93.3M rows) which
+excludes balloon and telemetry contamination identified by the V2 detection system.
+
+- **V1 balloon filter** (deprecated): flagged 276M spots (2.56%) — 99.7% false positives
+- **V2 balloon filter** (current): date-level velocity detection + full Rosetta Stone (3.64M callsigns) — 1,443 entries, 950K spots (0.009%) — surgical
+
+The V2 filter correctly excludes only confirmed high-altitude balloon transmissions
+while preserving legitimate ground station data. The difference is quantified in the
+V14-TP vs V14-TP-v2 A/B comparison (+1.3 pp Pearson improvement from corrected filter).
+
+DDL: `21-balloon_callsigns_v2.sql`, `19-signatures_v2_terrestrial.sql`
+
 ## DDL Location
 
 `/usr/share/ki7mt-ai-lab-core/ddl/12-signatures_v1.sql`

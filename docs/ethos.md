@@ -44,8 +44,9 @@ A model is useless if only one person can run it.
 
 Our research must yield tangible value for the operator at the key.
 
-* **Actionable Intelligence:** We strive to move beyond "average" predictions (VOACAP) to real-time, data-driven insights that help operators make contacts.
-* **Bridge Building:** We actively work to bridge the gap between distinct data silos (e.g., mapping Machine spots from WSPR to Human logs from Contests) to create a unified view of propagation.
+* **Mode-Aware Answers:** IONIS answers the question every operator asks: *"Can I work this path right now, on my mode?"* One prediction yields verdicts for SSB, CW, RTTY, FT8, and WSPR — because the physics is the same, but the operational threshold is not.
+* **Actionable Intelligence:** We move beyond "average" predictions to real-time, data-driven insights. A path that VOACAP calls "closed" may be wide open for FT8 — IONIS tells you that.
+* **Bridge Building:** We actively work to bridge the gap between distinct data silos (mapping machine spots from WSPR/PSK Reporter to human logs from contests) to create a unified view of propagation.
 
 ## Statement of Intent
 

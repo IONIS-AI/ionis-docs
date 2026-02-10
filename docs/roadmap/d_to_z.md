@@ -10,7 +10,7 @@ measure the signature, search the library, reconstruct what you can't see.
 
 | # | Advantage | VOACAP Equivalent |
 |---|-----------|-------------------|
-| 1 | **13.2B real observations** (WSPR + RBN + contests) — not theory | Monthly median ionosonde models from the 1960s |
+| 1 | **13.18B+ real observations** (WSPR + RBN + contests + PSK Reporter) — not theory | Monthly median ionosonde models from the 1960s |
 | 2 | **195M contest QSOs** — proof the band delivered | Nothing — VOACAP has no ground truth |
 | 3 | **Continuous ingest** — new data every 2 minutes, forever | Frozen. Never learns. |
 

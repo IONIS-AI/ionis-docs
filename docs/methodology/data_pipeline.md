@@ -96,19 +96,21 @@ Four pillars of propagation truth, each on a dedicated ZFS dataset:
 | **WSPR** | `wspr-turbo` | 10.8B spots | WSPR only | 4-char Maidenhead |
 | **RBN** | `rbn-ingest` | 2.18B spots | CW, RTTY | DXCC prefix only (24% geocoded via Rosetta Stone) |
 | **Contest Logs** | `contest-ingest` | 195M QSOs (491K files) | CW/SSB/RTTY/Digi | HQ-GRID-LOCATOR (98.5% ARRL) + callsign lookup |
-| **PSK Reporter** | `pskr-collector` | ~22M HF spots/day (collecting) | FT8/FT4/WSPR/JS8/CW | 4-6 char Maidenhead |
+| **PSK Reporter** | `pskr-collector` | ~26M HF spots/day (live since 2026-02-10) | FT8/FT4/WSPR/JS8/CW | 4-6 char Maidenhead |
 
 ### PSK Reporter (Forward Collection — Active)
 
 Created by **Philip Gladstone, N1DQ**. MQTT feed provided by **Tom Sevart, M0LTE**.
 
 - **No bulk archive exists** — forward-only, collection started 2026-02-09
-- **MQTT firehose** at `mqtt.pskreporter.info:1883` (~22M HF spots/day)
+- **MQTT firehose** at `mqtt.pskreporter.info:1883` (~26M HF spots/day)
 - **Best data quality**: machine-decoded SNR, 4-6 char grids, multi-mode
 - **Collection tool**: `pskr-collector` — Go MQTT subscriber → hourly-rotated gzip JSONL → `/mnt/pskr-data`
-- **Observed throughput**: ~250 HF spots/sec sustained, all 10 HF bands
+- **Running as systemd service** since 2026-02-10 (~19 bytes/spot compressed, ~15 GB/year)
+- **Observed throughput**: ~300 HF spots/sec sustained, all 10 HF bands
 - **Mode mix**: 88.7% FT8, 9.1% WSPR, 1.5% FT4, 0.5% JS8
 - **Grid coverage**: 28% receiver grids, 15% sender grids (per-spot)
+- **Dual purpose**: Training feed for future models + validation feed for live scoring
 - **Stage 2** (future): `pskr-ingest` JSONL → ClickHouse `pskr.bronze`
 
 ## Storage Layout (9975WX)
@@ -123,12 +125,12 @@ Created by **Philip Gladstone, N1DQ**. MQTT feed provided by **Tom Sevart, M0LTE
 | `archive-pool/wspr-data` | `/mnt/wspr-data` | lz4 | WSPR raw CSV archives (.csv.gz) |
 | `archive-pool/contest-logs` | `/mnt/contest-logs` | zstd-9 | CQ + ARRL Cabrillo logs |
 | `archive-pool/rbn-data` | `/mnt/rbn-data` | lz4 | RBN daily ZIP archives |
-| `archive-pool/pskr-data` | `/mnt/pskr-data` | zstd-9 | PSK Reporter MQTT collection |
+| `archive-pool/pskr-data` | `/mnt/pskr-data` | lz4 | PSK Reporter MQTT collection (pre-compressed gzip) |
 
 **Compression rationale**:
 
-- `zstd-9` for text data (Cabrillo, JSON) — 10-20x compression ratio
-- `lz4` for pre-compressed ZIPs (RBN) — near-zero CPU overhead, slight metadata savings
+- `zstd-9` for text data (Cabrillo logs) — 10-20x compression ratio
+- `lz4` for pre-compressed archives (RBN ZIPs, PSK Reporter gzip JSONL) — near-zero CPU overhead on incompressible data
 
 Each dataset can be independently snapshotted, replicated (`zfs send`), and quota'd.
 

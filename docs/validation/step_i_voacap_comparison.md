@@ -179,3 +179,16 @@ IONIS's advantage comes from:
 VOACAP remains a valuable independent baseline: its 76% recall confirms
 that the contest QSO dataset is physically reasonable (these paths really
 were open), and the band-by-band pattern matches expected ionospheric physics.
+
+### A Note on Mode Context
+
+VOACAP was designed for **SSB voice circuits** — its prediction algorithms,
+noise models, and reliability metrics assume analog telephony. The comparison
+above uses contest QSOs across all modes (CW, SSB, RTTY, Digital) with uniform
+thresholds, which is useful for overall benchmarking.
+
+However, the most meaningful head-to-head is **SSB vs SSB**, where VOACAP is on
+its home turf. For digital modes (FT8, FT4, WSPR) and CW with decode thresholds
+well below VOACAP's design point, IONIS provides predictions where no comparable
+reference model exists. See the [Validation Overview](index.md) for the mode-aware
+recall staircase.

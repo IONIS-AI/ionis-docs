@@ -95,7 +95,7 @@ From a 30-second test run (7,607 spots):
 
 | Metric | Value |
 |--------|-------|
-| Throughput | ~250 HF spots/sec sustained |
+| Throughput | ~300 HF spots/sec sustained |
 | SNR range | -34 to +38 dB (mean -9.5) |
 | Non-zero SNR | 95.8% |
 | Sender grids present | 14.7% |
@@ -144,7 +144,8 @@ tmux new-session -d -s pskr 'pskr-collector 2>&1 | tee /var/log/pskr-collector.l
 
 ### Estimated Collection Rates
 
-At ~250 HF spots/sec: **~22M spots/day**, **~660M spots/month**.
+At ~300 HF spots/sec: **~26M spots/day**, **~780M spots/month**.
+At ~19 bytes/spot compressed: **~15 GB/year** on ZFS (lz4).
 With `--hf-only=false`: higher volume including VHF/UHF/microwave.
 
 ### ClickHouse Schema

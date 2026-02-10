@@ -2,37 +2,55 @@
 
 > *"The logs have been speaking for decades, but nobody is listening."*
 
-Every day, millions of radio contacts are logged — WSPR beacons, RBN spots, contest QSOs. They contain the ground truth of HF propagation: what actually worked, when, and under what conditions. Until now, that data sat in archives, unused.
+Every day, millions of radio contacts are logged — WSPR beacons, RBN spots, contest
+QSOs, PSK Reporter decodes. They contain the ground truth of HF propagation: what
+actually worked, when, and under what conditions. Until now, that data sat in archives,
+unused for prediction.
 
 ---
 
 ## What is IONIS?
 
-**IONIS** (Ionospheric Neural Inference System) is a machine learning engine that predicts HF radio propagation using real-world observations instead of theoretical models.
+**IONIS** (Ionospheric Neural Inference System) is a machine learning engine that
+predicts HF radio propagation using real-world observations instead of theoretical models.
 
-The ionosphere is chaotic. Traditional tools like VOACAP rely on monthly median models derived from 1960s ionosonde data — they tell you what propagation *should* look like on an average day, not what it *will* look like today.
+IONIS answers one question: **"Can I work this path right now, on my mode?"**
 
-IONIS takes a different approach: learn from billions of actual radio contacts to predict what the bands will do next.
+One model predicts the signal level. A mode-aware threshold layer converts that into
+operational verdicts for six mode families — from WSPR at -28 dB to SSB at +5 dB. One
+forward pass, six answers.
 
 ## Building on Traditional Prediction
 
-Tools like VOACAP represent decades of ionospheric research and remain valuable references. But they have inherent limitations:
+Tools like VOACAP represent decades of ionospheric research and remain valuable
+references. But they have inherent limitations:
 
 - **Static models**: Based on historical averages, updated infrequently
-- **Limited validation**: Difficult to verify predictions against real-world results
-- **Coarse resolution**: Monthly medians can miss daily and hourly variations
+- **Single-mode focus**: Designed for SSB voice circuits, with no concept of digital mode thresholds
+- **Limited validation**: No feedback loop — predictions are never checked against observations
+- **Coarse resolution**: Monthly medians miss daily and hourly variations
 
-IONIS aims to complement these tools by adding what they lack: continuous learning from real-world observations. The two approaches validate each other — physics models provide theoretical grounding, while observational data reveals what actually happens.
+When FT8 operators use VOACAP and find "closed" paths that are wide open at -20 dB,
+that's not a VOACAP bug — it was never designed for the digital world.
+
+IONIS extends VOACAP's legacy by adding what it lacks: mode-aware thresholds, continuous
+learning from real-world observations, and a closed-loop feedback cycle. The two
+approaches validate each other — physics models provide theoretical grounding, while
+observational data reveals what actually happens.
 
 ## The IONIS Approach
 
-IONIS is built on three pillars:
+IONIS is built on four pillars:
 
-1. **Massive observational data**: 13.2B radio contacts from WSPR, RBN, and contest logs
+1. **Massive observational data**: 13.18B+ radio contacts from four independent networks (WSPR, RBN, contest logs, and PSK Reporter)
 2. **Neural network with physics constraints**: The model can't violate known ionospheric physics
-3. **Continuous learning**: New data flows in every 2 minutes, forever
+3. **Mode-aware prediction**: One SNR prediction yields six operational verdicts (WSPR, FT8, CW, RTTY, SSB)
+4. **Closed-loop validation**: Live PSK Reporter data continuously scores the model against observations it has never seen
 
-The goal: improve real-world accuracy by learning patterns that physics-first models can miss, while using traditional tools like VOACAP for validation and comparison.
+The model predicts signal-to-noise ratio — a physical quantity that is mode-agnostic.
+The threshold layer applies mode-specific decode limits to determine operational
+viability. The physics doesn't change by mode; only the minimum signal required to use
+it does.
 
 ## Current Status
 
@@ -49,17 +67,17 @@ The goal: improve real-world accuracy by learning patterns that physics-first mo
 | **Physics Tests** | 4/4 PASS |
 | **Step I Recall** | 85.34% (+9.5 pp vs reference) |
 
-V13 demonstrates consistent improvement over the ITS/NTIA reference model (VOACAP) on 1M validated contest paths, with particular gains on NVIS (160m) and sporadic-E (10m) propagation modes.
+V13 demonstrates consistent improvement over the ITS/NTIA reference model (VOACAP) on 1M validated contest paths. VOACAP comparison is most meaningful for SSB (voice) mode, where both models are directly applicable. For digital modes (FT8, FT4, WSPR) and CW, IONIS provides predictions where no comparable reference model exists.
 
 ## Data Sources
 
-| Source | Volume | Purpose |
-|--------|--------|---------|
-| **WSPR** | 10.8B spots | Signal floor, path attenuation |
-| **RBN** | 2.18B spots | CW/RTTY traffic, DXpedition coverage |
-| **Contest Logs** | 195M QSOs | Ground truth — proof the band was open |
-| **Signatures** | 93.4M buckets | Aggregated path×band×hour×month patterns |
-| **Solar Indices** | 76K rows | SFI, Kp, SSN conditions (2000–2026) |
+| Source | Volume | Mode Coverage | Purpose |
+|--------|--------|---------------|---------|
+| **WSPR** | 10.8B spots | WSPR (-28 dB) | Signal floor, continuous baseline |
+| **RBN** | 2.18B spots | CW, RTTY | Machine-decoded SNR, DXpedition coverage |
+| **Contest Logs** | 195M QSOs | SSB, CW, RTTY, Digi | Ground truth — proof the band was open |
+| **PSK Reporter** | ~26M/day (live) | FT8, FT4, WSPR | Real-time validation and future training |
+| **Solar Indices** | 76K rows | — | SFI, Kp, SSN conditions (2000-2026) |
 
 ## Infrastructure
 

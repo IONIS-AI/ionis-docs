@@ -1,6 +1,11 @@
 # Training Methodology
 
-## Current Production Model: V12
+## Training Architecture: V12 Baseline (Historical)
+
+!!! note "V13 is the current production model"
+    V12 remains documented here as the training methodology baseline. V13 Combined
+    extends V12's approach with RBN DXpedition synthesis data covering 152 rare DXCC
+    entities. V15 Diamond is currently in training.
 
 V12 is trained on **aggregated signatures** (`wspr.signatures_v1`) rather than raw spots.
 This strips site-level noise and reveals the atmospheric transfer function.
