@@ -399,7 +399,7 @@ contest ceiling (+10 dB for SSB). Curriculum learning approach.
 
 ### V17 RBN Grid-Enriched
 
-**Status: COMPLETE but BLOCKED** (2026-02-10)
+**Status: ARCHIVED** (2026-02-10) — Superseded by V20. See V17-V19 post-mortem in [IONIS-THESIS.md](https://github.com/KI7MT/ki7mt-ai-lab-devel/blob/main/IONIS-THESIS.md).
 
 Added full RBN signatures (56.7M rows with real machine-measured SNR) to create
 4-source curriculum: WSPR floor → RBN middle → Contest ceiling → DXpedition rare.
@@ -429,9 +429,9 @@ breaks dB comparability. V16 used per-band WSPR normalization (mean ~-17 dB).
 Result: V17 predictions denormalize to ~0 to +7 dB, well above all mode
 thresholds (-20 to -28 dB). Validation shows 100%/99.99% recall (inflated).
 
-**Decision:** V16 remains production until normalization is recalibrated.
+**Decision:** V17 archived. V20 Golden Master replicated V16 physics in clean codebase, proving the failure was architectural (missing constraints), not data-related.
 
-**Checkpoint:** `versions/v17/ionis_v17.pth` (blocked)
+**Checkpoint:** `versions/v17/ionis_v17.pth` (archived)
 
 ---
 
@@ -477,7 +477,7 @@ the data is telling us.
 
 ### Step Z — The Goal
 
-**STATUS: ACHIEVED** (V16, 2026-02-10)
+**STATUS: ACHIEVED** (V16, 2026-02-10 | V20 Golden Master, 2026-02-11)
 
 IONIS consistently outperforms the reference model on standardized tests.
 
@@ -497,7 +497,7 @@ IONIS consistently outperforms the reference model on standardized tests.
 - [x] Results are reproducible and documented — V16 checkpoint + validation suite
 - [x] Independent validation on unseen data — PSK Reporter 84.14%
 
-**Production Model:** IONIS V16 Contest (`versions/v16/ionis_v16.pth`)
+**Production Model:** IONIS V20 Golden Master (`versions/v20/ionis_v20.pth`) — V16 physics replicated in clean codebase
 
 ---
 
@@ -511,4 +511,4 @@ IONIS consistently outperforms the reference model on standardized tests.
 
 ---
 
-*Last updated: 2026-02-10*
+*Last updated: 2026-02-11*
