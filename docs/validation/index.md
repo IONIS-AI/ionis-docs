@@ -82,14 +82,33 @@ coefficients. It has no concept of digital mode decode thresholds.
 
     See [Step K: Quality Test](step_k_quality_test.md) for full band-by-band results.
 
-## Current Status: V16 Contest
+## Current Status: V20 Golden Master (2026-02-11)
 
-!!! success "96.38% Recall — 35/35 Tests Pass"
-    IONIS V16 Contest — trained on:
+!!! success "V20 Production Locked — All Criteria Met"
+    IONIS V20 Golden Master validates V16 physics in clean, config-driven codebase.
 
-    - WSPR signatures (93.3M) — floor physics
-    - RBN DXpedition (91K × 50x) — rare path coverage
-    - Contest anchors (6.34M) — ceiling proof (+10 dB SSB, 0 dB RTTY)
+    | Metric | Target | V20 Final | V16 Reference | Status |
+    |--------|--------|-----------|---------------|--------|
+    | Pearson | > +0.48 | **+0.4879** | +0.4873 | **PASS** |
+    | Kp sidecar | > +3.0σ | **+3.487σ** | +3.445σ | **PASS** |
+    | SFI sidecar | > +0.4σ | **+0.482σ** | +0.478σ | **PASS** |
+    | RMSE | — | **0.862σ** | 0.860σ | Matched |
+
+    Training: 100 epochs in 4h 16m on Mac Studio M3 Ultra (MPS backend).
+    Checkpoint: `versions/v20/ionis_v20.pth`
+
+### V17-V19 Post-Mortem
+
+!!! warning "Failed Refactoring Series — Architectural Root Cause"
+    V17-V19 failed due to missing constraints in the `IonisModel` refactoring:
+
+    - **V19.4 Decisive Experiment**: Pure V16 data + IonisModel → sidecars died
+    - **Conclusion**: Architecture was the problem, not data poisoning
+    - **Recovery**: V20 uses original `IonisV12Gate` with all V16 Physics Laws
+
+    See [IONIS-THESIS.md](https://github.com/KI7MT/ki7mt-ai-lab-devel/blob/main/IONIS-THESIS.md) for full autopsy.
+
+### V16 Reference Metrics
 
 | Metric | Value |
 |--------|-------|
