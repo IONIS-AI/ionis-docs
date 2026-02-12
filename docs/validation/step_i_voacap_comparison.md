@@ -1,4 +1,4 @@
-# Step I: IONIS vs VOACAP Head-to-Head
+# Step I: IONIS vs VOACAP Comparison
 
 - **Date:** 2026-02-11 (V16 update)
 - **Dataset:** 1,000,000 contest QSO paths (CQ WW, CQ WPX, ARRL DX — 2005-2025)
@@ -25,8 +25,8 @@ is which model correctly predicts that.
   V16 Delta: +9.49 pp vs V15
 ```
 
-IONIS V16 outperforms VOACAP by **20.56 percentage points** on real-world
-contest QSO recall.
+IONIS V16 showed a **20.56 percentage point** improvement over the reference
+model on real-world contest QSO recall.
 
 ### V16 Contest Anchoring
 
@@ -104,8 +104,8 @@ DG         22,269       20,773     93.29%       18,397     82.84%      +10.4 pp
 **V16 breakthrough**: SSB (PH) recall jumped from 81% (V15) to **98.40%** (V16).
 Contest anchoring taught the model what "voice-viable" actually looks like.
 
-IONIS leads in every mode. The gap is widest for SSB (+22.6 pp) — VOACAP's
-home turf, and now IONIS dominates it.
+IONIS showed higher recall across all modes. The largest delta was SSB (+22.6 pp),
+which is notable because SSB voice circuits are VOACAP's primary design target.
 
 ---
 
@@ -205,8 +205,8 @@ noise models, and reliability metrics assume analog telephony. The comparison
 above uses contest QSOs across all modes (CW, SSB, RTTY, Digital) with uniform
 thresholds, which is useful for overall benchmarking.
 
-However, the most meaningful head-to-head is **SSB vs SSB**, where VOACAP is on
-its home turf. For digital modes (FT8, FT4, WSPR) and CW with decode thresholds
+However, the most meaningful direct comparison is **SSB vs SSB**, where VOACAP
+was specifically designed to perform. For digital modes (FT8, FT4, WSPR) and CW with decode thresholds
 well below VOACAP's design point, IONIS provides predictions where no comparable
 reference model exists. See the [Validation Overview](index.md) for the mode-aware
 recall staircase.

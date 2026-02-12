@@ -24,7 +24,7 @@ the ceiling (+10 dB). The model now knows the full dynamic range.
 VOACAP (ITS/NTIA) was designed for **SSB voice circuits** using 1960s-era ionosonde
 coefficients. It has no concept of digital mode decode thresholds.
 
-- **SSB is the only fair head-to-head comparison** — both models target voice-viable paths
+- **SSB is the only direct comparison** — both models target voice-viable paths
 - **For digital modes (FT8, FT4, WSPR) and CW/RTTY**, IONIS provides predictions where no comparable reference model exists
 - When FT8 operators use VOACAP and find "closed" paths that are wide open at -20 dB, that's not a VOACAP failure — it was never designed for that world
 
@@ -62,8 +62,8 @@ coefficients. It has no concept of digital mode decode thresholds.
 ## Step I: IONIS vs VOACAP (2026-02-11)
 
 !!! success "IONIS V16 96.38% vs VOACAP 75.82% — 1M Contest QSOs"
-    Head-to-head comparison on 1,000,000 real contest QSO paths.
-    IONIS V16 Contest outperforms VOACAP by **+20.56 percentage points**.
+    Comparison on 1,000,000 real contest QSO paths.
+    IONIS V16 showed **+20.56 percentage point** improvement over VOACAP.
 
     | Model | Overall Recall | vs VOACAP |
     |-------|----------------|-----------|
@@ -78,7 +78,7 @@ coefficients. It has no concept of digital mode decode thresholds.
 
 !!! success "IONIS Pearson r=+0.3675 vs VOACAP r=+0.0218"
     100K high-confidence signatures (spot_count > 50), per-band Pearson correlation.
-    IONIS wins 9 of 10 bands. VOACAP anti-correlated on low bands (160/80/60/40/30m).
+    IONIS showed higher correlation on 9 of 10 bands. VOACAP anti-correlated on low bands (160/80/60/40/30m).
 
     **Note:** Step K was measured with V13. V20 Golden Master achieves Pearson **+0.4879**
     — a substantial improvement from V13's +0.3675.
@@ -179,6 +179,6 @@ The model learned the full dynamic range. WSPR alone only taught "marginal."
 ## Documentation
 
 - [V20 Link Budget Battery](v20_link_budget_battery.md) — 24-profile station discrimination test
-- [Step I: IONIS vs VOACAP](step_i_voacap_comparison.md) — 1M path head-to-head comparison
+- [Step I: IONIS vs VOACAP](step_i_voacap_comparison.md) — 1M path comparison
 - [Step K: Quality Test](step_k_quality_test.md) — 100K path Pearson correlation comparison
 - [V12 Test Specification](v12_test_specification.md) — NASA-style test documentation (historical)

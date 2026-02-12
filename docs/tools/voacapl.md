@@ -15,7 +15,7 @@ original prediction algorithms.
 
 IONIS uses VOACAP as an independent baseline: the same 1M contest QSO paths
 validated by `validate_v12.py` are run through VOACAP, and recall is compared
-head-to-head.
+side by side.
 
 ```text
 voacapl - release 0.7.5

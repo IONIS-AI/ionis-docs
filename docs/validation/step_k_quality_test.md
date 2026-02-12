@@ -2,7 +2,7 @@
 
 **Date**: 2026-02-09
 **Status**: COMPLETE
-**Result**: IONIS V13 outperforms VOACAP on correlation (+0.35 delta)
+**Result**: IONIS V13 showed +0.35 correlation improvement over reference model
 
 ---
 
@@ -47,24 +47,24 @@ If IONIS has higher Pearson r than VOACAP against ground truth SNR, it doesn't j
 | RMSE | 5.00 dB | — | — |
 | Bias | -2.00 dB | — | — |
 
-**IONIS correlation is 16.8x higher than VOACAP.**
+IONIS Pearson r = +0.3675 vs VOACAP r = +0.0218 (delta: +0.3456).
 
 ### Per-Band Breakdown
 
-| Band | N | IONIS r | VOACAP r | Delta | Winner |
-|------|---|---------|----------|-------|--------|
-| 160m | 10,000 | +0.2948 | -0.1950 | +0.4898 | **IONIS** |
-| 80m | 10,000 | +0.2664 | -0.2100 | +0.4764 | **IONIS** |
-| 60m | 10,000 | +0.2449 | -0.1817 | +0.4265 | **IONIS** |
-| 40m | 10,000 | +0.4214 | -0.1717 | +0.5932 | **IONIS** |
-| 30m | 10,000 | +0.2997 | -0.0892 | +0.3889 | **IONIS** |
-| 20m | 10,000 | +0.3850 | -0.0205 | +0.4054 | **IONIS** |
-| 17m | 10,000 | +0.4993 | -0.0258 | +0.5251 | **IONIS** |
-| 15m | 10,000 | +0.4979 | +0.0468 | +0.4511 | **IONIS** |
-| 12m | 10,000 | +0.3391 | +0.2691 | +0.0700 | **IONIS** |
-| 10m | 10,000 | +0.1244 | +0.1826 | -0.0583 | VOACAP |
+| Band | N | IONIS r | VOACAP r | Delta |
+|------|---|---------|----------|-------|
+| 160m | 10,000 | +0.2948 | -0.1950 | +0.4898 |
+| 80m | 10,000 | +0.2664 | -0.2100 | +0.4764 |
+| 60m | 10,000 | +0.2449 | -0.1817 | +0.4265 |
+| 40m | 10,000 | +0.4214 | -0.1717 | +0.5932 |
+| 30m | 10,000 | +0.2997 | -0.0892 | +0.3889 |
+| 20m | 10,000 | +0.3850 | -0.0205 | +0.4054 |
+| 17m | 10,000 | +0.4993 | -0.0258 | +0.5251 |
+| 15m | 10,000 | +0.4979 | +0.0468 | +0.4511 |
+| 12m | 10,000 | +0.3391 | +0.2691 | +0.0700 |
+| 10m | 10,000 | +0.1244 | +0.1826 | -0.0583 |
 
-**IONIS wins 9/10 bands.**
+**IONIS showed higher correlation on 9 of 10 bands.**
 
 ### Low-Band Analysis (160m-40m)
 
