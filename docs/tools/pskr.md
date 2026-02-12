@@ -17,7 +17,10 @@ gzip JSONL files to `/mnt/pskr-data`. Part of `ki7mt-ai-lab-apps` (Go binary).
 This is stage 1 of a two-stage pipeline:
 
 1. **Collect** (this tool): MQTT &rarr; gzip JSONL files on ZFS
-2. **Ingest** (future `pskr-ingest`): JSONL &rarr; ClickHouse `pskr.bronze`
+2. **Ingest** (`pskr-ingest`): JSONL &rarr; ClickHouse `pskr.bronze`
+
+Both stages are live. `pskr-ingest` runs hourly via cron, using a watermark
+table (`pskr.ingest_log`) to track loaded files for incremental processing.
 
 The disk-first design provides durability (no data loss if ClickHouse is
 down), replayability (re-ingest after schema changes), and consistency

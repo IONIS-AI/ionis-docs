@@ -2,10 +2,10 @@
 
 ## Training Architecture: V12 Baseline (Historical)
 
-!!! note "V13 is the current production model"
-    V12 remains documented here as the training methodology baseline. V13 Combined
-    extends V12's approach with RBN DXpedition synthesis data covering 152 rare DXCC
-    entities. V15 Diamond is currently in training.
+!!! note "V20 is the current production model"
+    V12 remains documented here as the training methodology baseline. V20 Golden Master
+    validates the V16 Physics Laws (IonisV12Gate, HuberLoss, weight clamp, defibrillator init,
+    gate variance loss, 6-group optimizer) in a clean, config-driven codebase.
 
 V12 is trained on **aggregated signatures** (`wspr.signatures_v1`) rather than raw spots.
 This strips site-level noise and reveals the atmospheric transfer function.

@@ -80,6 +80,9 @@ coefficients. It has no concept of digital mode decode thresholds.
     100K high-confidence signatures (spot_count > 50), per-band Pearson correlation.
     IONIS wins 9 of 10 bands. VOACAP anti-correlated on low bands (160/80/60/40/30m).
 
+    **Note:** Step K was measured with V13. V20 Golden Master achieves Pearson **+0.4879**
+    — a substantial improvement from V13's +0.3675.
+
     See [Step K: Quality Test](step_k_quality_test.md) for full band-by-band results.
 
 ## Current Status: V20 Golden Master (2026-02-11)

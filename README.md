@@ -8,18 +8,13 @@ Built with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/).
 
 IONIS is a machine learning system that predicts HF radio propagation using real-world observations. Instead of relying solely on theoretical ionospheric models, IONIS learns from billions of heterogeneous observations (WSPR, RBN, Contest Logs) harmonized through a Z-normalized signal-to-noise architecture.
 
-**Current Model:** IONIS V13 Combined — *Multi-Source Hybrid*
-- 203,573 parameters
-- Trained on 20M WSPR + 91K RBN DXpedition signatures
-- Bridges weak-signal digital modes with high-power CW and DXpedition activity
-- 152 rare DXCC entities covered (Bouvet, Heard Island, South Sandwich, etc.)
-- **Step K Quality Test**: Pearson r +0.3675 vs VOACAP +0.0218 (IONIS wins 9/10 bands)
-- Low-band correlation delta: +0.5167 (IONIS +0.3204 vs VOACAP -0.1963)
-
-**V14-TP (Terrestrial Physics)** — in training (epoch 49/100). Uses balloon-filtered signature library.
-- V14-TP: 89.9M signatures (V1 balloon filter — 99.7% false positives, 3.4M legitimate signatures lost)
-- V14-TP-v2: 93.3M signatures (V2 corrected filter — surgical 20K removal, 0.021%)
-- A/B comparison in progress to quantify impact of corrected balloon detection
+**Current Model:** IONIS V20 Golden Master — *Production*
+- IonisV12Gate architecture (203,573 parameters)
+- Trained on 20M WSPR + 4.55M DXpedition (50x) + 6.34M Contest = ~31M rows
+- Pearson **+0.4879**, RMSE **0.862σ**, Kp **+3.487σ**, SFI **+0.482σ**
+- Step I Recall: 96.38% vs VOACAP 75.82% (+20.56 pp)
+- PSK Reporter live validation: 84.14% recall on independent data
+- 100 epochs in 4h 16m on Mac Studio M3 Ultra (MPS backend)
 
 ## Data Sources
 
@@ -36,7 +31,7 @@ IONIS is a machine learning system that predicts HF radio propagation using real
 - **Architecture** — Model design, monotonic sidecars, gated physics
 - **Methodology** — Data pipeline, bronze/silver/gold layers, training
 - **Validation** — Physics tests, reference model comparison, test specifications
-- **Roadmap** — D-to-Z path to production (Steps D-L complete, Step M A/B comparison in progress)
+- **Roadmap** — D-to-Z path to production (V20 Golden Master validated, pskr-ingest live)
 - **Tools** — WSPR ingestion, solar pipeline, contest/RBN, CUDA engine
 
 ## Local Development
