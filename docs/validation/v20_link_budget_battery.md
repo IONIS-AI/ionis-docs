@@ -24,7 +24,7 @@
 | Amplified | home_amp_dipole through big_gun | 38 - 59 dB |
 | Contest | contest_lp through contest_super | 43 - 67 dB |
 | DXpedition | dxpedition_lite through dxpedition_mega | 27 - 53 dB |
-| Special | maritime_mobile, eme_hf | 25 - 71 dB |
+| Special | maritime_mobile, extreme_hf | 25 - 71 dB |
 
 ## 2. Physical Verification (IONIS Integrity Check)
 
