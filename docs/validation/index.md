@@ -150,8 +150,32 @@ The model learned the full dynamic range. WSPR alone only taught "marginal."
 | Robustness | TST-500 | 9 | Determinism, stability |
 | Regression | TST-800 | 1 | Catch silent degradation |
 
+## V20 Link Budget Battery (2026-02-11)
+
+!!! success "24 Profiles Tested — Full Discrimination Curve Mapped"
+    Validated V20 model predictions across 24 station profiles from
+    WSPR baseline (0 dB) to EME (+70.8 dB) against 3 ground truth sources.
+
+    **Discrimination Curve (RBN, 56.7M paths):**
+
+    | Profile | Advantage | Recall | Tier |
+    |---------|-----------|--------|------|
+    | wspr | +0.0 dB | 15.61% | baseline |
+    | qrp_portable | +11.0 dB | 91.86% | **GOLDILOCKS** |
+    | home_station | +31.0 dB | 100.00% | saturated |
+    | contest_cw | +53.0 dB | 100.00% | saturated |
+
+    **Key insight**: The model predicts ionospheric propagation correctly.
+    Station profiles provide the "gearbox" for operational predictions.
+    The ~92% QRP recall confirms the model discriminates between
+    easy and hard paths — exactly what operators need.
+
+    See [V20 Link Budget Battery](v20_link_budget_battery.md) for
+    full 24-profile results, per-band analysis, and solar breakdowns.
+
 ## Documentation
 
+- [V20 Link Budget Battery](v20_link_budget_battery.md) — 24-profile station discrimination test
 - [Step I: IONIS vs VOACAP](step_i_voacap_comparison.md) — 1M path head-to-head comparison
 - [Step K: Quality Test](step_k_quality_test.md) — 100K path Pearson correlation comparison
 - [V12 Test Specification](v12_test_specification.md) — NASA-style test documentation (historical)
