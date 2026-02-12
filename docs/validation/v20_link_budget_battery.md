@@ -2,7 +2,7 @@
 
 - **Timestamp**: 2026-02-11 18:45 UTC
 - **Model Checkpoint**: `versions/v20/ionis_v20.pth`
-- **Test Objective**: Validate mode viability prediction across 24 station profiles covering the full range of amateur radio operations, from milliwatt QRP to EME super stations.
+- **Test Objective**: Validate mode viability prediction across 23 station profiles covering the full range of HF operations, from milliwatt QRP to contest super stations.
 
 ## 1. Methodology
 
