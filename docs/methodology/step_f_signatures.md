@@ -146,4 +146,4 @@ DDL: `21-balloon_callsigns_v2.sql`, `19-signatures_v2_terrestrial.sql`
 
 ## DDL Location
 
-`/usr/share/ki7mt-ai-lab-core/ddl/12-signatures_v1.sql`
+`/usr/share/ionis-core/ddl/12-signatures_v1.sql`

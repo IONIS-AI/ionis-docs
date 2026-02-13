@@ -7,7 +7,7 @@ ClickHouse from source archives on ZFS.
 
 The bronze stack contains raw and lightly transformed data loaded directly from
 source archives. All tables are reproducible from ZFS-stored archives using
-deterministic DDL and CLI tools from `ki7mt-ai-lab-core` and `ki7mt-ai-lab-apps`.
+deterministic DDL and CLI tools from `ionis-core` and `ionis-apps`.
 
 Bronze is self-contained — users who only need the dataset can stop here.
 
@@ -19,17 +19,17 @@ Bronze is self-contained — users who only need the dataset can stop here.
     - `/mnt/contest-logs` — CQ + ARRL Cabrillo log files
     - `/mnt/rbn-data` — RBN daily ZIP archives
 3. **RPM packages** installed (v2.3.1+):
-    - `ki7mt-ai-lab-core` — DDL schemas and population scripts
-    - `ki7mt-ai-lab-apps` — Go ingesters (wspr-turbo, rbn-ingest, contest-ingest, solar-backfill)
+    - `ionis-core` — DDL schemas and population scripts
+    - `ionis-apps` — Go ingesters (wspr-turbo, rbn-ingest, contest-ingest, solar-backfill)
 
 ## Step 1: Apply DDL Schemas
 
-All DDL files live in `/usr/share/ki7mt-ai-lab-core/ddl/` (installed by the
+All DDL files live in `/usr/share/ionis-core/ddl/` (installed by the
 RPM). Each file is idempotent (`CREATE TABLE IF NOT EXISTS`). Apply in
 numerical order:
 
 ```bash
-for f in /usr/share/ki7mt-ai-lab-core/ddl/*.sql; do
+for f in /usr/share/ionis-core/ddl/*.sql; do
     echo "Applying: $f"
     clickhouse-client --multiquery < "$f"
 done

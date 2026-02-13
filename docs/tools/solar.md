@@ -7,7 +7,7 @@ solar flux, geomagnetic, and X-ray data.
 
 Multi-source downloader covering 10 NOAA, SIDC, and GOES endpoints. Downloads
 daily/monthly sunspot numbers, F10.7 flux, Kp indices, and X-ray flux.
-Part of `ki7mt-ai-lab-apps` (Go binary).
+Part of `ionis-apps` (Go binary).
 
 ```text
 solar-download v2.3.0 - Solar Data Downloader
@@ -42,7 +42,7 @@ Data Sources:
 
 Parses and ingests SIDC CSV, NOAA JSON, and GOES JSON files into ClickHouse
 `solar.bronze`. Supports truncate-and-reload for clean refreshes.
-Part of `ki7mt-ai-lab-apps` (Go binary).
+Part of `ionis-apps` (Go binary).
 
 ```text
 solar-ingest v2.3.0 - Solar Flux Data Ingester
@@ -73,7 +73,7 @@ Supported formats:
 
 Downloads and parses the GFZ Potsdam composite file containing SSN, SFI (F10.7),
 and 3-hourly Kp/ap indices from 1932 to present. Inserts into `solar.bronze`.
-Part of `ki7mt-ai-lab-apps` (Go binary).
+Part of `ionis-apps` (Go binary).
 
 ```text
 solar-backfill v2.3.0 — Historical Solar Index Backfill (GFZ Potsdam)
@@ -111,7 +111,7 @@ Examples:
 
 Full refresh pipeline: downloads fresh solar/geomagnetic data, truncates
 `solar.bronze`, and reloads all sources.
-Part of `ki7mt-ai-lab-core` (Shell script).
+Part of `ionis-core` (Shell script).
 
 ```text
 solar-refresh v2.0.5 - Solar Data Refresh Utility
@@ -140,7 +140,7 @@ Examples:
 
 Lightweight updater for the Now-Casting pipeline. Designed for 15-minute cron
 intervals to keep near-real-time solar indices current.
-Part of `ki7mt-ai-lab-core` (Shell script).
+Part of `ionis-core` (Shell script).
 
 ```text
 Usage: solar-live-update [--refresh]
@@ -151,7 +151,7 @@ Usage: solar-live-update [--refresh]
 
 Training data loader for the historical solar index pipeline. Designed for
 6-hour cron intervals to keep training datasets aligned with latest observations.
-Part of `ki7mt-ai-lab-core` (Shell script).
+Part of `ionis-core` (Shell script).
 
 ```text
 Usage: solar-history-load [--download]

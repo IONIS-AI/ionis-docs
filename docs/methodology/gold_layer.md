@@ -18,9 +18,9 @@ SSN-stratified training set: 200K rows per (band x SSN quintile) = 10M total.
 Ensures equal representation across solar cycle conditions.
 
 ```bash
-bash /usr/share/ki7mt-ai-lab-core/scripts/populate_stratified.sh
+bash /usr/share/ionis-core/scripts/populate_stratified.sh
 # Or with custom host:
-# CH_HOST=10.60.1.1 bash /usr/share/ki7mt-ai-lab-core/scripts/populate_stratified.sh
+# CH_HOST=10.60.1.1 bash /usr/share/ionis-core/scripts/populate_stratified.sh
 ```
 
 Verification:
@@ -37,9 +37,9 @@ sampling against a 2D (SSN, midpoint_lat) density histogram. Eliminates
 stair-step artifacts from discrete SSN quintile bins.
 
 ```bash
-bash /usr/share/ki7mt-ai-lab-core/scripts/populate_continuous.sh
+bash /usr/share/ionis-core/scripts/populate_continuous.sh
 # Or with custom host:
-# CH_HOST=10.60.1.1 bash /usr/share/ki7mt-ai-lab-core/scripts/populate_continuous.sh
+# CH_HOST=10.60.1.1 bash /usr/share/ionis-core/scripts/populate_continuous.sh
 ```
 
 Verification:
@@ -58,9 +58,9 @@ Used for Phase 6+ training (Kp inversion fix).
     This step must run after Step 2 — it reads from `wspr.gold_continuous`.
 
 ```bash
-bash /usr/share/ki7mt-ai-lab-core/scripts/populate_v6_clean.sh
+bash /usr/share/ionis-core/scripts/populate_v6_clean.sh
 # Or with custom host:
-# CH_HOST=10.60.1.1 bash /usr/share/ki7mt-ai-lab-core/scripts/populate_v6_clean.sh
+# CH_HOST=10.60.1.1 bash /usr/share/ionis-core/scripts/populate_v6_clean.sh
 ```
 
 Verification:
@@ -78,16 +78,16 @@ clickhouse-client --query "SELECT min(kp_penalty), max(kp_penalty) FROM wspr.gol
 Export the training set as CSV for use on the M3 Ultra (or any training host).
 
 ```bash
-mkdir -p /mnt/ai-stack/ki7mt-ai-lab/ki7mt-ai-lab-training/data
+mkdir -p /mnt/ai-stack/ionis-ai/ionis-training/data
 
 clickhouse-client --query "SELECT * FROM wspr.gold_v6 FORMAT CSV" \
-    > /mnt/ai-stack/ki7mt-ai-lab/ki7mt-ai-lab-training/data/gold_v6.csv
+    > /mnt/ai-stack/ionis-ai/ionis-training/data/gold_v6.csv
 ```
 
 Transfer to M3 Ultra via DAC link (from 9975WX):
 
 ```bash
-scp data/gold_v6.csv gbeam@10.20.1.2:workspace/ki7mt-ai-lab/ki7mt-ai-lab-training/data/
+scp data/gold_v6.csv gbeam@10.20.1.2:workspace/ionis-ai/ionis-training/data/
 ```
 
 Verification:
@@ -130,7 +130,7 @@ For reference, the complete pipeline from clean slate:
 
 ```text
 Phase 1: DDL (see Bronze Stack)
-  Apply all /usr/share/ki7mt-ai-lab-core/ddl/*.sql in order (01-15)
+  Apply all /usr/share/ionis-core/ddl/*.sql in order (01-15)
 
 Phase 2: Bronze Ingest (see Bronze Stack)
   2a. solar-backfill             solar.bronze          (<1s)

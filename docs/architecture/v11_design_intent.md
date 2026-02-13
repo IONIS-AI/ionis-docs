@@ -198,5 +198,5 @@ v2 → v6_monotonic → v7_lobotomy → v8_sidecar → v9_dual_mono → v10_fina
 
 | File | Purpose |
 |------|---------|
-| `ki7mt-ai-lab-training/scripts/ionis_v11_gate.py` | PyTorch module + self-verification |
-| `ki7mt-ai-lab-docs/docs/architecture/v11_design_intent.md` | This document |
+| `ionis-training/scripts/ionis_v11_gate.py` | PyTorch module + self-verification |
+| `ionis-docs/docs/architecture/v11_design_intent.md` | This document |

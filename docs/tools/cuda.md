@@ -1,7 +1,7 @@
 # CUDA Engine
 
 !!! note "Local Build Only"
-    `bulk-processor` is **not included in the `ki7mt-ai-lab-cuda` RPM**. COPR build
+    `bulk-processor` is **not included in the `ionis-cuda` RPM**. COPR build
     servers do not have NVIDIA GPUs or the CUDA toolkit, so this binary must be built
     locally on a host with a supported GPU and CUDA 13.1+.
 
@@ -10,12 +10,12 @@
 GPU-accelerated float4 embedding generator for the WSPR silver layer. Reads
 date-ranged batches from `wspr.bronze`, JOINs with `solar.bronze` for solar/geomagnetic
 context, computes signature embeddings on the GPU, and writes results to `wspr.silver`.
-Part of `ki7mt-ai-lab-cuda` (CUDA binary).
+Part of `ionis-cuda` (CUDA binary).
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐
 │  Bulk Embedding Processor - Blackwell sm_120                │
-│  ki7mt-ai-lab-cuda v2.3.1                                   │
+│  ionis-cuda v2.3.1                                   │
 └─────────────────────────────────────────────────────────────┘
 
 Usage: bulk-processor --start YYYY-MM-DD --end YYYY-MM-DD [options]
@@ -50,7 +50,7 @@ Example:
 **Build steps:**
 
 ```bash
-cd ki7mt-ai-lab-cuda
+cd ionis-cuda
 mkdir build && cd build
 cmake ..
 cmake --build . -j$(nproc)

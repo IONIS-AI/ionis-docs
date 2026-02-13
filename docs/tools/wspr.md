@@ -6,7 +6,7 @@ Four Go binaries for downloading and ingesting WSPR spot data into ClickHouse.
 
 The primary ingestion engine. Streams tar.gz/csv.gz archives directly into ClickHouse
 using zero-copy decompression and double-buffered native blocks — no intermediate disk I/O.
-Part of `ki7mt-ai-lab-apps` (Go binary).
+Part of `ionis-apps` (Go binary).
 
 ```text
 wspr-turbo v2.3.0 - Zero-Copy Streaming Pipeline
@@ -43,7 +43,7 @@ Architecture:
 
 Maximum throughput ingester for uncompressed CSV files. Uses 1 MB read buffers and
 zero-allocation CSV parsing to saturate PCIe 5.0 lanes.
-Part of `ki7mt-ai-lab-apps` (Go binary).
+Part of `ionis-apps` (Go binary).
 
 ```text
 wspr-shredder v2.3.0 - Maximum Throughput WSPR Ingester
@@ -76,7 +76,7 @@ Optimizations:
 
 Native Go Parquet reader for ingesting Parquet-format WSPR data. Avoids ClickHouse
 `file()` function restrictions by reading client-side with `parquet-go`.
-Part of `ki7mt-ai-lab-apps` (Go binary).
+Part of `ionis-apps` (Go binary).
 
 ```text
 wspr-parquet-native v2.3.0 - Native Go Parquet Ingester
@@ -109,7 +109,7 @@ Features:
 
 Parallel archive downloader for WSPR spot data from wsprnet.org. Uses ETag validation
 to detect updated files and supports configurable rate limiting.
-Part of `ki7mt-ai-lab-apps` (Go binary).
+Part of `ionis-apps` (Go binary).
 
 ```text
 wspr-download v2.3.0 — WSPR Archive Downloader

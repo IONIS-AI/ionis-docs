@@ -109,7 +109,7 @@ coefficients. It has no concept of digital mode decode thresholds.
     - **Conclusion**: Architecture was the problem, not data poisoning
     - **Recovery**: V20 uses original `IonisV12Gate` with all V16 Physics Laws
 
-    See [IONIS-THESIS.md](https://github.com/KI7MT/ki7mt-ai-lab-devel/blob/main/IONIS-THESIS.md) for full autopsy.
+    See [IONIS-THESIS.md](https://github.com/KI7MT/ionis-devel/blob/main/IONIS-THESIS.md) for full autopsy.
 
 ### V16 Reference Metrics
 

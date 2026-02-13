@@ -172,9 +172,9 @@ ORDER BY p.mode
 ```text
 Source table:  validation.step_i_paths   (1,000,000 rows)
 Result table:  validation.step_i_voacap  (1,000,000 rows)
-DDL:           ki7mt-ai-lab-core/src/16-validation_step_i.sql
-Script:        ki7mt-ai-lab-training/scripts/voacap_batch_runner.py
-Docs:          ki7mt-ai-lab-docs/docs/tools/voacapl.md
+DDL:           ionis-core/src/16-validation_step_i.sql
+Script:        ionis-training/scripts/voacap_batch_runner.py
+Docs:          ionis-docs/docs/tools/voacapl.md
 ```
 
 ---

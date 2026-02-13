@@ -4,7 +4,7 @@
 **Model Version:** IONIS V12 Signatures
 **Checkpoint:** `models/ionis_v12_signatures.pth`
 **Date:** 2026-02-05
-**Author:** KI7MT AI Lab
+**Author:** IONIS
 
 ---
 
@@ -470,8 +470,8 @@ These tests catch cases where the model might produce confident but wrong answer
 ### Running the Full Suite
 
 ```bash
-cd /Users/gbeam/workspace/ki7mt-ai-lab
-.venv/bin/python ki7mt-ai-lab-training/scripts/oracle_v12.py --test
+cd /Users/gbeam/workspace/ionis-ai
+.venv/bin/python ionis-training/scripts/oracle_v12.py --test
 ```
 
 ### Expected Output

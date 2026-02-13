@@ -399,7 +399,7 @@ contest ceiling (+10 dB for SSB). Curriculum learning approach.
 
 ### V17 RBN Grid-Enriched
 
-**Status: ARCHIVED** (2026-02-10) — Superseded by V20. See V17-V19 post-mortem in [IONIS-THESIS.md](https://github.com/KI7MT/ki7mt-ai-lab-devel/blob/main/IONIS-THESIS.md).
+**Status: ARCHIVED** (2026-02-10) — Superseded by V20. See V17-V19 post-mortem in [IONIS-THESIS.md](https://github.com/KI7MT/ionis-devel/blob/main/IONIS-THESIS.md).
 
 Added full RBN signatures (56.7M rows with real machine-measured SNR) to create
 4-source curriculum: WSPR floor → RBN middle → Contest ceiling → DXpedition rare.

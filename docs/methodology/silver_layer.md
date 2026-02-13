@@ -23,8 +23,8 @@ bulk-processor --host 192.168.1.90
     The RTX PRO 6000 (96 GB) processes all 10.8B spots in a single pass.
 
 !!! note "Not in RPM"
-    `bulk-processor` is not yet packaged in the `ki7mt-ai-lab-cuda` RPM.
-    Build locally: `cd ki7mt-ai-lab-cuda && mkdir build && cd build && cmake .. && make`
+    `bulk-processor` is not yet packaged in the `ionis-cuda` RPM.
+    Build locally: `cd ionis-cuda && mkdir build && cd build && cmake .. && make`
 
 Verification:
 
@@ -51,9 +51,9 @@ See [Aggregated Signatures](step_f_signatures.md) for full methodology
 and per-band distribution.
 
 ```bash
-bash /usr/share/ki7mt-ai-lab-core/scripts/populate_signatures.sh
+bash /usr/share/ionis-core/scripts/populate_signatures.sh
 # Or with custom host:
-# CH_HOST=10.60.1.1 bash /usr/share/ki7mt-ai-lab-core/scripts/populate_signatures.sh
+# CH_HOST=10.60.1.1 bash /usr/share/ionis-core/scripts/populate_signatures.sh
 ```
 
 Verification:

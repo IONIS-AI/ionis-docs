@@ -1,7 +1,7 @@
-site_name: KI7MT Sovereign AI Lab
-site_description: IONIS — HF Propagation Prediction powered by Neural Networks and Real-World Data
+site_name: IONIS — Ionospheric Neural Inference System
+site_description: HF Propagation Prediction powered by Neural Networks and Real-World Data
 site_author: Greg Beam, KI7MT
-repo_url: https://github.com/KI7MT/ki7mt-ai-lab-docs
+repo_url: https://github.com/IONIS-AI/ionis-docs
 
 theme:
   name: material

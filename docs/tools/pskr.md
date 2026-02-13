@@ -12,7 +12,7 @@ Sevart, M0LTE**.
 
 Long-running MQTT daemon that subscribes to the PSK Reporter feed, parses
 JSON spots, normalizes bands via ADIF lookup, and writes hourly-rotated
-gzip JSONL files to `/mnt/pskr-data`. Part of `ki7mt-ai-lab-apps` (Go binary).
+gzip JSONL files to `/mnt/pskr-data`. Part of `ionis-apps` (Go binary).
 
 This is stage 1 of a two-stage pipeline:
 
@@ -117,7 +117,7 @@ All 10 HF bands represented (160m through 10m).
 
 ### Running as a Service
 
-A systemd unit file is provided in `ki7mt-ai-lab-apps/scripts/pskr-collector.service`:
+A systemd unit file is provided in `ionis-apps/scripts/pskr-collector.service`:
 
 ```bash
 # Install the service
@@ -153,7 +153,7 @@ With `--hf-only=false`: higher volume including VHF/UHF/microwave.
 
 ### ClickHouse Schema
 
-The `pskr.bronze` table is defined in `ki7mt-ai-lab-core/src/22-pskr_schema_v1.sql`:
+The `pskr.bronze` table is defined in `ionis-core/src/22-pskr_schema_v1.sql`:
 
 ```sql
 CREATE TABLE IF NOT EXISTS pskr.bronze (

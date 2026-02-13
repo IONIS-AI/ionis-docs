@@ -7,7 +7,7 @@ and Reverse Beacon Network spot data.
 
 Downloads public Cabrillo logs from CQ and ARRL contest websites. Supports
 15 contest series with configurable year/mode filtering and rate limiting.
-Part of `ki7mt-ai-lab-apps` (Go binary).
+Part of `ionis-apps` (Go binary).
 
 ```text
 contest-download v2.3.0 — Contest Log Downloader
@@ -66,7 +66,7 @@ Examples:
 Walks contest log directories, parses Cabrillo V2/V3 headers and QSO lines,
 normalizes bands via ADIF lookup, and bulk-inserts into `contest.bronze`.
 Optionally enriches `wspr.callsign_grid` with grid locators.
-Part of `ki7mt-ai-lab-apps` (Go binary).
+Part of `ionis-apps` (Go binary).
 
 ```text
 contest-ingest v2.3.0 — Parse Cabrillo contest logs into ClickHouse
@@ -104,7 +104,7 @@ Examples:
 
 Downloads daily ZIP archives of CW/RTTY spots from the Reverse Beacon Network.
 Covers the full archive from 2009 to present (~6,183 files, ~21 GB).
-Part of `ki7mt-ai-lab-apps` (Go binary).
+Part of `ionis-apps` (Go binary).
 
 ```text
 rbn-download v2.3.0 — Reverse Beacon Network Archive Downloader
@@ -147,7 +147,7 @@ Examples:
 
 Streams RBN daily ZIP archives into ClickHouse. Handles all three CSV format
 eras (11-column 2009–2010, 13-column 2011+) with automatic detection.
-Part of `ki7mt-ai-lab-apps` (Go binary).
+Part of `ionis-apps` (Go binary).
 
 ```text
 rbn-ingest v2.3.0 — Stream RBN ZIP archives into ClickHouse

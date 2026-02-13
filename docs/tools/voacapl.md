@@ -149,7 +149,7 @@ solar condition. The comparison methodology:
 
 The script `voacap_batch_runner.py` automates the full VOACAP validation run.
 
-**Location:** `ki7mt-ai-lab-training/scripts/voacap_batch_runner.py`
+**Location:** `ionis-training/scripts/voacap_batch_runner.py`
 
 **Prerequisites:**
 

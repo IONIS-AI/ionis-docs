@@ -1,4 +1,4 @@
-# KI7MT Sovereign AI Lab
+# IONIS Sovereign AI Lab
 
 > *"The logs have been speaking for decades, but nobody is listening."*
 

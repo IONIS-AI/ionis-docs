@@ -118,7 +118,7 @@ IONIS learned the "Deep-Tissue Physics" of the ionosphere from 10.8B observation
 
 | File | Location |
 |------|----------|
-| Test script | `ki7mt-ai-lab-training/scripts/quality_test_ionis.py` |
+| Test script | `ionis-training/scripts/quality_test_ionis.py` |
 | Test paths | `validation.quality_test_paths` (ClickHouse) |
 | VOACAP results | `validation.quality_test_voacap` (ClickHouse) |
 
