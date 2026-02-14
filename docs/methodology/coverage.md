@@ -69,7 +69,7 @@ This helps users understand when to trust the prediction and when to be skeptica
 
 The coverage analysis is a roadmap candidate, not yet implemented. When built:
 
-- Query `wspr.signatures_v1` for grid observation counts
+- Query `wspr.signatures_v2_terrestrial` for grid observation counts
 - Cross-reference with RBN and contest data for additional coverage
 - Generate static heatmaps for documentation
 - Consider adding confidence scores to IONIS inference output

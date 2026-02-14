@@ -2,7 +2,7 @@
 
 ## Training Architecture
 
-IONIS is trained on **aggregated signatures** (`wspr.signatures_v1`) rather than raw spots.
+IONIS is trained on **aggregated signatures** (`wspr.signatures_v2_terrestrial`) rather than raw spots.
 This strips site-level noise and reveals the atmospheric transfer function.
 
 | Setting | Raw spots | Aggregated signatures |

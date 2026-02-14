@@ -22,7 +22,7 @@ If IONIS has higher Pearson r than VOACAP against ground truth SNR, it doesn't j
 
 ### Test Dataset
 
-- **Source**: `validation.quality_test_paths` — 100K signatures from `wspr.signatures_v1`
+- **Source**: `validation.quality_test_paths` — 100K signatures from `wspr.signatures_v2_terrestrial`
 - **Stratification**: 10K per band (160m through 10m)
 - **Quality filter**: `spot_count > 50` (high-confidence ground truth)
 - **Ground truth**: `median_snr` from signature bucket
