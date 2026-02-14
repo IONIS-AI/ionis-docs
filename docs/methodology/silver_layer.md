@@ -59,8 +59,8 @@ bash /usr/share/ionis-core/scripts/populate_signatures.sh
 Verification:
 
 ```bash
-clickhouse-client --query "SELECT count() FROM wspr.signatures_v1"
-# Expected: ~93,350,000
+clickhouse-client --query "SELECT count() FROM wspr.signatures_v2_terrestrial"
+# Expected: ~93,600,000
 ```
 
 ## QA Actuals
@@ -71,7 +71,7 @@ Clean-slate rebuild on 9975WX (2026-02-07):
 Table                   Rows            Time
 ----------------------  --------------  ---------
 wspr.silver             4,430,000,000   ~45 min
-wspr.signatures_v1      93,352,578      3m31s
+wspr.signatures_v2_terrestrial  93,600,000      3m31s
 v_quality_distribution  ~6,100,000      (auto)
 ```
 

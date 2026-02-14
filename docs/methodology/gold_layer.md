@@ -140,7 +140,7 @@ Phase 2: Bronze Ingest (see Bronze Stack)
 
 Phase 3: Silver Layer (see Silver Layer)
   3a. bulk-processor (CUDA)      wspr.silver           (~45m)
-  3b. populate_signatures.sh     wspr.signatures_v1    (~3m30s)
+  3b. populate_signatures.sh     wspr.signatures_v2_terrestrial  (~3m30s)
 
 Phase 4: Gold Layer (this page)
   4a. populate_stratified.sh     wspr.gold_stratified  (~7m)
