@@ -19,8 +19,8 @@ Bronze is self-contained — users who only need the dataset can stop here.
     - `/mnt/contest-logs` — CQ + ARRL Cabrillo log files
     - `/mnt/rbn-data` — RBN daily ZIP archives
     - `/mnt/pskr-data` — PSK Reporter MQTT collection (gzip JSONL)
-3. **RPM packages** installed (v3.0.2+):
-    - `ionis-core` — DDL schemas (29 files) and population scripts (10 files)
+3. **RPM packages** installed (v3.0.3+):
+    - `ionis-core` — DDL schemas (29 files), population scripts (12 files), and static data
     - `ionis-apps` — Go ingesters (wspr-turbo, rbn-ingest, contest-ingest, solar-backfill, pskr-ingest)
 
 ## Step 1: Apply DDL Schemas

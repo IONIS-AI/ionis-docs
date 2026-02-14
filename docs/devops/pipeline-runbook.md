@@ -24,7 +24,7 @@ sudo dnf install ionis-core ionis-apps
 
 ```bash
 rpm -q ionis-core ionis-apps
-# Expected: ionis-core-3.0.2+, ionis-apps-3.0.1+
+# Expected: ionis-core-3.0.3+, ionis-apps-3.0.1+
 ```
 
 ### Step 1.3: Verify DDL and scripts installed
@@ -34,7 +34,7 @@ ls /usr/share/ionis-core/ddl/*.sql | wc -l
 # Expected: 29
 
 ls /usr/share/ionis-core/scripts/*.sh | wc -l
-# Expected: 10
+# Expected: 12
 ```
 
 ---
@@ -198,7 +198,7 @@ See [Bronze Stack](../methodology/bronze_stack.md) for per-step verification que
 
 ## Phase 4: Populate Derived Tables (~20 min)
 
-All 10 population scripts live in `/usr/share/ionis-core/scripts/`. They
+All 12 population scripts live in `/usr/share/ionis-core/scripts/`. They
 accept `CH_HOST` env var (default: `192.168.1.90`, use `10.60.1.1` for DAC).
 
 Run in dependency order — three tiers.
@@ -247,21 +247,27 @@ bash /usr/share/ionis-core/scripts/populate_v6_clean.sh
 # Expected: 10M rows in wspr.gold_v6
 ```
 
+### DXpedition chain (depends on Tier 1 + rbn.bronze)
+
+```bash
+# 4.10 — DXpedition catalog (depends on: static TSV data file)
+bash /usr/share/ionis-core/scripts/populate_dxpedition_catalog.sh
+# Expected: 332 rows in dxpedition.catalog
+
+# 4.11 — DXpedition paths + signatures (depends on: catalog, rbn.bronze, callsign_grid, solar.bronze)
+bash /usr/share/ionis-core/scripts/populate_dxpedition_paths.sh
+# Expected: ~3.9M rows in rbn.dxpedition_paths, ~260K rows in rbn.dxpedition_signatures
+```
+
 ### Tier 3: Balloon-filtered signatures
 
 ```bash
-# 4.10 — Signatures V2 Terrestrial (depends on: wspr.bronze, solar.bronze, balloon_callsigns_v2)
+# 4.12 — Signatures V2 Terrestrial (depends on: wspr.bronze, solar.bronze, balloon_callsigns_v2)
 bash /usr/share/ionis-core/scripts/populate_signatures_v2_terrestrial.sh
 # Expected: ~93.3M rows in wspr.signatures_v2_terrestrial
 ```
 
-!!! warning "Dxpedition chain"
-    The dxpedition tables (`dxpedition.catalog`, `rbn.dxpedition_paths`,
-    `rbn.dxpedition_signatures`) were restored from backup and do not yet
-    have reproducible population scripts. This is tracked for a future
-    release.
-
-### Step 4.11: Verify all derived tables
+### Step 4.13: Verify all derived tables
 
 ```bash
 clickhouse-client --query "
@@ -274,6 +280,9 @@ UNION ALL SELECT 'wspr.gold_stratified', count() FROM wspr.gold_stratified
 UNION ALL SELECT 'wspr.gold_v6', count() FROM wspr.gold_v6
 UNION ALL SELECT 'rbn.signatures', count() FROM rbn.signatures
 UNION ALL SELECT 'contest.signatures', count() FROM contest.signatures
+UNION ALL SELECT 'dxpedition.catalog', count() FROM dxpedition.catalog
+UNION ALL SELECT 'rbn.dxpedition_paths', count() FROM rbn.dxpedition_paths
+UNION ALL SELECT 'rbn.dxpedition_signatures', count() FROM rbn.dxpedition_signatures
 UNION ALL SELECT 'validation.quality_test_paths', count() FROM validation.quality_test_paths
 ORDER BY 1
 FORMAT PrettyCompact
@@ -374,21 +383,14 @@ for repo in ionis-core ionis-apps ionis-cuda ionis-docs ionis-training ionis-dev
 done
 ```
 
-### Step 8.2: Set up CLAUDE.md symlink
-
-```bash
-cd /Users/gbeam/workspace/ionis-ai
-ln -s ionis-devel/CLAUDE.md CLAUDE.md
-```
-
-### Step 8.3: Verify ClickHouse connectivity over DAC
+### Step 8.2: Verify ClickHouse connectivity over DAC
 
 ```bash
 clickhouse-client --host 10.60.1.1 --query "SELECT version()"
 clickhouse-client --host 10.60.1.1 --query "SELECT count() FROM wspr.bronze"
 ```
 
-### Step 8.4: Set up Python venv
+### Step 8.3: Set up Python venv
 
 ```bash
 cd /Users/gbeam/workspace/ionis-ai/ionis-training
@@ -441,7 +443,7 @@ python versions/v20/validate_v20_pskr.py
 ```text
 Phase 1: Install Packages
   1.1  dnf install ionis-core ionis-apps
-  1.2  Verify versions, DDL count (29), script count (10)
+  1.2  Verify versions, DDL count (29), script count (12)
 
 Phase 2: Schema
   2.1  ionis-db-init                                         (<1 min)
@@ -465,8 +467,12 @@ Phase 4: Population Scripts (Tier 1 → 2 → 3)
   4.7  populate_contest_signatures.sh contest.signatures       (~6.3M)
   4.8  populate_quality_test_paths.sh validation.quality_test_paths (100K)
   4.9  populate_v6_clean.sh          wspr.gold_v6              (10M)
+  ── DXpedition ──
+  4.10 populate_dxpedition_catalog.sh   dxpedition.catalog            (332)
+  4.11 populate_dxpedition_paths.sh     rbn.dxpedition_paths          (~3.9M)
+                                        rbn.dxpedition_signatures     (~260K)
   ── Tier 3 ──
-  4.10 populate_signatures_v2_terrestrial.sh  wspr.signatures_v2_terrestrial (~93.3M)
+  4.12 populate_signatures_v2_terrestrial.sh  wspr.signatures_v2_terrestrial (~93.3M)
 
 Phase 5: Silver Layer (optional, requires GPU)
   5.1  bulk-processor (CUDA)         wspr.silver              (~4.43B, ~45m)
@@ -478,7 +484,7 @@ Phase 7: Verify Services
   7.1  solar-live-update, cron jobs, pskr-collector
 
 Phase 8: M3 Ultra Setup
-  8.1  Clone repos, CLAUDE.md symlink, venv, DAC connectivity
+  8.1  Clone repos, venv, DAC connectivity
 
 Phase 9: Train and Validate V20
   9.1  train.py --config versions/v20/config_v20.json        (~4h16m)
