@@ -1,6 +1,7 @@
 site_name: IONIS — Ionospheric Neural Inference System
 site_description: HF Propagation Prediction powered by Neural Networks and Real-World Data
 site_author: Greg Beam, KI7MT
+site_url: https://ionis-ai.github.io/ionis-docs/
 repo_url: https://github.com/IONIS-AI/ionis-docs
 
 theme:
@@ -43,18 +44,16 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Ethos: ethos.md
-  - "Data Privacy & GDPR": data-privacy.md
   - Architecture:
-    - "V11/V12 Gatekeeper": architecture/v11_design_intent.md
+    - IonisGate: architecture/ionisgate.md
     - Monotonic Sidecars: architecture/sidecars.md
-    - "V10 (Historical)": architecture/model_v10.md
   - Methodology:
     - Data Pipeline: methodology/data_pipeline.md
-    - "Bronze Stack": methodology/bronze_stack.md
-    - "Silver Layer": methodology/silver_layer.md
-    - "Gold Layer": methodology/gold_layer.md
+    - Bronze Layer: methodology/bronze_stack.md
+    - Silver Layer: methodology/silver_layer.md
+    - Gold Layer: methodology/gold_layer.md
+    - Signatures: methodology/step_f_signatures.md
     - Training: methodology/training.md
-    - "Aggregated Signatures": methodology/step_f_signatures.md
     - "Coverage & Confidence": methodology/coverage.md
   - Tools:
     - Overview: tools/index.md
@@ -67,12 +66,9 @@ nav:
     - "VOACAP (External)": tools/voacapl.md
   - Validation:
     - Overview: validation/index.md
-    - "Step I: IONIS vs VOACAP": validation/step_i_voacap_comparison.md
-    - "V20 Link Budget Battery": validation/v20_link_budget_battery.md
-    - "V12 Test Specification": validation/v12_test_specification.md
-    - "V10 Frequency Audit": validation/frequency_tests/IONIS-V10-FREQ-01.md
-    - "V10 Polar Challenge": validation/polar_tests/IONIS-V10-POL-01.md
-  - Roadmap:
-    - "D to Z: Digital Twin Roadmap": roadmap/d_to_z.md
-    - "Phase 11 (Legacy)": roadmap/phase_11.md
+    - Link Budget Battery: validation/v20_link_budget_battery.md
+    - "IONIS vs VOACAP": validation/step_i_voacap_comparison.md
+    - Prediction Quality: validation/step_k_quality_test.md
+    - Test Specification: validation/v12_test_specification.md
+  - "Data Privacy & GDPR": data-privacy.md
   - Credits: credits.md
