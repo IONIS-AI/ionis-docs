@@ -64,11 +64,18 @@ nav:
     - Database: tools/database.md
     - CUDA Engine: tools/cuda.md
     - "VOACAP (External)": tools/voacapl.md
+  - DevOps:
+    - Hardware Requirements: devops/index.md
+    - Pipeline Runbook: devops/pipeline-runbook.md
+    - "Operations & Maintenance": devops/maintenance.md
   - Validation:
     - Overview: validation/index.md
     - Link Budget Battery: validation/v20_link_budget_battery.md
     - "IONIS vs VOACAP": validation/step_i_voacap_comparison.md
     - Prediction Quality: validation/step_k_quality_test.md
     - Test Specification: validation/v12_test_specification.md
+  - UserGuide:
+    - Getting Started: userguide/index.md
+    - Running Predictions: userguide/predictions.md
   - "Data Privacy & GDPR": data-privacy.md
   - Credits: credits.md
