@@ -1,4 +1,4 @@
-# Solar Pipeline Tools
+# Solar Pipeline Apps
 
 Three Go binaries and three shell scripts for downloading and ingesting
 solar flux, geomagnetic, and X-ray data.

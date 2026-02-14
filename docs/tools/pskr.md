@@ -1,4 +1,4 @@
-# PSK Reporter Tools
+# PSK Reporter Apps
 
 Real-time MQTT spot collector for PSK Reporter reception data.
 

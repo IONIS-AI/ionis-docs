@@ -55,7 +55,7 @@ nav:
     - Signatures: methodology/step_f_signatures.md
     - Training: methodology/training.md
     - "Coverage & Confidence": methodology/coverage.md
-  - Tools:
+  - Pipeline Apps:
     - Overview: tools/index.md
     - WSPR Ingestion: tools/wspr.md
     - Solar Pipeline: tools/solar.md

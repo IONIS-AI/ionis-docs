@@ -1,4 +1,4 @@
-# Database Tools
+# Database Apps
 
 Two shell scripts and one Go binary for managing the ClickHouse environment.
 

@@ -1,4 +1,4 @@
-# Contest & RBN Tools
+# Contest & RBN Apps
 
 Four Go binaries for downloading and ingesting amateur radio contest logs
 and Reverse Beacon Network spot data.

@@ -1,4 +1,4 @@
-# WSPR Ingestion Tools
+# WSPR Ingestion Apps
 
 Four Go binaries for downloading and ingesting WSPR spot data into ClickHouse.
 
