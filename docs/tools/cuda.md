@@ -15,7 +15,7 @@ Part of `ionis-cuda` (CUDA binary).
 ```text
 ┌─────────────────────────────────────────────────────────────┐
 │  Bulk Embedding Processor - Blackwell sm_120                │
-│  ionis-cuda v2.3.1                                   │
+│  ionis-cuda v3.0.2                                   │
 └─────────────────────────────────────────────────────────────┘
 
 Usage: bulk-processor --start YYYY-MM-DD --end YYYY-MM-DD [options]

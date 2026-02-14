@@ -1,21 +1,16 @@
 # Training Methodology
 
-## Training Architecture: V12 Baseline (Historical)
+## Training Architecture
 
-!!! note "V20 is the current production model"
-    V12 remains documented here as the training methodology baseline. V20 Golden Master
-    validates the V16 Physics Laws (IonisV12Gate, HuberLoss, weight clamp, defibrillator init,
-    gate variance loss, 6-group optimizer) in a clean, config-driven codebase.
-
-V12 is trained on **aggregated signatures** (`wspr.signatures_v1`) rather than raw spots.
+IONIS is trained on **aggregated signatures** (`wspr.signatures_v1`) rather than raw spots.
 This strips site-level noise and reveals the atmospheric transfer function.
 
-| Setting | V10 (raw spots) | V12 (aggregated) |
-|---------|-----------------|------------------|
+| Setting | Raw spots | Aggregated signatures |
+|---------|-----------|----------------------|
 | Training rows | 10M spots | 20M signatures |
 | Target | Individual SNR | Median SNR per bucket |
-| RMSE | 2.48 dB | **2.03 dB** |
-| Pearson | +0.24 | **+0.32** |
+| RMSE | 2.48 dB | **0.862σ** (V20) |
+| Pearson | +0.24 | **+0.4879** (V20) |
 
 ## Differential Learning Rate
 
@@ -34,7 +29,7 @@ Sidecar weights are clamped to `[0.5, 2.0]` after each optimizer step:
 - **Lower bound (0.5)**: Prevents sidecar collapse to zero influence
 - **Upper bound (2.0)**: Prevents sidecar explosion
 
-## Gated Architecture (V11/V12)
+## Gated Architecture
 
 The trunk produces three outputs:
 
@@ -67,14 +62,8 @@ The DNN receives **zero** direct solar/storm features. This forces the model to:
 | Epoch Time | ~9s |
 | Total Time | ~15 min |
 
-## V12 Convergence
+## Convergence
 
-| Epoch | RMSE | Pearson | SFI+ | Kp9 Cost |
-|-------|------|---------|------|----------|
-| 1 | 2.25 | +0.18 | +1.5 | +3.0 |
-| 25 | 2.10 | +0.27 | +2.0 | +3.8 |
-| 50 | 2.06 | +0.30 | +2.1 | +4.0 |
-| 100 | 2.05 | +0.31 | +2.1 | +4.0 |
-
-Physics constraints remained positive throughout. Aggregated signatures produce
-4x stronger physics response than raw spots.
+Physics constraints remain positive throughout training. Aggregated signatures produce
+stronger physics response than raw spots. V20 production achieves Pearson +0.4879
+after 100 epochs (4h 16m on MPS).

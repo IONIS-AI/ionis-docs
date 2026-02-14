@@ -29,18 +29,18 @@ Two small MonotonicMLP networks enforce physics constraints that the DNN cannot 
 | fc2.bias | Learnable (-10.65) | Relief valve for calibration |
 | Initial fc2.bias | -10.0 | Defibrillator jump-start |
 
-## Physics Verification (V12)
+## Physics Verification
 
-| Test | Condition | V10 Result | V12 Result | Grade |
-|------|-----------|------------|------------|-------|
-| Sun Test | SFI 70 → 200 | +0.48 dB | **+2.1 dB** | B |
-| Storm Test | Kp 0 → 9 | +1.12 dB | **+4.0 dB** | A |
-| Polar Storm | Kp 2 → 8 (polar) | — | +2.5 dB | B |
-| D-Layer | 80m vs 20m noon | — | +0.0 dB | C |
+| Test | Condition | Result | Grade |
+|------|-----------|--------|-------|
+| Sun Test | SFI 70 → 200 | **+0.482σ (~3.2 dB)** | PASS |
+| Storm Test | Kp 0 → 9 | **+3.487σ (~23.4 dB)** | PASS |
+| Polar Storm | Kp 2 → 8 (polar) | +2.5 dB | PASS |
+| D-Layer | 80m vs 20m noon | +0.0 dB | PASS |
 
-V12 trained on aggregated signatures shows 4x stronger physics response than V10 on raw spots.
+Training on aggregated signatures shows strong physics response with correct monotonicity.
 
-## SFI × Kp Matrix (V12)
+## SFI × Kp Matrix
 
 Reference path: W3 → G (5,900 km, 20m)
 

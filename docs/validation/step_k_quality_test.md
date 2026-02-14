@@ -1,14 +1,18 @@
-# Step K: Quality Test (Pearson Correlation + RMSE)
+# Prediction Quality (Pearson Correlation)
 
 **Date**: 2026-02-09
 **Status**: COMPLETE
-**Result**: IONIS V13 showed +0.35 correlation improvement over reference model
+**Result**: IONIS showed +0.35 correlation improvement over reference model
+
+!!! note "V20 Production"
+    V20 Golden Master achieves Pearson **+0.4879** — a substantial improvement
+    from the +0.3675 measured in this initial test.
 
 ---
 
 ## Objective
 
-Step I proved IONIS correctly identifies **if** a band is open (Recall). Step K proves IONIS tracks the **quality** of the opening (Correlation).
+The IONIS vs VOACAP comparison proved IONIS correctly identifies **if** a band is open (Recall). This test proves IONIS tracks the **quality** of the opening (Correlation).
 
 If IONIS has higher Pearson r than VOACAP against ground truth SNR, it doesn't just know the band is open—it knows how strong the signal will be.
 
@@ -27,7 +31,7 @@ If IONIS has higher Pearson r than VOACAP against ground truth SNR, it doesn't j
 
 | Model | Method |
 |-------|--------|
-| **IONIS V13** | `oracle_v13.py` inference on M3 Ultra |
+| **IONIS** | `oracle_v13.py` inference on M3 Ultra |
 | **VOACAP** | Method 30 (SNRxx) via `voacapl` on 9975WX |
 
 ### Metrics
@@ -41,7 +45,7 @@ If IONIS has higher Pearson r than VOACAP against ground truth SNR, it doesn't j
 
 ### Overall Correlation
 
-| Metric | IONIS V13 | VOACAP | Delta |
+| Metric | IONIS | VOACAP | Delta |
 |--------|-----------|--------|-------|
 | **Pearson r** | **+0.3675** | +0.0218 | **+0.3456** |
 | RMSE | 5.00 dB | — | — |
@@ -101,19 +105,6 @@ IONIS learned the "Deep-Tissue Physics" of the ionosphere from 10.8B observation
 
 ---
 
-## Step Z Progress
-
-| Criterion | Status |
-|-----------|--------|
-| Band-open recall > reference | ✓ 85.34% vs 75.82% (+9.5 pp) |
-| **Pearson r > reference** | **✓ +0.3675 vs +0.0218 (+0.35)** |
-| RMSE < reference | ✓ (unit incompatibility prevents direct comparison) |
-| >90% of paths improved | 9/10 bands = 90% ✓ |
-
-**Step Z criteria are substantially met.**
-
----
-
 ## Files
 
 | File | Location |
@@ -125,4 +116,4 @@ IONIS learned the "Deep-Tissue Physics" of the ionosphere from 10.8B observation
 ---
 
 *Generated: 2026-02-09*
-*IONIS V13 — Ionospheric Neural Inference System*
+*IONIS — Ionospheric Neural Inference System (V20 Production)*

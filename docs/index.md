@@ -54,7 +54,7 @@ it does.
 
 ## Current Status
 
-**IONIS V20 Golden Master** is the production model, validating the V16 Physics Laws in a clean, config-driven codebase. Trained on 20M WSPR + 4.55M DXpedition (50x) + 6.34M Contest signatures (~31M rows). It correctly predicts:
+**IONIS V20 Golden Master** is the production model. Trained on 20M WSPR + 4.55M DXpedition (50x) + 6.34M Contest signatures (~31M rows). It correctly predicts:
 
 - Higher solar flux (SFI) improves propagation (+0.482σ, ~3.2 dB benefit, monotonic)
 - Geomagnetic storms (Kp) degrade propagation (+3.487σ, ~23.4 dB cost, monotonic)
@@ -64,7 +64,7 @@ it does.
 |--------|-------|
 | **Pearson correlation** | +0.4879 |
 | **RMSE** | 0.862σ (~5.8 dB) |
-| **Step I Recall** | 96.38% (+20.56 pp vs VOACAP) |
+| **Recall (vs VOACAP)** | 96.38% (+20.56 pp vs VOACAP) |
 | **PSK Reporter Recall** | 84.14% (independent live data) |
 | **Physics Tests** | 4/4 PASS |
 
@@ -92,10 +92,9 @@ Self-hosted, no cloud dependencies:
 
 ## Documentation
 
-- [Architecture](architecture/model_v10.md) — Model design, sidecars, gated physics
+- [Architecture](architecture/ionisgate.md) — IonisGate model design, sidecars, gated physics
 - [Methodology](methodology/data_pipeline.md) — Data ingestion and training process
 - [Validation](validation/index.md) — 35-test automated verification suite
-- [Roadmap](roadmap/d_to_z.md) — D-to-Z path to production validation
 - [Data Privacy](data-privacy.md) — GDPR compliance, data authorization
 - [Ethos](ethos.md) — Core principles and statement of intent
 

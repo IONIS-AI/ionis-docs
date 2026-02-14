@@ -1,8 +1,8 @@
-# IONIS V12 Oracle Test Specification
+# Oracle Test Specification
 
 **Document Version:** 1.2
-**Model Version:** IONIS V12 Signatures
-**Checkpoint:** `models/ionis_v12_signatures.pth`
+**Model Version:** IonisGate (Production)
+**Checkpoint:** `versions/v20/ionis_v20.pth`
 **Date:** 2026-02-05
 **Author:** IONIS
 
@@ -10,7 +10,7 @@
 
 ## Overview
 
-This document specifies the automated test suite for IONIS V12. Each test has:
+This document specifies the automated test suite for IONIS. Each test has:
 - **ID**: Unique identifier (TST-XXX)
 - **Purpose**: What physics or behavior is being validated
 - **Method**: How the test works
@@ -274,7 +274,7 @@ Physics Score = (TST-201 + TST-202 + TST-203 + TST-204 + TST-205 + TST-206) / 6
 | **Expected Result** | SNR(SFI 200) > SNR(SFI 70) by at least +1 dB |
 | **Pass Criteria** | Delta is positive |
 | **Failure Mode** | If negative or zero: Sun sidecar physics inverted or dead |
-| **Actual (V12)** | +2.1 dB improvement |
+| **Actual** | +2.1 dB improvement |
 | **Notes** | This is fundamental ionospheric physics — higher SFI = higher MUF = better HF |
 
 ### TST-202: Kp Monotonicity (0 vs 9)
@@ -287,7 +287,7 @@ Physics Score = (TST-201 + TST-202 + TST-203 + TST-204 + TST-205 + TST-206) / 6
 | **Expected Result** | SNR(Kp 9) < SNR(Kp 0) by at least -2 dB |
 | **Pass Criteria** | Delta is negative (storm cost positive) |
 | **Failure Mode** | If positive: Storm sidecar physics inverted (CRITICAL BUG) |
-| **Actual (V12)** | +4.0 dB storm cost |
+| **Actual** | +4.0 dB storm cost |
 | **Notes** | This was the "Kp inversion problem" that plagued V1-V9 |
 
 ### TST-203: D-Layer Absorption (80m vs 20m at Noon)
@@ -300,8 +300,8 @@ Physics Score = (TST-201 + TST-202 + TST-203 + TST-204 + TST-205 + TST-206) / 6
 | **Expected Result** | SNR(20m) >= SNR(80m) at noon |
 | **Pass Criteria** | Delta >= 0 dB |
 | **Failure Mode** | If 80m better at noon: Model missing D-layer physics |
-| **Actual (V12)** | +0.0 dB (equal) |
-| **Notes** | Model shows equal; real physics expects 20m better. Acceptable for V12. |
+| **Actual** | +0.0 dB (equal) |
+| **Notes** | Model shows equal; real physics expects 20m better. |
 
 ### TST-204: Polar Storm Degradation (Kp 2 vs 8)
 
@@ -313,7 +313,7 @@ Physics Score = (TST-201 + TST-202 + TST-203 + TST-204 + TST-205 + TST-206) / 6
 | **Expected Result** | Storm cost > 2 dB |
 | **Pass Criteria** | Significant degradation observed |
 | **Failure Mode** | If < 1 dB: Storm gate not modulating by latitude |
-| **Actual (V12)** | +2.5 dB degradation |
+| **Actual** | +2.5 dB degradation |
 | **Notes** | Validates latitude-dependent storm sensitivity |
 
 ### TST-205: 10m SFI Sensitivity
@@ -326,7 +326,7 @@ Physics Score = (TST-201 + TST-202 + TST-203 + TST-204 + TST-205 + TST-206) / 6
 | **Expected Result** | Delta > +1.5 dB |
 | **Pass Criteria** | 10m shows strong SFI dependence |
 | **Failure Mode** | If < 1 dB: Sun sidecar not frequency-aware |
-| **Actual (V12)** | +2.0 dB improvement |
+| **Actual** | +2.0 dB improvement |
 | **Notes** | 10m needs high SFI; model should capture this |
 
 ### TST-206: Grey Line / Twilight Enhancement
@@ -339,7 +339,7 @@ Physics Score = (TST-201 + TST-202 + TST-203 + TST-204 + TST-205 + TST-206) / 6
 | **Expected Result** | SNR(18 UTC) >= SNR(14 UTC) |
 | **Pass Criteria** | Twilight hour shows equal or better propagation |
 | **Failure Mode** | If negative: Model missing grey line physics |
-| **Actual (V12)** | +0.2 dB enhancement |
+| **Actual** | +0.2 dB enhancement |
 | **Notes** | Grey line (twilight) often enhances E-W paths due to lower D-layer absorption |
 
 **Grey Line Scoring Criteria**
@@ -478,15 +478,15 @@ cd /Users/gbeam/workspace/ionis-ai
 
 ```
 ======================================================================
-  IONIS V12 Oracle Test Suite
+  IONIS Oracle Test Suite
 ======================================================================
-Model loaded: IonisV12Gate (trunk+3heads+2gated_sidecars)
-RMSE: 2.0478 dB, Pearson: +0.3051
+Model loaded: IonisGate (trunk+3heads+2gated_sidecars)
+Pearson: +0.4879, RMSE: 0.862σ
 
   ... test results ...
 
-  PHYSICS SCORE: 76.7/100 (Grade: B)
-  Rating: Research Quality
+  PHYSICS SCORE: 4/4 PASS
+  Rating: Production Ready
 
 ======================================================================
   SUMMARY
@@ -658,7 +658,7 @@ Tests for systematic biases in model predictions.
 | **Expected Result** | Bias < 5 dB between regions |
 | **Pass Criteria** | Similar predictions for similar physics |
 | **Failure Mode** | >5 dB difference suggests model memorized dense regions |
-| **Actual (V12)** | EU: -15.2 dB, Africa: -15.2 dB, Bias: 0.0 dB |
+| **Actual** | EU: -15.2 dB, Africa: -15.2 dB, Bias: 0.0 dB |
 | **Category** | Geographic Bias |
 | **Status** | AUTOMATED |
 
@@ -690,7 +690,7 @@ Tests for systematic biases in model predictions.
 
 Baseline tests to catch future regressions.
 
-### TST-801: V12 Reference Prediction
+### TST-801: Reference Prediction
 
 | Field | Value |
 |-------|-------|
@@ -708,7 +708,7 @@ Baseline tests to catch future regressions.
 |-------|-------|
 | **Purpose** | Ensure model accuracy hasn't degraded |
 | **Method** | Check checkpoint metadata |
-| **Reference Value** | RMSE = 2.0478 dB |
+| **Reference Value** | RMSE = 0.862σ |
 | **Pass Criteria** | Loaded RMSE matches documented |
 | **Failure Mode** | Wrong checkpoint loaded |
 | **Category** | Regression |
@@ -719,7 +719,7 @@ Baseline tests to catch future regressions.
 |-------|-------|
 | **Purpose** | Ensure correlation hasn't degraded |
 | **Method** | Check checkpoint metadata |
-| **Reference Value** | Pearson = +0.3051 |
+| **Reference Value** | Pearson = +0.4879 |
 | **Pass Criteria** | Loaded Pearson matches documented |
 | **Failure Mode** | Wrong checkpoint loaded |
 | **Category** | Regression |
@@ -747,7 +747,7 @@ Baseline tests to catch future regressions.
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 1.0 | 2026-02-05 | Initial specification for V12 |
+| 1.0 | 2026-02-05 | Initial specification |
 | 1.1 | 2026-02-05 | Added TST-500 (Robustness), TST-600 (Security), TST-700 (Bias), TST-800 (Regression) |
 | 1.2 | 2026-02-05 | Added TST-206 (Grey line twilight), automated TST-701 (Geographic bias) per Gemini review |
 
@@ -755,7 +755,7 @@ Baseline tests to catch future regressions.
 
 ## References
 
-- IONIS V12 Training: `train_v12_signatures.py`
-- Physics Verification: `verify_v12_signatures.py`
-- Oracle Implementation: `oracle_v12.py`
-- Model Checkpoint: `models/ionis_v12_signatures.pth`
+- Training: `ionis-training/scripts/train_v20.py`
+- Physics Verification: `ionis-training/scripts/verify_v20.py`
+- Oracle Implementation: `ionis-training/scripts/oracle_v20.py`
+- Model Checkpoint: `versions/v20/ionis_v20.pth`

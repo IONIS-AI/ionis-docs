@@ -1,8 +1,8 @@
-# Step I: IONIS vs VOACAP Comparison
+# IONIS vs VOACAP Comparison
 
-- **Date:** 2026-02-11 (V16 update)
+- **Date:** 2026-02-11
 - **Dataset:** 1,000,000 contest QSO paths (CQ WW, CQ WPX, ARRL DX — 2005-2025)
-- **IONIS Version:** V16 Contest
+- **IONIS Version:** IONIS (IonisGate)
 - **VOACAP Version:** voacapl 0.7.5 (NTIA/ITS Method 30)
 
 ---
@@ -17,20 +17,18 @@ is which model correctly predicts that.
 +------------+---------+
 | Model      | Recall  |
 +------------+---------+
-| IONIS V16  | 96.38%  |
-| IONIS V15  | 86.89%  |
+| IONIS      | 96.38%  |
 | VOACAP     | 75.82%  |
 +------------+---------+
-  V16 Delta: +20.56 pp vs VOACAP
-  V16 Delta: +9.49 pp vs V15
+  Delta: +20.56 pp vs VOACAP
 ```
 
-IONIS V16 showed a **20.56 percentage point** improvement over the reference
+IONIS showed a **20.56 percentage point** improvement over the reference
 model on real-world contest QSO recall.
 
-### V16 Contest Anchoring
+### Contest Anchoring
 
-V16 added 6.34M contest signatures with anchored SNR values:
+The training recipe includes 6.34M contest signatures with anchored SNR values:
 
 - **SSB QSOs → +10 dB anchor** (proven voice-viable paths)
 - **RTTY QSOs → 0 dB anchor** (proven digital-viable paths)
@@ -51,7 +49,7 @@ synthetic paths — every row is a real QSO that actually completed.
 
 ### IONIS Scoring
 
-IONIS V12 predicts SNR for each path. Band is considered "open" if:
+IONIS predicts SNR for each path. Band is considered "open" if:
 
 ```text
 predicted_snr >= mode_threshold
@@ -90,10 +88,10 @@ querying by either the 9975WX or M3 agent.
 
 ---
 
-## Results by Mode (V16)
+## Results by Mode
 
 ```text
-Mode      Total       IONIS TP    IONIS %    VOACAP TP   VOACAP %    V16 vs VOACAP
+Mode      Total       IONIS TP    IONIS %    VOACAP TP   VOACAP %    IONIS vs VOACAP
 ------  ---------  -----------  ---------  -----------  ---------   -------------
 CW        459,200      430,609     93.77%      340,678     74.36%      +19.4 pp
 PH        285,083      280,521     98.40%      215,717     75.83%      +22.6 pp
@@ -101,7 +99,7 @@ RY        233,446      231,982     99.37%      183,392     78.72%      +20.6 pp
 DG         22,269       20,773     93.29%       18,397     82.84%      +10.4 pp
 ```
 
-**V16 breakthrough**: SSB (PH) recall jumped from 81% (V15) to **98.40%** (V16).
+**SSB breakthrough**: SSB (PH) recall reached **98.40%**.
 Contest anchoring taught the model what "voice-viable" actually looks like.
 
 IONIS showed higher recall across all modes. The largest delta was SSB (+22.6 pp),
@@ -109,10 +107,10 @@ which is notable because SSB voice circuits are VOACAP's primary design target.
 
 ---
 
-## Results by Band (V16)
+## Results by Band
 
 ```text
-Band      Total     IONIS TP    IONIS %    VOACAP TP   VOACAP %    V16 vs VOACAP
+Band      Total     IONIS TP    IONIS %    VOACAP TP   VOACAP %    IONIS vs VOACAP
 ------  ---------  ----------  ---------  ----------  ---------   -------------
 80m        95,350      93,063     97.60%      71,328     74.98%      +22.6 pp
 40m       205,856     200,281     97.29%     174,004     84.71%      +12.6 pp
@@ -123,7 +121,7 @@ Band      Total     IONIS TP    IONIS %    VOACAP TP   VOACAP %    V16 vs VOACAP
 
 ### Band Analysis
 
-**10m (98.60%)** — V16's biggest improvement. VOACAP misses sporadic-E and
+**10m (98.60%)** — The biggest improvement. VOACAP misses sporadic-E and
 day-to-day solar variability. Contest anchoring taught IONIS that 10m paths
 actually work when conditions are right.
 
@@ -131,8 +129,8 @@ actually work when conditions are right.
 doesn't capture. IONIS learned from real WSPR spots that include short-range
 contacts.
 
-**15m (93.59%)** — Strong improvement from V15's 75.91%. The contest ceiling
-taught the model what "open" really means on this band.
+**15m (93.59%)** — The contest ceiling taught the model what "open" really
+means on this band.
 
 **20m (96.16%)** — VOACAP uses monthly median SSN, missing day-to-day
 variability and sporadic-E openings that account for many contest QSOs on
@@ -182,7 +180,7 @@ Docs:          ionis-docs/docs/tools/voacapl.md
 ## Significance
 
 This is a direct comparison between a 1980s physics-based model (VOACAP)
-and a 2026 data-driven neural network (IONIS V15) on the same 1M paths.
+and a 2026 data-driven neural network (IONIS) on the same 1M paths.
 IONIS's advantage comes from:
 
 1. **Training on real propagation data** — 10.8B WSPR spots capture actual

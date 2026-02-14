@@ -10,7 +10,7 @@ daily/monthly sunspot numbers, F10.7 flux, Kp indices, and X-ray flux.
 Part of `ionis-apps` (Go binary).
 
 ```text
-solar-download v2.3.0 - Solar Data Downloader
+solar-download v3.0.2 - Solar Data Downloader
 
 Usage: solar-download [OPTIONS]
 
@@ -45,7 +45,7 @@ Parses and ingests SIDC CSV, NOAA JSON, and GOES JSON files into ClickHouse
 Part of `ionis-apps` (Go binary).
 
 ```text
-solar-ingest v2.3.0 - Solar Flux Data Ingester
+solar-ingest v3.0.2 - Solar Flux Data Ingester
 
 Usage: solar-ingest [OPTIONS] [files...]
 
@@ -76,7 +76,7 @@ and 3-hourly Kp/ap indices from 1932 to present. Inserts into `solar.bronze`.
 Part of `ionis-apps` (Go binary).
 
 ```text
-solar-backfill v2.3.0 — Historical Solar Index Backfill (GFZ Potsdam)
+solar-backfill v3.0.2 — Historical Solar Index Backfill (GFZ Potsdam)
 
 Downloads SSN, SFI (F10.7), and 3-hourly Kp/ap from GFZ Potsdam
 and inserts into ClickHouse solar.bronze.
@@ -111,10 +111,10 @@ Examples:
 
 Full refresh pipeline: downloads fresh solar/geomagnetic data, truncates
 `solar.bronze`, and reloads all sources.
-Part of `ionis-core` (Shell script).
+Part of `ionis-apps` (Shell script).
 
 ```text
-solar-refresh v2.0.5 - Solar Data Refresh Utility
+solar-refresh v3.0.2 - Solar Data Refresh Utility
 
 Usage: solar-refresh [OPTIONS]
 
@@ -140,7 +140,7 @@ Examples:
 
 Lightweight updater for the Now-Casting pipeline. Designed for 15-minute cron
 intervals to keep near-real-time solar indices current.
-Part of `ionis-core` (Shell script).
+Part of `ionis-apps` (Shell script).
 
 ```text
 Usage: solar-live-update [--refresh]
@@ -151,7 +151,7 @@ Usage: solar-live-update [--refresh]
 
 Training data loader for the historical solar index pipeline. Designed for
 6-hour cron intervals to keep training datasets aligned with latest observations.
-Part of `ionis-core` (Shell script).
+Part of `ionis-apps` (Shell script).
 
 ```text
 Usage: solar-history-load [--download]

@@ -128,7 +128,7 @@ The V20 link budget battery validates three key claims:
 | Pearson | >= +0.48 | +0.4879 | **PASS** |
 | Kp storm cost | >= +3.0σ | +3.487σ | **PASS** |
 | SFI benefit | >= +0.4σ | +0.482σ | **PASS** |
-| Step I recall | > 86.89% | 95.91% | **PASS** |
+| Recall (vs VOACAP) | > 86.89% | 95.91% | **PASS** |
 | Discrimination present | yes | 15%→92%→100% | **PASS** |
 
 ### Band-Level Physics
@@ -153,6 +153,5 @@ The full 24-profile × 3-source battery (72 runs, ~13-16 hours) will provide:
 ---
 
 **Test ID**: IONIS-V20-LB-01
-**Author**: Claude-M3 (execution), Claude-9975 (infrastructure)
-**Reviewer**: Gemini Pro (architecture)
+**Author**: IONIS Team
 **Status**: PASS — Initial validation complete, full battery pending

@@ -77,7 +77,6 @@ The coverage analysis is a roadmap candidate, not yet implemented. When built:
 ## Related
 
 - [Aggregated Signatures](step_f_signatures.md) — how observations become signatures
-- [D-to-Z Roadmap](../roadmap/d_to_z.md) — roadmap status and future steps
 
 ---
 

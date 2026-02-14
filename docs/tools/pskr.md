@@ -27,7 +27,7 @@ down), replayability (re-ingest after schema changes), and consistency
 with the WSPR/RBN/contest pipeline pattern.
 
 ```text
-pskr-collector v2.3.1 — PSK Reporter MQTT real-time spot collector
+pskr-collector v3.0.2 — PSK Reporter MQTT real-time spot collector
 
 Usage: pskr-collector [flags]
 

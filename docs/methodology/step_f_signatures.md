@@ -1,7 +1,6 @@
-# Step F — Aggregated Signatures
+# Aggregated Signatures
 
 **Status**: COMPLETE (2026-02-05)
-**Roadmap Step**: F — Metrology Noise Rejection
 **Executed on**: Threadripper 9975WX (64 threads, ClickHouse on dedicated NVMe)
 
 ---
@@ -40,11 +39,11 @@ the atmospheric transfer function.
 
 **ORDER BY**: `(band, hour, tx_grid_4, rx_grid_4)` for fast training access.
 
-## V11 Feature Derivation
+## Feature Derivation
 
-All 13 IONIS V11 features are derivable from the signature table:
+All 13 IONIS features are derivable from the signature table:
 
-| V11 Feature | Source |
+| Feature | Source |
 |---|---|
 | distance | `avg_distance` |
 | freq_log | Derived from `band` → frequency mapping |

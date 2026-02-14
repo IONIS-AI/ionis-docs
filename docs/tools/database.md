@@ -30,7 +30,7 @@ Part of `ionis-core` (Shell script).
 ```text
 # Usage: source ionis-env
 
-IONIS Environment (2.3.1) Loaded.
+IONIS Environment (3.0.2) Loaded.
   WSPR Data.......: /mnt/ai-stack/wspr-data
   Solar Data......: /mnt/ai-stack/solar-data
   ClickHouse Data.: /mnt/ai-stack/clickhouse
@@ -44,7 +44,7 @@ pass/fail status with actual counts. Useful for post-ingest verification.
 Part of `ionis-apps` (Go binary, not yet installed to PATH).
 
 ```text
-db-validate v2.3.1 — Validate ClickHouse table row counts
+db-validate v3.0.2 — Validate ClickHouse table row counts
 
 Usage: db-validate [flags]
 

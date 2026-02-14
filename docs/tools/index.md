@@ -21,9 +21,9 @@ collector uses MQTT for real-time spot streaming.
 | [solar-download](solar.md#solar-download) | Go | ionis-apps | Multi-source downloader (10 NOAA/SIDC endpoints) |
 | [solar-ingest](solar.md#solar-ingest) | Go | ionis-apps | Solar/geomagnetic data ingester |
 | [solar-backfill](solar.md#solar-backfill) | Go | ionis-apps | GFZ Potsdam historical SSN/SFI/Kp (1932–present) |
-| [solar-refresh](solar.md#solar-refresh) | Shell | ionis-core | Download + truncate + ingest pipeline |
-| [solar-live-update](solar.md#solar-live-update) | Shell | ionis-core | Now-Casting updater, 15-min cron |
-| [solar-history-load](solar.md#solar-history-load) | Shell | ionis-core | Training data loader, 6-hour cron |
+| [solar-refresh](solar.md#solar-refresh) | Shell | ionis-apps | Download + truncate + ingest pipeline |
+| [solar-live-update](solar.md#solar-live-update) | Shell | ionis-apps | Now-Casting updater, 15-min cron |
+| [solar-history-load](solar.md#solar-history-load) | Shell | ionis-apps | Training data loader, 6-hour cron |
 
 ## Contest & RBN
 

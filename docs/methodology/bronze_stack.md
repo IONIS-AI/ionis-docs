@@ -18,7 +18,7 @@ Bronze is self-contained — users who only need the dataset can stop here.
     - `/mnt/wspr-data` — WSPR raw CSV archives (.csv.gz)
     - `/mnt/contest-logs` — CQ + ARRL Cabrillo log files
     - `/mnt/rbn-data` — RBN daily ZIP archives
-3. **RPM packages** installed (v2.3.1+):
+3. **RPM packages** installed (v3.0.2+):
     - `ionis-core` — DDL schemas and population scripts
     - `ionis-apps` — Go ingesters (wspr-turbo, rbn-ingest, contest-ingest, solar-backfill)
 

@@ -9,7 +9,7 @@ using zero-copy decompression and double-buffered native blocks — no intermedi
 Part of `ionis-apps` (Go binary).
 
 ```text
-wspr-turbo v2.3.0 - Zero-Copy Streaming Pipeline
+wspr-turbo v3.0.2 - Zero-Copy Streaming Pipeline
 
 Usage: wspr-turbo [OPTIONS] [archives...]
 
@@ -46,7 +46,7 @@ zero-allocation CSV parsing to saturate PCIe 5.0 lanes.
 Part of `ionis-apps` (Go binary).
 
 ```text
-wspr-shredder v2.3.0 - Maximum Throughput WSPR Ingester
+wspr-shredder v3.0.2 - Maximum Throughput WSPR Ingester
 
 Usage: wspr-shredder [OPTIONS] [path|files...]
 
@@ -79,7 +79,7 @@ Native Go Parquet reader for ingesting Parquet-format WSPR data. Avoids ClickHou
 Part of `ionis-apps` (Go binary).
 
 ```text
-wspr-parquet-native v2.3.0 - Native Go Parquet Ingester
+wspr-parquet-native v3.0.2 - Native Go Parquet Ingester
 
 Usage: wspr-parquet-native [OPTIONS] [path|files...]
 
@@ -112,7 +112,7 @@ to detect updated files and supports configurable rate limiting.
 Part of `ionis-apps` (Go binary).
 
 ```text
-wspr-download v2.3.0 — WSPR Archive Downloader
+wspr-download v3.0.2 — WSPR Archive Downloader
 
 Usage: wspr-download [flags]
 

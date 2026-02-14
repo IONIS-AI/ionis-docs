@@ -10,7 +10,7 @@ Downloads public Cabrillo logs from CQ and ARRL contest websites. Supports
 Part of `ionis-apps` (Go binary).
 
 ```text
-contest-download v2.3.0 — Contest Log Downloader
+contest-download v3.0.2 — Contest Log Downloader
 
 Usage: contest-download [flags]
 
@@ -69,7 +69,7 @@ Optionally enriches `wspr.callsign_grid` with grid locators.
 Part of `ionis-apps` (Go binary).
 
 ```text
-contest-ingest v2.3.0 — Parse Cabrillo contest logs into ClickHouse
+contest-ingest v3.0.2 — Parse Cabrillo contest logs into ClickHouse
 
 Usage: contest-ingest [flags]
 
@@ -107,7 +107,7 @@ Covers the full archive from 2009 to present (~6,183 files, ~21 GB).
 Part of `ionis-apps` (Go binary).
 
 ```text
-rbn-download v2.3.0 — Reverse Beacon Network Archive Downloader
+rbn-download v3.0.2 — Reverse Beacon Network Archive Downloader
 
 Usage: rbn-download [flags]
 
@@ -150,7 +150,7 @@ eras (11-column 2009–2010, 13-column 2011+) with automatic detection.
 Part of `ionis-apps` (Go binary).
 
 ```text
-rbn-ingest v2.3.0 — Stream RBN ZIP archives into ClickHouse
+rbn-ingest v3.0.2 — Stream RBN ZIP archives into ClickHouse
 
 Usage: rbn-ingest [flags]
 
