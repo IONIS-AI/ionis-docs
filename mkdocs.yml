@@ -1,7 +1,7 @@
 site_name: IONIS — Ionospheric Neural Inference System
 site_description: HF Propagation Prediction powered by Neural Networks and Real-World Data
 site_author: Greg Beam, KI7MT
-site_url: https://ionis-ai.github.io/ionis-docs/
+site_url: https://ionis-ai.com/
 repo_url: https://github.com/IONIS-AI/ionis-docs
 
 theme:
