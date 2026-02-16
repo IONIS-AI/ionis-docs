@@ -21,11 +21,15 @@ stripped immediately and never leave your machine.
 1. You export your log as an ADIF (.adi) file from your logging service
 2. `ionis-validate adif` parses the file **locally on your machine**
 3. Callsigns are discarded at parse time — only grid-pairs, bands, times, and modes are kept
-4. Each QSO is run through the V20 model as a validation path
-5. The report shows recall: how often the model agrees the band was open
+4. Each QSO that meets the model's input requirements (valid grids + HF band) is measured
+5. Records missing required fields are skipped with the reason noted
+6. The report shows recall: how often the model agrees the band was open
 
-Every QSO in your log is a confirmed contact — the band **was** open.
-Recall measures how often the model agrees.
+!!! tip "Use confirmed QSOs for best results"
+    For the strongest ground truth, export only confirmed QSOs (eQSL, LoTW,
+    or paper QSL) from your logger. A confirmed QSL proves the contact
+    happened and the band was open. The tool will process any valid ADIF
+    record, but unconfirmed QSOs may include logging errors or busted calls.
 
 ## Usage
 
@@ -44,49 +48,82 @@ ionis-validate adif my_log.adi --my-grid DN26
 | `--export` | No | Export anonymized observations to JSON |
 | `--encoding` | No | File encoding (default: utf-8) |
 
+### Model Input Requirements
+
+Each QSO must have these fields to be measured against the model:
+
+| Requirement | ADIF Fields Used | If Missing |
+|-------------|------------------|------------|
+| TX grid | `MY_GRIDSQUARE` or `--my-grid` flag | Skipped (`no_grid`) |
+| RX grid | `GRIDSQUARE` | Skipped (`no_grid`) |
+| HF band | `BAND` or derived from `FREQ` | Skipped (`no_band`) |
+
+Time (`QSO_DATE`, `TIME_ON`) and mode (`MODE`, `SUBMODE`) are used when
+present. If missing, defaults are applied (12:00 UTC, June, Digital mode).
+
 ### Example
 
 ```bash
-ionis-validate adif eqsl_export.adi --my-grid DN26 --sfi 140
+ionis-validate adif ki7mt-eqsl-inbox.adi --my-grid DN26
 ```
 
 Output:
 
 ```
+======================================================================
   IONIS V20 — ADIF Log Validation
 ======================================================================
 
-  Log file:      eqsl_export.adi
+  Log file:      ki7mt-eqsl-inbox.adi
   Your grid:     DN26
-  Conditions:    SFI=140, Kp=2.0
+  Conditions:    SFI=150.0, Kp=2.0
 
-  Observations validated: 12,847
-  Band open (predicted):  11,493
-  Recall:                 89.47%
+  Records skipped: 130
+    no_grid: 87
+    no_band: 42
+    bad_grid: 1
 
-  Date range:    2018 – 2025
+  Observations validated: 23,747
+  Band open (predicted):  7,108
+  Recall:                 29.93%
+
+  Date range:    2009 – 2025
 
   Recall by Mode:
-    Digital     93.21%  (8,412 QSOs)
-    CW          88.76%  (2,103 QSOs)
-    SSB         81.34%  (1,890 QSOs)
-    RTTY        90.52%  (442 QSOs)
+    CW           37.61%  (2,975 QSOs)
+    Digital      98.21%  (4,025 QSOs)
+    SSB           7.19%  (2,906 QSOs)
+    RTTY         13.20%  (13,841 QSOs)
 
   Recall by Band:
-    160m    62.14%  (215 QSOs)
-    80m     71.88%  (1,024 QSOs)
-    40m     85.92%  (3,412 QSOs)
-    20m     94.23%  (4,891 QSOs)
-    15m     96.01%  (2,103 QSOs)
-    10m     93.47%  (1,202 QSOs)
+    160m      5.28%  (776 QSOs)
+    80m       8.19%  (891 QSOs)
+    40m      30.24%  (5,049 QSOs)
+    30m      70.33%  (1,483 QSOs)
+    20m      23.11%  (9,183 QSOs)
+    17m      63.85%  (899 QSOs)
+    15m      27.90%  (3,516 QSOs)
+    12m      71.03%  (321 QSOs)
+    10m      31.86%  (1,629 QSOs)
+
+  SNR Comparison (3,455 QSOs with signal reports):
+    Pearson correlation:  -0.0815
+    RMSE:                13.4 dB
 
 ======================================================================
-  Overall Recall: 89.47% on 12,847 confirmed QSOs
+  Overall Recall: 29.93% on 23,747 QSOs
 ======================================================================
 
-  Every QSO in your log is a confirmed contact — the band WAS open.
+  Each QSO is a contact that happened — the band was open.
   Recall measures how often the model agrees.
 ```
+
+!!! note "Why is recall low with static conditions?"
+    The example above uses static SFI=150, Kp=2 for 16 years of QSOs
+    (2009-2025). Real conditions varied from deep solar minimum (SFI ~65)
+    to solar maximum (SFI ~250+). Per-QSO solar conditions from the
+    `solar.bronze` table would improve recall significantly — that
+    integration is planned for a future release.
 
 ## Exporting Your Log
 
@@ -96,6 +133,10 @@ Output:
 2. Go to **Log Page** > **Download ADIF File**
 3. Select your date range and download
 4. Save the `.adi` file
+
+!!! note
+    eQSL limits the number of downloadable QSOs. If your inbox is large,
+    you may need to download in date-range batches.
 
 ### From LoTW (ARRL Logbook of The World)
 
@@ -174,10 +215,9 @@ you explicitly choose to share the exported JSON.
 
 ## Why This Matters
 
-Your log represents **confirmed two-way contacts** — stronger ground truth
-than one-way reception reports. Benefits over other validation data:
+Your log represents real contacts across real propagation paths — ground truth
+from your own operating experience. Benefits over other validation data:
 
-- **Confirmed communication**: Both stations copied each other. The band was unambiguously open.
 - **Mode diversity**: SSB and RTTY QSOs that PSK Reporter barely covers.
 - **Historical depth**: Many operators have 10-20 years of logs spanning multiple solar cycles.
 - **Explicit opt-in**: You export, you run, you review, you decide to share.
