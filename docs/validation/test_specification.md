@@ -1,10 +1,19 @@
-# Oracle Test Specification
+# IONIS Test Specification
 
-**Document Version:** 1.2
-**Model Version:** IonisGate (Production)
+**Document Version:** 2.0
+**Model Version:** IonisGate V20 (Production)
 **Checkpoint:** `versions/v20/ionis_v20.pth`
-**Date:** 2026-02-05
+**Date:** 2026-02-16
 **Author:** IONIS
+
+!!! note "Implementation Status"
+    This document specifies the full IONIS test suite. Currently implemented:
+
+    - **verify_v20.py** — TST-200 (Physics Constraints): 4/6 tests automated
+    - **test_v20.py** — Sensitivity analysis with geographic bias checks (TST-701)
+    - **validate_v20_pskr.py** — Live PSK Reporter validation
+
+    Test groups TST-100, TST-300, TST-400, TST-500, TST-600, TST-800 are specified but not yet automated.
 
 ---
 
@@ -18,10 +27,19 @@ This document specifies the automated test suite for IONIS. Each test has:
 - **Failure Mode**: What a failure indicates
 - **Hallucination Trap**: Tests designed to catch model overconfidence
 
-The test suite runs via:
+The test suite runs via two scripts in `versions/v20/`:
+
 ```bash
-python scripts/oracle_v12.py --test
+cd /Users/gbeam/workspace/ionis-ai/ionis-training
+
+# Physics verification (4 core tests)
+.venv/bin/python versions/v20/verify_v20.py
+
+# Sensitivity analysis (8 sweeps)
+.venv/bin/python versions/v20/test_v20.py
 ```
+
+**Implementation Status:** The scripts above implement TST-200 (Physics Constraints) and portions of TST-700 (Geographic Bias). The remaining test groups (TST-100, TST-300, TST-400, TST-500, TST-600, TST-800) are specified below but not yet automated.
 
 ---
 
@@ -467,34 +485,60 @@ These tests catch cases where the model might produce confident but wrong answer
 
 ## Test Execution
 
-### Running the Full Suite
+### Running the Implemented Tests
 
 ```bash
-cd /Users/gbeam/workspace/ionis-ai
-.venv/bin/python ionis-training/scripts/oracle_v12.py --test
+cd /Users/gbeam/workspace/ionis-ai/ionis-training
+
+# 1. Physics Verification (4 tests)
+.venv/bin/python versions/v20/verify_v20.py
+
+# 2. Sensitivity Analysis (8 sweeps)
+.venv/bin/python versions/v20/test_v20.py
+
+# 3. PSK Reporter Live Validation
+.venv/bin/python versions/v20/validate_v20_pskr.py
 ```
 
-### Expected Output
+### Expected Output: verify_v20.py
 
 ```
-======================================================================
-  IONIS Oracle Test Suite
-======================================================================
-Model loaded: IonisGate (trunk+3heads+2gated_sidecars)
-Pearson: +0.4879, RMSE: 0.862σ
+Loading versions/v20/ionis_v20.pth...
+  Parameters: 203,573
+  RMSE: 0.8620 sigma (5.78 dB equiv)
+  Pearson: +0.4777
 
-  ... test results ...
+============================================================
+TEST 1: STORM SIDECAR (Kp)
+============================================================
+  Storm Cost (Kp 0->9): +3.487 sigma (+23.4 dB)
+  PASS: Signal DROPPED during storm (correct physics)
 
-  PHYSICS SCORE: 4/4 PASS
-  Rating: Production Ready
+============================================================
+TEST 2: SUN SIDECAR (SFI)
+============================================================
+  Sun Benefit (SFI 70->200): +0.482 sigma (+3.2 dB)
+  PASS: Signal IMPROVED with higher SFI (correct physics)
 
-======================================================================
-  SUMMARY
-======================================================================
-  Passed: 35/35
-  Failed: 0/35
+============================================================
+TEST 3: GATE RANGE [0.5, 2.0]
+============================================================
+  PASS: All gate values within [0.5, 2.0]
 
-  ALL TESTS PASSED
+============================================================
+TEST 4: DECOMPOSITION MATH
+============================================================
+  PASS: base + sun_gate*sun_raw + storm_gate*storm_raw = predicted
+
+============================================================
+V20 PHYSICS VERIFICATION SUMMARY
+============================================================
+  Storm Sidecar (Kp 0->9)       PASS
+  Sun Sidecar (SFI 70->200)     PASS
+  Gate range [0.5, 2.0]         PASS
+  Decomposition math            PASS
+
+ALL TESTS PASSED -- Physics constraints enforced
 ```
 
 ### Interpreting Failures
@@ -750,12 +794,15 @@ Baseline tests to catch future regressions.
 | 1.0 | 2026-02-05 | Initial specification |
 | 1.1 | 2026-02-05 | Added TST-500 (Robustness), TST-600 (Security), TST-700 (Bias), TST-800 (Regression) |
 | 1.2 | 2026-02-05 | Added TST-206 (Grey line twilight), automated TST-701 (Geographic bias) per Gemini review |
+| 2.0 | 2026-02-16 | Updated for V20 Golden Master; fixed script paths to `versions/v20/`; documented implementation status; renamed from `v12_test_specification.md` |
 
 ---
 
 ## References
 
-- Training: `ionis-training/scripts/train_v20.py`
-- Physics Verification: `ionis-training/scripts/verify_v20.py`
-- Oracle Implementation: `ionis-training/scripts/oracle_v20.py`
-- Model Checkpoint: `versions/v20/ionis_v20.pth`
+- Training: `ionis-training/versions/v20/train_v20.py`
+- Physics Verification: `ionis-training/versions/v20/verify_v20.py`
+- Sensitivity Analysis: `ionis-training/versions/v20/test_v20.py`
+- PSKR Live Validation: `ionis-training/versions/v20/validate_v20_pskr.py`
+- Model Checkpoint: `ionis-training/versions/v20/ionis_v20.pth`
+- Config: `ionis-training/versions/v20/config_v20.json`

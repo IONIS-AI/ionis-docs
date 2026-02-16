@@ -60,7 +60,7 @@ nav:
     - Link Budget Battery: validation/v20_link_budget_battery.md
     - "IONIS vs VOACAP": validation/step_i_voacap_comparison.md
     - Prediction Quality: validation/step_k_quality_test.md
-    - Test Specification: validation/v12_test_specification.md
+    - Test Specification: validation/test_specification.md
   - Pipeline Apps:
     - Overview: tools/index.md
     - WSPR Ingestion: tools/wspr.md
