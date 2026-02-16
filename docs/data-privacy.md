@@ -58,7 +58,7 @@ No callsign, no name, no address, no personal identifier of any kind.
 We have assessed our data processing against the EU General Data Protection
 Regulation (GDPR) and believe our use is compliant on multiple independent grounds:
 
-**1. Anonymization (Recital 26)**
+**1. Anonymization ([Recital 26](https://gdpr-info.eu/recitals/no-26/))**
 
 GDPR Recital 26 states: "The principles of data protection should therefore not
 apply to anonymous information, namely information which does not relate to an
@@ -88,14 +88,14 @@ Every observation in our dataset was voluntarily made public by the operator:
   open to the public" as a condition of participation. ARRL posts submitted logs
   publicly at contests.arrl.org.
 
-Amateur radio is, by its nature, a public service. ITU Radio Regulations and
-national licensing authorities (FCC 47 CFR 97.119, Ofcom, BNetzA, etc.) **require**
+Amateur radio is, by its nature, a public service. [ITU Radio Regulations](https://www.itu.int/pub/R-REG-RR) and
+national licensing authorities ([FCC 47 CFR 97.119](https://www.ecfr.gov/current/title-47/chapter-I/subchapter-D/part-97/subpart-B/section-97.119), Ofcom, BNetzA, etc.) **require**
 operators to identify themselves with their callsign during every transmission.
 Callsigns are broadcast over the air, published in national licensing databases,
 and printed in callbooks that have been publicly available for over 70 years.
 There is no expectation of privacy for amateur radio callsigns.
 
-**3. Scientific Research Purpose (Article 89)**
+**3. Scientific Research Purpose ([Article 89](https://gdpr-info.eu/art-89-gdpr/))**
 
 GDPR Article 89 provides safeguards and derogations for processing personal data
 for scientific or historical research purposes and statistical purposes, provided
