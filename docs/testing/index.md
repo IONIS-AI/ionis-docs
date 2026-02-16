@@ -15,6 +15,7 @@ with the shipped checkpoint.
 | `ionis-validate test` | Run the full 62-test automated battery |
 | `ionis-validate predict` | Predict a single HF path from your grid |
 | `ionis-validate custom` | Batch-test your own paths from a JSON file |
+| `ionis-validate adif` | Validate the model against your own QSO log |
 | `ionis-validate report` | Generate a structured report for GitHub Issues |
 | `ionis-validate info` | Show model version, system info, and diagnostics |
 
@@ -50,4 +51,5 @@ ionis-validate test
 - [Test Suite](test-suite.md) — What the 62 tests cover and how to read results
 - [Single Path Prediction](predict.md) — Predict any HF path from the command line
 - [Custom Path Tests](custom-paths.md) — Define your own test paths in JSON
+- [ADIF Log Validation](adif-validation.md) — Validate the model against your own QSO log
 - [Reporting Issues](reporting.md) — How to file feedback and what to include
