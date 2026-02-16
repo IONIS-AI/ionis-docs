@@ -125,5 +125,5 @@ This ensures the model starts training from a known baseline — the gates are i
 
 | File | Purpose |
 |------|---------|
-| `ionis-training/scripts/models/ionisgate.py` | PyTorch module + self-verification |
-| `ionis-docs/docs/architecture/ionisgate.md` | This document |
+| [`ionis-training/scripts/models/ionisgate.py`](https://github.com/IONIS-AI/ionis-training/blob/main/scripts/models/ionisgate.py) | PyTorch module + self-verification |
+| [`ionis-docs/docs/architecture/ionisgate.md`](https://github.com/IONIS-AI/ionis-docs/blob/main/docs/architecture/ionisgate.md) | This document |
