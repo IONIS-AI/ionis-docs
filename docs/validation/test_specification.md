@@ -1,19 +1,27 @@
 # IONIS Test Specification
 
-**Document Version:** 2.0
+**Document Version:** 2.1
 **Model Version:** IonisGate V20 (Production)
 **Checkpoint:** `versions/v20/ionis_v20.pth`
 **Date:** 2026-02-16
 **Author:** IONIS
 
-!!! note "Implementation Status"
-    This document specifies the full IONIS test suite. Currently implemented:
+!!! success "Implementation Status: COMPLETE"
+    All 62 tests are fully automated in the modular test suite:
 
-    - **verify_v20.py** — TST-200 (Physics Constraints): 4/6 tests automated
-    - **test_v20.py** — Sensitivity analysis with geographic bias checks (TST-701)
-    - **validate_v20_pskr.py** — Live PSK Reporter validation
+    | Group | Tests | Description |
+    |-------|-------|-------------|
+    | TST-100 | 30 | Canonical Paths — Global HF propagation coverage |
+    | TST-200 | 6 | Physics Constraints — V16 Physics Laws |
+    | TST-300 | 5 | Input Validation — Boundary checks |
+    | TST-400 | 4 | Hallucination Traps — Out-of-domain detection |
+    | TST-500 | 7 | Model Robustness — Determinism, stability |
+    | TST-600 | 4 | Adversarial & Security — Malicious input handling |
+    | TST-700 | 3 | Bias & Fairness — Geographic, temporal, band bias |
+    | TST-800 | 3 | Regression Tests — V20 baseline locks |
+    | **Total** | **62** | |
 
-    Test groups TST-100, TST-300, TST-400, TST-500, TST-600, TST-800 are specified but not yet automated.
+    Run all tests: `python versions/v20/tests/run_all.py`
 
 ---
 
@@ -27,19 +35,29 @@ This document specifies the automated test suite for IONIS. Each test has:
 - **Failure Mode**: What a failure indicates
 - **Hallucination Trap**: Tests designed to catch model overconfidence
 
-The test suite runs via two scripts in `versions/v20/`:
+The test suite runs via modular test scripts in `versions/v20/tests/`:
 
 ```bash
-cd /Users/gbeam/workspace/ionis-ai/ionis-training
+cd /Users/gbeam/workspace/ionis-ai
 
-# Physics verification (4 core tests)
-.venv/bin/python versions/v20/verify_v20.py
+# Run complete test suite (62 tests)
+.venv/bin/python ionis-training/versions/v20/tests/run_all.py
 
-# Sensitivity analysis (8 sweeps)
-.venv/bin/python versions/v20/test_v20.py
+# Run individual test groups
+.venv/bin/python ionis-training/versions/v20/tests/test_tst200_physics.py
+.venv/bin/python ionis-training/versions/v20/tests/test_tst100_canonical.py
+# etc.
 ```
 
-**Implementation Status:** The scripts above implement TST-200 (Physics Constraints) and portions of TST-700 (Geographic Bias). The remaining test groups (TST-100, TST-300, TST-400, TST-500, TST-600, TST-800) are specified below but not yet automated.
+**Additional validation scripts:**
+
+```bash
+# Legacy physics verification (standalone)
+.venv/bin/python ionis-training/versions/v20/verify_v20.py
+
+# PSK Reporter live validation
+.venv/bin/python ionis-training/versions/v20/validate_v20_pskr.py
+```
 
 ---
 
@@ -485,60 +503,60 @@ These tests catch cases where the model might produce confident but wrong answer
 
 ## Test Execution
 
-### Running the Implemented Tests
+### Running the Complete Test Suite
 
 ```bash
-cd /Users/gbeam/workspace/ionis-ai/ionis-training
+cd /Users/gbeam/workspace/ionis-ai
 
-# 1. Physics Verification (4 tests)
-.venv/bin/python versions/v20/verify_v20.py
-
-# 2. Sensitivity Analysis (8 sweeps)
-.venv/bin/python versions/v20/test_v20.py
-
-# 3. PSK Reporter Live Validation
-.venv/bin/python versions/v20/validate_v20_pskr.py
+# Complete test suite (62 tests, ~2 min)
+.venv/bin/python ionis-training/versions/v20/tests/run_all.py
 ```
 
-### Expected Output: verify_v20.py
+### Expected Output: run_all.py
 
 ```
-Loading versions/v20/ionis_v20.pth...
-  Parameters: 203,573
-  RMSE: 0.8620 sigma (5.78 dB equiv)
-  Pearson: +0.4777
+======================================================================
+  IONIS V20 — Complete Test Suite
+======================================================================
 
-============================================================
-TEST 1: STORM SIDECAR (Kp)
-============================================================
-  Storm Cost (Kp 0->9): +3.487 sigma (+23.4 dB)
-  PASS: Signal DROPPED during storm (correct physics)
+  Date: 2026-02-16 10:47:23
+  Model: IonisGate V20 Golden Master
+  Checkpoint: versions/v20/ionis_v20.pth
 
-============================================================
-TEST 2: SUN SIDECAR (SFI)
-============================================================
-  Sun Benefit (SFI 70->200): +0.482 sigma (+3.2 dB)
-  PASS: Signal IMPROVED with higher SFI (correct physics)
+  Running 8 test groups (62 total tests)...
 
-============================================================
-TEST 3: GATE RANGE [0.5, 2.0]
-============================================================
-  PASS: All gate values within [0.5, 2.0]
+  [TST-200] Physics Constraints (6 tests)... PASS
+  [TST-300] Input Validation (5 tests)... PASS
+  [TST-500] Model Robustness (7 tests)... PASS
+  [TST-800] Regression Tests (3 tests)... PASS
+  [TST-100] Canonical Paths (30 tests)... PASS
+  [TST-400] Hallucination Traps (4 tests)... PASS
+  [TST-600] Adversarial & Security (4 tests)... PASS
+  [TST-700] Bias & Fairness (3 tests)... PASS
 
-============================================================
-TEST 4: DECOMPOSITION MATH
-============================================================
-  PASS: base + sun_gate*sun_raw + storm_gate*storm_raw = predicted
+======================================================================
+  TEST SUITE SUMMARY
+======================================================================
 
-============================================================
-V20 PHYSICS VERIFICATION SUMMARY
-============================================================
-  Storm Sidecar (Kp 0->9)       PASS
-  Sun Sidecar (SFI 70->200)     PASS
-  Gate range [0.5, 2.0]         PASS
-  Decomposition math            PASS
+  Group       Description                 Tests    Status
+  -------------------------------------------------------
+  TST-200     Physics Constraints             6      PASS
+  TST-300     Input Validation                5      PASS
+  TST-500     Model Robustness                7      PASS
+  TST-800     Regression Tests                3      PASS
+  TST-100     Canonical Paths                30      PASS
+  TST-400     Hallucination Traps             4      PASS
+  TST-600     Adversarial & Security          4      PASS
+  TST-700     Bias & Fairness                 3      PASS
+  -------------------------------------------------------
+  TOTAL                                      62  62/62
 
-ALL TESTS PASSED -- Physics constraints enforced
+  ==================================================
+  ALL TEST GROUPS PASSED
+  ==================================================
+
+  V20 Golden Master validation complete.
+  Model is ready for production deployment.
 ```
 
 ### Interpreting Failures
@@ -795,13 +813,28 @@ Baseline tests to catch future regressions.
 | 1.1 | 2026-02-05 | Added TST-500 (Robustness), TST-600 (Security), TST-700 (Bias), TST-800 (Regression) |
 | 1.2 | 2026-02-05 | Added TST-206 (Grey line twilight), automated TST-701 (Geographic bias) per Gemini review |
 | 2.0 | 2026-02-16 | Updated for V20 Golden Master; fixed script paths to `versions/v20/`; documented implementation status; renamed from `v12_test_specification.md` |
+| 2.1 | 2026-02-16 | **COMPLETE IMPLEMENTATION**: All 62 tests automated in modular test suite; TST-100 expanded to 30 global paths; TST-200 implemented with 6 physics tests; added `run_all.py` orchestrator |
 
 ---
 
 ## References
 
+**Test Suite (62 tests):**
+
+- Orchestrator: `ionis-training/versions/v20/tests/run_all.py`
+- TST-100 Canonical Paths: `ionis-training/versions/v20/tests/test_tst100_canonical.py`
+- TST-200 Physics Constraints: `ionis-training/versions/v20/tests/test_tst200_physics.py`
+- TST-300 Input Validation: `ionis-training/versions/v20/tests/test_tst300_input_validation.py`
+- TST-400 Hallucination Traps: `ionis-training/versions/v20/tests/test_tst400_hallucination.py`
+- TST-500 Model Robustness: `ionis-training/versions/v20/tests/test_tst500_robustness.py`
+- TST-600 Adversarial/Security: `ionis-training/versions/v20/tests/test_tst600_adversarial.py`
+- TST-700 Bias & Fairness: `ionis-training/versions/v20/tests/test_tst700_bias.py`
+- TST-800 Regression: `ionis-training/versions/v20/tests/test_tst800_regression.py`
+
+**Model & Training:**
+
 - Training: `ionis-training/versions/v20/train_v20.py`
-- Physics Verification: `ionis-training/versions/v20/verify_v20.py`
+- Legacy Physics Verification: `ionis-training/versions/v20/verify_v20.py`
 - Sensitivity Analysis: `ionis-training/versions/v20/test_v20.py`
 - PSKR Live Validation: `ionis-training/versions/v20/validate_v20_pskr.py`
 - Model Checkpoint: `ionis-training/versions/v20/ionis_v20.pth`
