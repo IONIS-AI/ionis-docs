@@ -3,53 +3,84 @@
 Found a path where the model disagrees with your on-air experience? That's
 exactly the feedback we need.
 
-## What to Report
+## The Easy Way: `ionis-validate report`
 
-### Test Suite Failures
+One command generates a complete, structured report you can paste directly
+into a GitHub Issue:
 
-If `ionis-validate test` reports any failures:
+```bash
+# System info + full test suite results
+ionis-validate report
 
-1. Run `ionis-validate info` and include the full output
-2. Copy the failing test output (test ID, expected vs actual values)
-3. Note your platform (OS, Python version, CPU/GPU)
+# Include your custom path tests
+ionis-validate report --custom my_paths.json
 
-### Prediction Disagreements
+# System info only (skip test suite)
+ionis-validate report --skip-tests
+```
 
-If `ionis-validate predict` gives a result that contradicts your operating
-experience:
+Progress prints to stderr. The report prints to stdout as markdown — copy
+it, open an issue, paste it in.
 
-1. The exact command you ran (all arguments)
-2. What you expected and why (e.g., "I work this path on FT8 every evening")
-3. Your station details if relevant (antenna, power class)
-4. The approximate date and conditions when you observed the path
-5. Current solar conditions if you have them (SFI, Kp)
+```bash
+# Pipe directly to clipboard (Linux)
+ionis-validate report | xclip -selection clipboard
 
-### Custom Path Results
-
-If you have a JSON file with `expect_open` assertions that fail:
-
-1. Attach the JSON file
-2. Include the command output
-3. Add notes on which paths you're most confident about
+# Save to file
+ionis-validate report --custom my_paths.json > report.md
+```
 
 ## Where to Report
 
-File an issue on the ionis-training repository:
+File an issue on the ionis-training repository. Structured templates guide
+you through each report type:
 
-**[https://github.com/IONIS-AI/ionis-training/issues](https://github.com/IONIS-AI/ionis-training/issues)**
+**[https://github.com/IONIS-AI/ionis-training/issues/new/choose](https://github.com/IONIS-AI/ionis-training/issues/new/choose)**
 
-Use the title format: `[V20 Beta] <brief description>`
+Three templates:
 
-Examples:
+| Template | When to Use |
+|----------|-------------|
+| **Test Suite Failure** | `ionis-validate test` reports a failure |
+| **Prediction Disagreement** | Model prediction contradicts your on-air experience |
+| **Custom Path Results** | Sharing results from `ionis-validate custom` |
 
-- `[V20 Beta] 160m polar path predicted open during Kp 7`
-- `[V20 Beta] TST-100 test 14 fails on Rocky 9.7 aarch64`
-- `[V20 Beta] Custom paths — 10m EU consistently over-predicted`
+Each template has structured fields — fill in what you can, paste the
+`ionis-validate report` output in the "Full Report" field, and submit.
+
+## What to Include
+
+### Test Suite Failures
+
+If `ionis-validate test` reports failures:
+
+1. Run `ionis-validate report` and paste the full output
+2. Or manually include: `ionis-validate info` output, failing test ID, expected vs actual
+
+### Prediction Disagreements
+
+If `ionis-validate predict` contradicts your experience:
+
+1. The exact command you ran (all arguments)
+2. What you expected and why (e.g., "I work this path on FT8 every evening")
+3. Approximate date and UTC time of your observation
+4. Solar conditions if you know them (SFI, Kp)
+5. Station details if relevant (antenna, power class)
+
+### Custom Path Results
+
+If your JSON file with `expect_open` assertions has failures:
+
+1. Run `ionis-validate report --custom your_file.json`
+2. The report includes your JSON, the output, and system info — all in one paste
 
 ## What Happens Next
 
-Every beta test result gets reviewed. Paths where the model consistently
-disagrees with experienced operators become training data for the next version.
+Every beta test result gets reviewed. Reports are tagged by model version
+in GitHub Issues, so feedback flows directly into the next version's
+development cycle.
 
-Your custom path JSON files are particularly valuable — they represent
-real-world ground truth that no public dataset captures.
+Paths where the model consistently disagrees with experienced operators
+become training data for the next version. Your custom path JSON files are
+particularly valuable — they represent real-world ground truth that no
+public dataset captures.

@@ -15,6 +15,7 @@ with the shipped checkpoint.
 | `ionis-validate test` | Run the full 62-test automated battery |
 | `ionis-validate predict` | Predict a single HF path from your grid |
 | `ionis-validate custom` | Batch-test your own paths from a JSON file |
+| `ionis-validate report` | Generate a structured report for GitHub Issues |
 | `ionis-validate info` | Show model version, system info, and diagnostics |
 
 ## Requirements
