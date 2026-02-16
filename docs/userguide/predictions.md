@@ -132,14 +132,14 @@ Pearson correlation for each. In Step K testing, IONIS achieved Pearson
 
 ## Training a New Model Version
 
-Training is covered in detail in the [Training Methodology](../methodology/training.md)
+Training is covered in detail in the [Training Methodology](../model/methodology/training.md)
 page. At a high level:
 
-1. Export training data: `gold_v6.csv` from ClickHouse (see [Gold Layer](../methodology/gold_layer.md))
+1. Export training data: `gold_v6.csv` from ClickHouse (see [Gold Layer](../model/methodology/gold_layer.md))
 2. Transfer to training host (M3 Ultra via DAC link)
 3. Create a new version config: `versions/vNN/config_vNN.json`
 4. Run training: `python train.py --config versions/vNN/config_vNN.json`
 5. Validate: run `validate_vNN.py` against quality test paths
 
 The model architecture (IonisGate) and its six non-negotiable constraints
-are documented in the [IonisGate Architecture](../architecture/ionisgate.md) page.
+are documented in the [IonisGate Architecture](../model/architecture/ionisgate.md) page.

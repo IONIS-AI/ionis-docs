@@ -119,7 +119,7 @@ WHERE database NOT IN ('system', 'information_schema', 'INFORMATION_SCHEMA', 'de
 # Expected: 35
 ```
 
-See [Bronze Stack — Step 1](../methodology/bronze_stack.md#step-1-apply-ddl-schemas) for
+See [Bronze Stack — Step 1](../model/methodology/bronze_stack.md#step-1-apply-ddl-schemas) for
 additional detail.
 
 ---
@@ -197,7 +197,7 @@ Clean-slate rebuild on 9975WX (2026-02-07):
 | `contest.bronze` | ~234,000,000 | ~22 min | — |
 | `pskr.bronze` | ~81,000,000+ | varies | — |
 
-See [Bronze Stack](../methodology/bronze_stack.md) for per-step verification queries.
+See [Bronze Stack](../model/methodology/bronze_stack.md) for per-step verification queries.
 
 ---
 
@@ -321,7 +321,7 @@ clickhouse-client --query "SELECT count() FROM wspr.silver"
 # Expected: ~4,430,000,000
 ```
 
-See [Silver Layer](../methodology/silver_layer.md) for details.
+See [Silver Layer](../model/methodology/silver_layer.md) for details.
 
 ---
 
@@ -347,7 +347,7 @@ ls -lh data/gold_v6.csv
 # Expected: ~838 MB
 ```
 
-See [Gold Layer](../methodology/gold_layer.md) for training table lineage.
+See [Gold Layer](../model/methodology/gold_layer.md) for training table lineage.
 
 ---
 

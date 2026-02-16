@@ -22,10 +22,9 @@ theme:
   features:
     - navigation.tabs
     - navigation.sections
-    - navigation.expand
+    - navigation.indexes
     - navigation.top
     - content.code.copy
-    - toc.integrate
 
 markdown_extensions:
   - tables
@@ -43,26 +42,34 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Ethos: ethos.md
-  - Architecture:
-    - IonisGate: architecture/ionisgate.md
-    - Monotonic Sidecars: architecture/sidecars.md
-  - Methodology:
-    - Data Pipeline: methodology/data_pipeline.md
-    - Bronze Layer: methodology/bronze_stack.md
-    - Silver Layer: methodology/silver_layer.md
-    - Gold Layer: methodology/gold_layer.md
-    - Signatures: methodology/step_f_signatures.md
-    - Training: methodology/training.md
-    - "Coverage & Confidence": methodology/coverage.md
-  - Validation:
-    - Overview: validation/index.md
-    - Link Budget Battery: validation/v20_link_budget_battery.md
-    - "IONIS vs VOACAP": validation/step_i_voacap_comparison.md
-    - Prediction Quality: validation/step_k_quality_test.md
-    - Test Specification: validation/test_specification.md
+  - Model:
+    - model/index.md
+    - Architecture:
+      - IonisGate: model/architecture/ionisgate.md
+      - Monotonic Sidecars: model/architecture/sidecars.md
+    - Methodology:
+      - Data Pipeline: model/methodology/data_pipeline.md
+      - Bronze Layer: model/methodology/bronze_stack.md
+      - Silver Layer: model/methodology/silver_layer.md
+      - Gold Layer: model/methodology/gold_layer.md
+      - Signatures: model/methodology/step_f_signatures.md
+      - Training: model/methodology/training.md
+      - "Coverage & Confidence": model/methodology/coverage.md
+    - Validation:
+      - model/validation/index.md
+      - Link Budget Battery: model/validation/v20_link_budget_battery.md
+      - "IONIS vs VOACAP": model/validation/step_i_voacap_comparison.md
+      - Prediction Quality: model/validation/step_k_quality_test.md
+      - Test Specification: model/validation/test_specification.md
+  - Testing:
+    - testing/index.md
+    - Getting Started: testing/getting-started.md
+    - Test Suite: testing/test-suite.md
+    - Single Path Prediction: testing/predict.md
+    - Custom Path Tests: testing/custom-paths.md
+    - Reporting Issues: testing/reporting.md
   - Pipeline Apps:
-    - Overview: tools/index.md
+    - tools/index.md
     - WSPR Ingestion: tools/wspr.md
     - Solar Pipeline: tools/solar.md
     - "Contest & RBN": tools/contest.md
@@ -71,11 +78,14 @@ nav:
     - CUDA Engine: tools/cuda.md
     - "VOACAP (External)": tools/voacapl.md
   - DevOps:
-    - Hardware Requirements: devops/index.md
+    - devops/index.md
     - Pipeline Runbook: devops/pipeline-runbook.md
     - "Operations & Maintenance": devops/maintenance.md
-  - UserGuide:
-    - Getting Started: userguide/index.md
+  - User Guide:
+    - userguide/index.md
     - Running Predictions: userguide/predictions.md
-  - "Data Privacy & GDPR": data-privacy.md
-  - Credits: credits.md
+  - About:
+    - about/index.md
+    - Ethos: about/ethos.md
+    - Credits: about/credits.md
+    - "Data Privacy & GDPR": about/data-privacy.md

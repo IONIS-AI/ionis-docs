@@ -92,11 +92,11 @@ Self-hosted, no cloud dependencies:
 
 ## Documentation
 
-- [Architecture](architecture/ionisgate.md) — IonisGate model design, sidecars, gated physics
-- [Methodology](methodology/data_pipeline.md) — Data ingestion and training process
-- [Validation](validation/index.md) — 62-test automated verification suite
-- [Data Privacy](data-privacy.md) — GDPR compliance, data authorization
-- [Ethos](ethos.md) — Core principles and statement of intent
+- [Model](model/index.md) — IonisGate architecture, training methodology, validation results
+- [Testing](testing/index.md) — Install, run, and report — beta testing for operators
+- [Pipeline Apps](tools/index.md) — WSPR, solar, contest, RBN, PSK Reporter ingesters
+- [DevOps](devops/index.md) — Hardware, pipeline runbook, operations
+- [About](about/ethos.md) — Ethos, credits, data privacy
 
 ## Open Source
 
