@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Document Version** | 2.1 |
+| **Document Version** | 2.2 |
 | **Model Version** | IonisGate V20 (Production) |
 | **Checkpoint** | `versions/v20/ionis_v20.pth` |
 | **Date** | 2026-02-16 |
@@ -89,138 +89,101 @@ cd $IONIS_WORKSPACE
 
 ## Group 1: Canonical Paths (TST-100)
 
-These tests verify the model produces reasonable predictions for well-known HF propagation paths.
+These tests verify the model produces reasonable predictions for well-known HF propagation paths. All paths must predict SNR > -2.5σ (~-17 dB) to be considered OPEN.
 
-### TST-101: US East Coast to Western Europe (20m Day)
+Default conditions unless noted: SFI 150, Kp 2, June.
 
-| Field | Value |
-|-------|-------|
-| **Purpose** | Validate classic transatlantic 20m path during daylight |
-| **TX Location** | W3 area: 39.14°N, 77.01°W (Maryland) |
-| **RX Location** | G area: 51.50°N, 0.12°W (London) |
-| **Frequency** | 14.0 MHz (20m) |
-| **Conditions** | SFI 150, Kp 2, 14:00 UTC |
-| **Distance** | ~5,900 km |
-| **Expected Result** | SNR > -25 dB (path OPEN) |
-| **Pass Criteria** | Model predicts usable WSPR signal |
-| **Failure Mode** | If CLOSED: Model underestimating F2 skip on mid-latitude path |
-| **Notes** | This is the most reliable transatlantic path; should always be open under these conditions |
+### Category A: North America to Europe
 
-### TST-102: US East Coast to Western Europe (20m Night)
+| ID | Path | Band | Hour UTC | Purpose |
+|----|------|------|----------|---------|
+| TST-101 | W3 → G | 20m | 14 | Classic transatlantic day path |
+| TST-102 | W3 → G | 20m | 04 | Grey line / night propagation |
+| TST-103 | G → W6 | 20m | 18 | Europe to US West Coast |
+| TST-104 | W3 → G | 40m | 22 | Transatlantic on 40m (evening) |
+| TST-105 | VE3 → DL | 20m | 14 | Canada to Germany |
 
-| Field | Value |
-|-------|-------|
-| **Purpose** | Validate transatlantic path during darkness (grey line effects) |
-| **TX Location** | W3 area: 39.14°N, 77.01°W |
-| **RX Location** | G area: 51.50°N, 0.12°W |
-| **Frequency** | 14.0 MHz (20m) |
-| **Conditions** | SFI 150, Kp 2, 04:00 UTC |
-| **Expected Result** | SNR > -25 dB (path OPEN, possibly marginal) |
-| **Pass Criteria** | Model predicts path open (grey line propagation) |
-| **Failure Mode** | If CLOSED: Model not capturing grey line enhancement |
-| **Notes** | 20m can stay open on this path even at night due to grey line |
+### Category B: Trans-Pacific
 
-### TST-103: US West Coast to Japan (20m)
+| ID | Path | Band | Hour UTC | Purpose |
+|----|------|------|----------|---------|
+| TST-110 | W6 → JA | 20m | 16 | US West Coast to Japan |
+| TST-111 | JA → W3 | 20m | 23 | Japan to US East Coast (long path timing) |
+| TST-112 | KH6 → JA | 20m | 06 | Hawaii to Japan |
+| TST-113 | VK → W6 | 20m | 05 | Australia to US West Coast |
 
-| Field | Value |
-|-------|-------|
-| **Purpose** | Validate long-path Pacific crossing |
-| **TX Location** | W6 area: 34.05°N, 118.24°W (Los Angeles) |
-| **RX Location** | JA area: 35.68°N, 139.69°E (Tokyo) |
-| **Frequency** | 14.0 MHz (20m) |
-| **Conditions** | SFI 150, Kp 2, 16:00 UTC |
-| **Distance** | ~8,800 km |
-| **Expected Result** | SNR > -25 dB (path OPEN) |
-| **Pass Criteria** | Model predicts usable signal on trans-Pacific path |
-| **Failure Mode** | If CLOSED: Model underestimating long-path propagation |
-| **Notes** | Classic DX path; well-represented in WSPR data |
+### Category C: Europe to Asia
 
-### TST-104: Greenland to Finland (Polar Path, Quiet)
+| ID | Path | Band | Hour UTC | Purpose |
+|----|------|------|----------|---------|
+| TST-120 | G → JA | 20m | 08 | Europe to Japan |
+| TST-121 | DL → VU | 20m | 12 | Germany to India |
+| TST-122 | JA → OH | 20m | 10 | Japan to Finland (near-polar) |
 
-| Field | Value |
-|-------|-------|
-| **Purpose** | Validate high-latitude path under quiet geomagnetic conditions |
-| **TX Location** | OX area: 64.18°N, 51.72°W (Nuuk, Greenland) |
-| **RX Location** | OH area: 60.17°N, 24.94°E (Helsinki) |
-| **Frequency** | 14.0 MHz (20m) |
-| **Conditions** | SFI 150, Kp 2, 12:00 UTC |
-| **Distance** | ~3,200 km |
-| **Expected Result** | SNR > -25 dB (path OPEN) |
-| **Pass Criteria** | Model predicts open path when Kp is low |
-| **Failure Mode** | If CLOSED: Model over-penalizing high-latitude paths |
-| **Notes** | Polar paths are viable when geomagnetically quiet |
+### Category D: Africa Paths
 
-### TST-105: Greenland to Finland (Polar Path, Storm)
+| ID | Path | Band | Hour UTC | Purpose |
+|----|------|------|----------|---------|
+| TST-130 | ZS → G | 20m | 14 | South Africa to Europe |
+| TST-131 | ZS → W3 | 20m | 16 | South Africa to US East Coast |
+| TST-132 | 5H → DL | 20m | 14 | Tanzania to Germany |
 
-| Field | Value |
-|-------|-------|
-| **Purpose** | Validate storm degradation on high-latitude path |
-| **TX Location** | OX area: 64.18°N, 51.72°W |
-| **RX Location** | OH area: 60.17°N, 24.94°E |
-| **Frequency** | 14.0 MHz (20m) |
-| **Conditions** | SFI 150, Kp 8, 12:00 UTC |
-| **Expected Result** | SNR degraded but > -25 dB (MARGINAL) |
-| **Pass Criteria** | Model shows significant degradation vs TST-104 |
-| **Failure Mode** | If no degradation: Storm sidecar not working |
-| **Notes** | Kp 8 is severe; path should be heavily degraded but WSPR may still decode |
+### Category E: South America Paths
 
-### TST-106: Brazil to India (Equatorial Path)
+| ID | Path | Band | Hour UTC | Purpose |
+|----|------|------|----------|---------|
+| TST-140 | PY → W3 | 20m | 18 | Brazil to US East Coast |
+| TST-141 | LU → G | 20m | 16 | Argentina to Europe |
+| TST-142 | PY → VU | 20m | 14 | Brazil to India (equatorial long-haul) |
 
-| Field | Value |
-|-------|-------|
-| **Purpose** | Validate equatorial/trans-equatorial propagation |
-| **TX Location** | PY area: 23.55°S, 46.63°W (São Paulo) |
-| **RX Location** | VU area: 12.97°N, 77.59°E (Bangalore) |
-| **Frequency** | 14.0 MHz (20m) |
-| **Conditions** | SFI 150, Kp 2, 14:00 UTC |
-| **Distance** | ~14,000 km |
-| **Expected Result** | SNR > -25 dB (path OPEN) |
-| **Pass Criteria** | Model predicts long equatorial path viable |
-| **Failure Mode** | If CLOSED: Model underestimating equatorial F2 |
-| **Notes** | Equatorial paths less affected by Kp storms |
+### Category F: Oceania Paths
 
-### TST-107: NVIS 80m (Short Path)
+| ID | Path | Band | Hour UTC | Purpose |
+|----|------|------|----------|---------|
+| TST-150 | VK → G | 20m | 08 | Australia to Europe |
+| TST-151 | ZL → JA | 20m | 04 | New Zealand to Japan |
+| TST-152 | VK → ZS | 20m | 10 | Australia to South Africa |
 
-| Field | Value |
-|-------|-------|
-| **Purpose** | Validate Near Vertical Incidence Skywave on 80m |
-| **TX Location** | 40.0°N, 100.0°W (Central US) |
-| **RX Location** | 42.0°N, 98.0°W (~250 km away) |
-| **Frequency** | 3.5 MHz (80m) |
-| **Conditions** | SFI 100, Kp 2, 02:00 UTC (night) |
-| **Distance** | ~250 km |
-| **Expected Result** | SNR > -20 dB (strong NVIS) |
-| **Pass Criteria** | Model predicts strong signal on short nighttime 80m path |
-| **Failure Mode** | If weak: Model not capturing NVIS propagation |
-| **Notes** | 80m NVIS is bread-and-butter regional communication |
+### Category G: Regional / NVIS
 
-### TST-108: US to Europe 10m (Low SFI)
+| ID | Path | Band | Hour UTC | Purpose |
+|----|------|------|----------|---------|
+| TST-160 | G → DL | 20m | 12 | Intra-Europe short path |
+| TST-161 | JA → HL | 20m | 06 | Intra-Asia (Japan to Korea) |
+| TST-162 | Central US | 80m | 02 | NVIS ~280 km (SFI 100, threshold -2.0σ) |
 
-| Field | Value |
-|-------|-------|
-| **Purpose** | Validate 10m behavior under marginal solar conditions |
-| **TX Location** | W3 area: 39.14°N, 77.01°W |
-| **RX Location** | G area: 51.50°N, 0.12°W |
-| **Frequency** | 28.0 MHz (10m) |
-| **Conditions** | SFI 80, Kp 2, 14:00 UTC |
-| **Expected Result** | SNR > -25 dB (marginal but OPEN for WSPR) |
-| **Pass Criteria** | Model predicts degraded but usable path |
-| **Failure Mode** | N/A — test validates relative behavior vs TST-109 |
-| **Notes** | Low SFI makes 10m difficult but not impossible |
+### Category H: Band-Specific Physics (Paired Tests)
 
-### TST-109: US to Europe 10m (High SFI)
+| ID | Path | Band | Conditions | Purpose |
+|----|------|------|------------|---------|
+| TST-170 | OX → OH | 20m | Kp 2 | Polar path quiet baseline |
+| TST-171 | OX → OH | 20m | Kp 8 | Polar storm degradation (> 1σ vs TST-170) |
+| TST-172 | W3 → G | 10m | SFI 80 | 10m low SFI baseline |
+| TST-173 | W3 → G | 10m | SFI 200 | 10m SFI improvement (> 0.3σ vs TST-172) |
+| TST-174 | W3 → G | 40m | 02 UTC | 40m night path |
+| TST-175 | VE3 → W3 | 160m | 04 UTC | 160m regional night (SFI 100) |
 
-| Field | Value |
-|-------|-------|
-| **Purpose** | Validate 10m improvement with high solar flux |
-| **TX Location** | W3 area: 39.14°N, 77.01°W |
-| **RX Location** | G area: 51.50°N, 0.12°W |
-| **Frequency** | 28.0 MHz (10m) |
-| **Conditions** | SFI 200, Kp 2, 14:00 UTC |
-| **Expected Result** | SNR better than TST-108, > -20 dB |
-| **Pass Criteria** | Model shows SFI improvement on 10m |
-| **Failure Mode** | If no improvement: Sun sidecar not affecting higher bands |
-| **Notes** | High SFI should significantly improve 10m propagation |
+### Location Database
+
+| Key | Location | Lat | Lon |
+|-----|----------|-----|-----|
+| W3 | Maryland | 39.14°N | 77.01°W |
+| W6 | Los Angeles | 34.05°N | 118.24°W |
+| VE3 | Toronto | 43.65°N | 79.38°W |
+| KH6 | Hawaii | 21.31°N | 157.86°W |
+| G | London | 51.50°N | 0.12°W |
+| DL | Berlin | 52.52°N | 13.40°E |
+| OH | Helsinki | 60.17°N | 24.94°E |
+| JA | Tokyo | 35.68°N | 139.69°E |
+| HL | Seoul | 37.57°N | 126.98°E |
+| VU | Bangalore | 12.97°N | 77.59°E |
+| VK | Sydney | 33.87°S | 151.21°E |
+| ZL | Wellington | 41.29°S | 174.78°E |
+| ZS | Cape Town | 33.93°S | 18.42°E |
+| 5H | Tanzania | 6.17°S | 35.74°E |
+| PY | Sao Paulo | 23.55°S | 46.63°W |
+| LU | Buenos Aires | 34.60°S | 58.38°W |
+| OX | Greenland | 64.18°N | 51.72°W |
 
 ---
 
@@ -312,7 +275,7 @@ Physics Score = (TST-201 + TST-202 + TST-203 + TST-204 + TST-205 + TST-206) / 6
 | **Expected Result** | SNR(SFI 200) > SNR(SFI 70) by at least +1 dB |
 | **Pass Criteria** | Delta is positive |
 | **Failure Mode** | If negative or zero: Sun sidecar physics inverted or dead |
-| **Actual** | +2.1 dB improvement |
+| **Actual** | +0.535σ (+3.6 dB) improvement — Grade A |
 | **Notes** | This is fundamental ionospheric physics — higher SFI = higher MUF = better HF |
 
 ### TST-202: Kp Monotonicity (0 vs 9)
@@ -325,7 +288,7 @@ Physics Score = (TST-201 + TST-202 + TST-203 + TST-204 + TST-205 + TST-206) / 6
 | **Expected Result** | SNR(Kp 9) < SNR(Kp 0) by at least -2 dB |
 | **Pass Criteria** | Delta is negative (storm cost positive) |
 | **Failure Mode** | If positive: Storm sidecar physics inverted (CRITICAL BUG) |
-| **Actual** | +4.0 dB storm cost |
+| **Actual** | +1.743σ (+11.7 dB) storm cost — Grade A |
 | **Notes** | This was the "Kp inversion problem" that plagued V1-V9 |
 
 ### TST-203: D-Layer Absorption (80m vs 20m at Noon)
@@ -338,8 +301,8 @@ Physics Score = (TST-201 + TST-202 + TST-203 + TST-204 + TST-205 + TST-206) / 6
 | **Expected Result** | SNR(20m) >= SNR(80m) at noon |
 | **Pass Criteria** | Delta >= 0 dB |
 | **Failure Mode** | If 80m better at noon: Model missing D-layer physics |
-| **Actual** | +0.0 dB (equal) |
-| **Notes** | Model shows equal; real physics expects 20m better. |
+| **Actual** | +0.063σ (+0.4 dB) — 20m slightly better — Grade C |
+| **Notes** | Correct direction but weak magnitude; real physics expects stronger D-layer effect |
 
 ### TST-204: Polar Storm Degradation (Kp 2 vs 8)
 
@@ -351,8 +314,8 @@ Physics Score = (TST-201 + TST-202 + TST-203 + TST-204 + TST-205 + TST-206) / 6
 | **Expected Result** | Storm cost > 2 dB |
 | **Pass Criteria** | Significant degradation observed |
 | **Failure Mode** | If < 1 dB: Storm gate not modulating by latitude |
-| **Actual** | +2.5 dB degradation |
-| **Notes** | Validates latitude-dependent storm sensitivity |
+| **Actual** | +1.149σ (+7.7 dB) polar degradation; polar/mid-lat ratio 1.00x — Grade C |
+| **Notes** | Significant storm degradation confirmed; gate not yet differentiating by latitude |
 
 ### TST-205: 10m SFI Sensitivity
 
@@ -364,8 +327,8 @@ Physics Score = (TST-201 + TST-202 + TST-203 + TST-204 + TST-205 + TST-206) / 6
 | **Expected Result** | Delta > +1.5 dB |
 | **Pass Criteria** | 10m shows strong SFI dependence |
 | **Failure Mode** | If < 1 dB: Sun sidecar not frequency-aware |
-| **Actual** | +2.0 dB improvement |
-| **Notes** | 10m needs high SFI; model should capture this |
+| **Actual** | +0.498σ (+3.3 dB) improvement; 10m/20m ratio 1.00x — Grade A |
+| **Notes** | 10m needs high SFI; model shows strong SFI sensitivity |
 
 ### TST-206: Grey Line / Twilight Enhancement
 
@@ -377,7 +340,7 @@ Physics Score = (TST-201 + TST-202 + TST-203 + TST-204 + TST-205 + TST-206) / 6
 | **Expected Result** | SNR(18 UTC) >= SNR(14 UTC) |
 | **Pass Criteria** | Twilight hour shows equal or better propagation |
 | **Failure Mode** | If negative: Model missing grey line physics |
-| **Actual** | +0.2 dB enhancement |
+| **Actual** | +0.074σ (+0.5 dB) enhancement — Grade C |
 | **Notes** | Grey line (twilight) often enhances E-W paths due to lower D-layer absorption |
 
 **Grey Line Scoring Criteria**
@@ -476,8 +439,8 @@ These tests catch cases where the model might produce confident but wrong answer
 | **Scenario** | 6m, 1500 km, summer afternoon |
 | **Expected Result** | Warning about sporadic E uncertainty |
 | **Pass Criteria** | Oracle flags low confidence |
-| **Status** | NOT IMPLEMENTED — 6m not in training data |
-| **Notes** | Sporadic E is unpredictable; model should admit uncertainty |
+| **Status** | IMPLEMENTED — rejects 50.3 MHz with "Sporadic E" warning |
+| **Notes** | 6m not in training data; oracle correctly flags as out-of-domain |
 
 ### TST-403: Ground Wave Confusion
 
@@ -498,7 +461,7 @@ These tests catch cases where the model might produce confident but wrong answer
 | **Scenario** | SFI 400+, Kp 9 |
 | **Expected Result** | Warning about extreme conditions |
 | **Pass Criteria** | Oracle flags low confidence |
-| **Status** | PARTIALLY IMPLEMENTED (SFI warning at >350) |
+| **Status** | IMPLEMENTED — SFI 400 + Kp 9 triggers "extreme solar event" warning with low confidence |
 | **Notes** | Extreme space weather is outside training distribution |
 
 ---
@@ -760,8 +723,8 @@ Baseline tests to catch future regressions.
 |-------|-------|
 | **Purpose** | Catch silent model changes |
 | **Method** | Fixed input, compare to documented output |
-| **Reference Input** | W3→G, 20m, SFI 150, Kp 2, 14:00 UTC |
-| **Reference Output** | -20.0 dB (±0.5 dB tolerance) |
+| **Reference Input** | W3→G, 20m, SFI 150, Kp 2, 12:00 UTC, June |
+| **Reference Output** | -0.328σ (±0.05σ tolerance) |
 | **Pass Criteria** | Within tolerance of documented value |
 | **Failure Mode** | Model weights changed, retraining without version bump |
 | **Category** | Regression |
@@ -772,8 +735,8 @@ Baseline tests to catch future regressions.
 |-------|-------|
 | **Purpose** | Ensure model accuracy hasn't degraded |
 | **Method** | Check checkpoint metadata |
-| **Reference Value** | RMSE = 0.862σ |
-| **Pass Criteria** | Loaded RMSE matches documented |
+| **Reference Value** | RMSE = 0.8617σ (checkpoint `val_rmse`, ±0.01σ tolerance) |
+| **Pass Criteria** | Loaded RMSE matches checkpoint value |
 | **Failure Mode** | Wrong checkpoint loaded |
 | **Category** | Regression |
 
@@ -783,8 +746,8 @@ Baseline tests to catch future regressions.
 |-------|-------|
 | **Purpose** | Ensure correlation hasn't degraded |
 | **Method** | Check checkpoint metadata |
-| **Reference Value** | Pearson = +0.4879 |
-| **Pass Criteria** | Loaded Pearson matches documented |
+| **Reference Value** | Pearson = +0.4879 (checkpoint `val_pearson`, ±0.005 tolerance) |
+| **Pass Criteria** | Loaded Pearson matches checkpoint value |
 | **Failure Mode** | Wrong checkpoint loaded |
 | **Category** | Regression |
 
@@ -816,6 +779,7 @@ Baseline tests to catch future regressions.
 | 1.2 | 2026-02-05 | Added TST-206 (Grey line twilight), automated TST-701 (Geographic bias) per Gemini review |
 | 2.0 | 2026-02-16 | Updated for V20 Golden Master; fixed script paths to `versions/v20/`; documented implementation status; renamed from `v12_test_specification.md` |
 | 2.1 | 2026-02-16 | **COMPLETE IMPLEMENTATION**: All 62 tests automated in modular test suite; TST-100 expanded to 30 global paths; TST-200 implemented with 6 physics tests; added `run_all.py` orchestrator |
+| 2.2 | 2026-02-16 | **SPEC RECONCILIATION**: TST-100 rewritten to match 30-test implementation (8 geographic categories); TST-200 actuals updated from 9975WX CPU test run; TST-400 status flags corrected (TST-402, TST-404 now IMPLEMENTED); TST-800 baselines corrected to match checkpoint values (RMSE 0.8617σ, Pearson +0.4879); verified 62/62 PASS on 9975WX |
 
 ---
 

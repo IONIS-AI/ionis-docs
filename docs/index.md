@@ -94,7 +94,7 @@ Self-hosted, no cloud dependencies:
 
 - [Architecture](architecture/ionisgate.md) — IonisGate model design, sidecars, gated physics
 - [Methodology](methodology/data_pipeline.md) — Data ingestion and training process
-- [Validation](validation/index.md) — 35-test automated verification suite
+- [Validation](validation/index.md) — 62-test automated verification suite
 - [Data Privacy](data-privacy.md) — GDPR compliance, data authorization
 - [Ethos](ethos.md) — Core principles and statement of intent
 

@@ -7,7 +7,7 @@
     - **RMSE**: 0.862σ (~5.8 dB)
     - **SFI benefit**: +0.482σ (~3.2 dB), monotonic
     - **Kp storm cost**: +3.487σ (~23.4 dB), monotonic
-    - **Test Suite**: 35/35 PASS
+    - **Test Suite**: 62/62 PASS
 
 ## Design Rationale
 

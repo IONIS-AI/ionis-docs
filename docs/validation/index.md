@@ -134,17 +134,21 @@ The model learned the full dynamic range. WSPR alone only taught "marginal."
 
 ## Test Suite
 
-!!! note "35/35 Tests Pass"
-    The oracle test suite validates physics constraints, canonical paths,
-    input validation, robustness, and regression baselines.
+!!! note "62/62 Tests Pass"
+    The automated test suite validates physics constraints, canonical paths,
+    input validation, hallucination traps, robustness, adversarial inputs,
+    bias/fairness, and regression baselines.
 
 | Group | ID Range | Tests | Purpose |
 |-------|----------|-------|---------|
-| Canonical Paths | TST-100 | 10 | Known HF paths |
+| Canonical Paths | TST-100 | 30 | Global HF propagation coverage |
 | Physics Constraints | TST-200 | 6 | Monotonicity, sidecars |
-| Input Validation | TST-300 | 9 | Boundary checks |
-| Robustness | TST-500 | 9 | Determinism, stability |
-| Regression | TST-800 | 1 | Catch silent degradation |
+| Input Validation | TST-300 | 5 | Boundary checks |
+| Hallucination Traps | TST-400 | 4 | Out-of-domain detection |
+| Robustness | TST-500 | 7 | Determinism, stability |
+| Adversarial/Security | TST-600 | 4 | Malicious input handling |
+| Bias & Fairness | TST-700 | 3 | Geographic, temporal, band bias |
+| Regression | TST-800 | 3 | Catch silent degradation |
 
 ## Documentation
 
