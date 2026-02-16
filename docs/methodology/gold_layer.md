@@ -78,16 +78,16 @@ clickhouse-client --query "SELECT min(kp_penalty), max(kp_penalty) FROM wspr.gol
 Export the training set as CSV for use on the M3 Ultra (or any training host).
 
 ```bash
-mkdir -p /mnt/ai-stack/ionis-ai/ionis-training/data
+mkdir -p $IONIS_WORKSPACE/ionis-training/data
 
 clickhouse-client --query "SELECT * FROM wspr.gold_v6 FORMAT CSV" \
-    > /mnt/ai-stack/ionis-ai/ionis-training/data/gold_v6.csv
+    > $IONIS_WORKSPACE/ionis-training/data/gold_v6.csv
 ```
 
-Transfer to M3 Ultra via DAC link (from 9975WX):
+Transfer to training host via DAC link:
 
 ```bash
-scp data/gold_v6.csv gbeam@10.20.1.2:workspace/ionis-ai/ionis-training/data/
+scp $IONIS_WORKSPACE/ionis-training/data/gold_v6.csv <user>@<sage-host>:$IONIS_WORKSPACE/ionis-training/data/
 ```
 
 Verification:

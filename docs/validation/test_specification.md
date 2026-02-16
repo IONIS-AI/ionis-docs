@@ -1,10 +1,12 @@
 # IONIS Test Specification
 
-**Document Version:** 2.1
-**Model Version:** IonisGate V20 (Production)
-**Checkpoint:** `versions/v20/ionis_v20.pth`
-**Date:** 2026-02-16
-**Author:** IONIS
+| | |
+|---|---|
+| **Document Version** | 2.1 |
+| **Model Version** | IonisGate V20 (Production) |
+| **Checkpoint** | `versions/v20/ionis_v20.pth` |
+| **Date** | 2026-02-16 |
+| **Author** | IONIS |
 
 !!! success "Implementation Status: COMPLETE"
     All 62 tests are fully automated in the modular test suite:
@@ -38,7 +40,7 @@ This document specifies the automated test suite for IONIS. Each test has:
 The test suite runs via modular test scripts in `versions/v20/tests/`:
 
 ```bash
-cd /Users/gbeam/workspace/ionis-ai
+cd $IONIS_WORKSPACE
 
 # Run complete test suite (62 tests)
 .venv/bin/python ionis-training/versions/v20/tests/run_all.py
@@ -506,7 +508,7 @@ These tests catch cases where the model might produce confident but wrong answer
 ### Running the Complete Test Suite
 
 ```bash
-cd /Users/gbeam/workspace/ionis-ai
+cd $IONIS_WORKSPACE
 
 # Complete test suite (62 tests, ~2 min)
 .venv/bin/python ionis-training/versions/v20/tests/run_all.py

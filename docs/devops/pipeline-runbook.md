@@ -9,6 +9,11 @@ with commands, expected counts, and wall times.
 **Total wall time: ~2 hours on [reference hardware](index.md#reference-build)
 (9975WX ingest + population), plus ~4 hours training on M3 Ultra.**
 
+!!! note "Path convention"
+    Commands in this runbook use `$IONIS_WORKSPACE` for the local clone
+    directory (e.g. `~/workspace/ionis-ai`). Set it once per session:
+    `export IONIS_WORKSPACE=~/workspace/ionis-ai`
+
 ---
 
 ## Phase 1: Install Packages (9975WX)
@@ -326,10 +331,10 @@ Export the gold_v6 training set as CSV and transfer to the training host.
 
 ```bash
 clickhouse-client --query "SELECT * FROM wspr.gold_v6 FORMAT CSV" \
-    > /mnt/ai-stack/ionis-ai/ionis-training/data/gold_v6.csv
+    > $IONIS_WORKSPACE/ionis-training/data/gold_v6.csv
 
 # Transfer to M3 Ultra via DAC link
-scp data/gold_v6.csv gbeam@10.60.1.2:workspace/ionis-ai/ionis-training/data/
+scp $IONIS_WORKSPACE/ionis-training/data/gold_v6.csv <user>@<sage-host>:$IONIS_WORKSPACE/ionis-training/data/
 ```
 
 Verification:
@@ -377,7 +382,7 @@ systemctl status pskr-collector
 ### Step 8.1: Clone all repos
 
 ```bash
-mkdir -p /Users/gbeam/workspace/ionis-ai && cd /Users/gbeam/workspace/ionis-ai
+mkdir -p $IONIS_WORKSPACE && cd $IONIS_WORKSPACE
 for repo in ionis-core ionis-apps ionis-cuda ionis-docs ionis-training ionis-devel ionis-tools; do
     git clone git@github.com:IONIS-AI/${repo}.git
 done
@@ -393,7 +398,7 @@ clickhouse-client --host 10.60.1.1 --query "SELECT count() FROM wspr.bronze"
 ### Step 8.3: Set up Python venv
 
 ```bash
-cd /Users/gbeam/workspace/ionis-ai/ionis-training
+cd $IONIS_WORKSPACE/ionis-training
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -406,7 +411,7 @@ pip install -r requirements.txt
 ### Step 9.1: Train V20
 
 ```bash
-cd /Users/gbeam/workspace/ionis-ai/ionis-training
+cd $IONIS_WORKSPACE/ionis-training
 source .venv/bin/activate
 python train.py --config versions/v20/config_v20.json
 # Expected: ~4h 16m on M3 Ultra (MPS backend)

@@ -151,4 +151,4 @@ The model learned the full dynamic range. WSPR alone only taught "marginal."
 - [Link Budget Battery](v20_link_budget_battery.md) — 24-profile station discrimination test
 - [IONIS vs VOACAP](step_i_voacap_comparison.md) — 1M path comparison
 - [Prediction Quality](step_k_quality_test.md) — 100K path Pearson correlation comparison
-- [Oracle Test Specification](v12_test_specification.md) — NASA-style test documentation
+- [Test Specification](test_specification.md) — TST-100 through TST-800 test suite
