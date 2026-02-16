@@ -20,7 +20,7 @@ The datasets we rely on—WSPR, RBN, and Contest Logs—are the collective memor
 
 * **The Good Neighbor Policy:** Our ingestion tools (`contest-download`, `rbn-download`) are designed to be polite. We enforce rate limits, identify ourselves honestly in User-Agents, and never hammer a volunteer-run server.
 * **Preservation:** We do not just scrape; we archive. Our ZFS compression strategies are designed to preserve the "Ground Truth" of radio history efficiently, ensuring it is never lost.
-* **Attribution:** We rigorously acknowledge the sources of our data (WWROF, WSPRnet, RBN) in every publication and model release.
+* **Attribution:** We rigorously acknowledge the sources of our data ([WWROF](https://wwrof.org/), WSPRnet, RBN) in every publication and model release.
 
 ## 3. Physics-First Machine Learning
 **"The model must obey the Ionosphere."**

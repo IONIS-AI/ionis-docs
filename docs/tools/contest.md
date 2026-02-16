@@ -5,7 +5,7 @@ and Reverse Beacon Network spot data.
 
 ## contest-download
 
-Downloads public Cabrillo logs from CQ and ARRL contest websites. Supports
+Downloads public Cabrillo logs from CQ and [ARRL](https://www.arrl.org/contests) contest websites. Supports
 15 contest series with configurable year/mode filtering and rate limiting.
 Part of `ionis-apps` (Go binary).
 
@@ -102,7 +102,7 @@ Examples:
 
 ## rbn-download
 
-Downloads daily ZIP archives of CW/RTTY spots from the Reverse Beacon Network.
+Downloads daily ZIP archives of CW/RTTY spots from the [Reverse Beacon Network](https://reversebeacon.net).
 Covers the full archive from 2009 to present (~6,183 files, ~21 GB).
 Part of `ionis-apps` (Go binary).
 

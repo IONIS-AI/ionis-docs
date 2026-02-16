@@ -32,7 +32,7 @@ clickhouse-client --query "SELECT count() FROM wspr.gold_stratified"
 
 ## Step 2: Populate gold_continuous
 
-IFW-weighted training set using Efraimidis-Spirakis weighted reservoir
+IFW-weighted training set using [Efraimidis-Spirakis](https://doi.org/10.1016/j.ipl.2005.11.003) weighted reservoir
 sampling against a 2D (SSN, midpoint_lat) density histogram. Eliminates
 stair-step artifacts from discrete SSN quintile bins.
 

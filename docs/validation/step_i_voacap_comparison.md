@@ -3,7 +3,7 @@
 - **Date:** 2026-02-11
 - **Dataset:** 1,000,000 contest QSO paths (CQ WW, CQ WPX, ARRL DX — 2005-2025)
 - **IONIS Version:** IONIS (IonisGate)
-- **VOACAP Version:** voacapl 0.7.5 (NTIA/ITS Method 30)
+- **VOACAP Version:** [voacapl](https://github.com/jawatson/voacapl) 0.7.5 ([NTIA/ITS](https://www.its.bldrdoc.gov/) Method 30)
 
 ---
 

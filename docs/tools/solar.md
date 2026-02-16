@@ -5,7 +5,7 @@ solar flux, geomagnetic, and X-ray data.
 
 ## solar-download
 
-Multi-source downloader covering 10 NOAA, SIDC, and GOES endpoints. Downloads
+Multi-source downloader covering 10 [NOAA](https://www.swpc.noaa.gov/), [SIDC](https://www.sidc.be/silso/), and GOES endpoints. Downloads
 daily/monthly sunspot numbers, F10.7 flux, Kp indices, and X-ray flux.
 Part of `ionis-apps` (Go binary).
 
@@ -71,7 +71,7 @@ Supported formats:
 
 ## solar-backfill
 
-Downloads and parses the GFZ Potsdam composite file containing SSN, SFI (F10.7),
+Downloads and parses the [GFZ Potsdam](https://kp.gfz-potsdam.de/) composite file containing SSN, SFI (F10.7),
 and 3-hourly Kp/ap indices from 1932 to present. Inserts into `solar.bronze`.
 Part of `ionis-apps` (Go binary).
 

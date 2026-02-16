@@ -2,7 +2,7 @@
 
 ## WSPR Ingestion
 
-**Source**: 10.8B WSPR spots from wsprnet.org CSV archives
+**Source**: 10.8B WSPR spots from [wsprnet.org](https://wsprnet.org) CSV archives
 
 | Tool | Method | Throughput |
 |------|--------|------------|
@@ -24,7 +24,7 @@ All ingesters normalize band via `bands.GetBand(freqMHz)` — single source of t
 
 ## Solar Pipeline
 
-**Source**: GFZ Potsdam (SSN, SFI, Kp) — ~17,840 rows, 2000–2026
+**Source**: [GFZ Potsdam](https://kp.gfz-potsdam.de/) (SSN, SFI, Kp) — ~17,840 rows, 2000-2026
 
 | Tool | Schedule | Purpose |
 |------|----------|---------|
@@ -52,7 +52,7 @@ Generates float4 embeddings from WSPR+solar data:
 
 ## RBN Ingestion
 
-**Source**: 2.18B Reverse Beacon Network spots from daily ZIP archives (2009-02-21 to 2025)
+**Source**: 2.18B [Reverse Beacon Network](https://reversebeacon.net) spots from daily ZIP archives (2009-02-21 to 2025)
 
 | Tool | Method | Throughput |
 |------|--------|------------|
@@ -68,7 +68,7 @@ Generates float4 embeddings from WSPR+solar data:
 
 ## Contest Log Ingestion
 
-**Source**: 491K Cabrillo log files across 15 contests (CQ + ARRL, 2005-2025)
+**Source**: 491K [Cabrillo](https://wwrof.org/cabrillo/) log files across 15 contests (CQ + ARRL, 2005-2025)
 
 | Tool | Method | Throughput |
 |------|--------|------------|
@@ -93,7 +93,7 @@ Four pillars of propagation truth, each on a dedicated ZFS dataset:
 
 | Source | Tool | Volume | Modes | Grid Quality |
 |--------|------|--------|-------|-------------|
-| **WSPR** | `wspr-turbo` | 10.8B spots | WSPR only | 4-char Maidenhead |
+| **WSPR** | `wspr-turbo` | 10.8B spots | WSPR only | 4-char [Maidenhead](https://en.wikipedia.org/wiki/Maidenhead_Locator_System) |
 | **RBN** | `rbn-ingest` | 2.18B spots | CW, RTTY | DXCC prefix only (24% geocoded via Rosetta Stone) |
 | **Contest Logs** | `contest-ingest` | 195M QSOs (491K files) | CW/SSB/RTTY/Digi | HQ-GRID-LOCATOR (98.5% ARRL) + callsign lookup |
 | **PSK Reporter** | `pskr-collector` | ~26M HF spots/day (live since 2026-02-10) | FT8/FT4/WSPR/JS8/CW | 4-6 char Maidenhead |

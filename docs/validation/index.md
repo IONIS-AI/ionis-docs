@@ -36,14 +36,14 @@ the ceiling (+10 dB). The model now knows the full dynamic range.
 
 ### VOACAP Comparison Context
 
-VOACAP (ITS/NTIA) was designed for **SSB voice circuits** using 1960s-era ionosonde
+[VOACAP](https://www.voacap.com/) ([ITS/NTIA](https://www.its.bldrdoc.gov/)) was designed for **SSB voice circuits** using 1960s-era ionosonde
 coefficients. It has no concept of digital mode decode thresholds.
 
 - **SSB is the only direct comparison** — both models target voice-viable paths
 - **For digital modes (FT8, FT4, WSPR) and CW/RTTY**, IONIS provides predictions where no comparable reference model exists
 - When FT8 operators use VOACAP and find "closed" paths that are wide open at -20 dB, that's not a VOACAP failure — it was never designed for that world
 
-## PSK Reporter Acid Test (2026-02-10)
+## [PSK Reporter](https://pskreporter.info) Acid Test (2026-02-10)
 
 !!! success "84.14% Recall on Independent Data — Model Generalizes"
     Validated against 100K spots from 16.5M PSK Reporter observations.

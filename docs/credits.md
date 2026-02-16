@@ -17,20 +17,55 @@ PSK Reporter: thank you.**
 - **Joe Taylor, K1JT** — Creator of WSPR, WSJT, WSJT-X, and MAP65. Nobel Laureate
   (Physics, 1993). The WSPR protocol and software that generates the observations
   we study are his contributions to amateur radio.
-- **WSPRNet** (wsprnet.org) — The community-operated database that collects and
+- **[WSPRNet](https://wsprnet.org)** — The community-operated database that collects and
   archives WSPR spot reports from operators worldwide.
-- **Reverse Beacon Network** (reversebeacon.net) — N4ZR, PY1NB, VE3NEA, and
+- **[Reverse Beacon Network](https://reversebeacon.net)** — N4ZR, PY1NB, VE3NEA, and
   the global network of CW/RTTY skimmer operators who contribute spots.
-- **PSK Reporter** (pskreporter.info) — Created and operated by
+- **[PSK Reporter](https://pskreporter.info)** — Created and operated by
   **Philip Gladstone, N1DQ**. The largest real-time amateur radio reception
   report network, with 27,000+ active monitors contributing millions of
   FT8/FT4/WSPR spots daily. The MQTT real-time feed that powers our
   `pskr-collector` is provided by **Tom Sevart, M0LTE** — making the
   full firehose of reception data available to the community.
-- **CQ Contest Logs** — World Wide Radio Operators Foundation (WWROF)
-- **ARRL Contest Logs** — American Radio Relay League
-- **GFZ Potsdam** — Helmholtz Centre Potsdam, German Research Centre for
+- **CQ Contest Logs** — [World Wide Radio Operators Foundation (WWROF)](https://wwrof.org/)
+- **ARRL Contest Logs** — [American Radio Relay League](https://www.arrl.org/contests)
+- **[GFZ Potsdam](https://kp.gfz-potsdam.de/)** — Helmholtz Centre Potsdam, German Research Centre for
   Geosciences. Solar and geomagnetic indices (SSN, SFI, Kp).
+
+---
+
+## References
+
+### Propagation Models
+
+- **[VOACAP](https://www.voacap.com/)** — Voice of America Coverage Analysis Program, originally developed by [NTIA/ITS](https://www.its.bldrdoc.gov/) (Institute for Telecommunication Sciences). The standard HF propagation prediction engine since the 1980s.
+- **[voacapl](https://github.com/jawatson/voacapl)** — Linux port of VOACAP by **James Watson, HZ1JW**. Method 30, CCIR coefficients.
+- **[VOACAP Online](https://www.voacap.com/hf/)** — Web-based VOACAP interface by **Jari Perkiomaki, OH6BG**.
+
+### Solar & Geomagnetic Data
+
+- **[NOAA Space Weather Prediction Center](https://www.swpc.noaa.gov/)** — Real-time F10.7 solar flux, planetary Kp index, GOES X-ray flux.
+- **[SIDC — Royal Observatory of Belgium](https://www.sidc.be/silso/)** — World Data Center for sunspot numbers (1749-present).
+- **[GFZ Potsdam](https://kp.gfz-potsdam.de/)** — Definitive Kp, ap, and Ap indices; composite SSN/SFI file (1932-present). See [Data Sources](#data-sources) above.
+- **[Penticton / NRC](https://www.spaceweather.gc.ca/forecast-prevision/solar-solaire/solarflux/sx-5-en.php)** — Dominion Radio Astrophysical Observatory, National Research Council Canada. The world's primary 10.7 cm solar flux measurement station.
+
+### Data Standards
+
+- **[ADIF](https://adif.org/)** — Amateur Data Interchange Format. Band ID numbering used throughout the pipeline.
+- **[Cabrillo](https://wwrof.org/cabrillo/)** — Contest log submission format (V2/V3), maintained by WWROF.
+- **[Maidenhead Locator System](https://en.wikipedia.org/wiki/Maidenhead_Locator_System)** — Grid square system for geographic coordinates in amateur radio.
+
+### Contest & DXpedition Organizations
+
+- **[WWROF](https://wwrof.org/)** — World Wide Radio Operators Foundation. Sponsors CQ WW, CQ WPX, and maintains the Cabrillo specification.
+- **[ARRL](https://www.arrl.org/contests)** — American Radio Relay League. Sponsors ARRL DX, Sweepstakes, RTTY Roundup, and other contest series.
+- **[IARU](https://www.iaru.org/)** — International Amateur Radio Union. Sponsors the IARU HF World Championship.
+- **[GDXF Mega DXpeditions Honor Roll](https://www.gdxf.de/megadx/qso.php)** — Curated catalog of major DXpeditions by **Bernd, DF3CB**. Source for the dxpedition training data chain.
+
+### Regulatory
+
+- **[ITU Radio Regulations](https://www.itu.int/pub/R-REG-RR)** — International Telecommunication Union. Governing framework for amateur radio spectrum allocation.
+- **[FCC 47 CFR 97.119](https://www.ecfr.gov/current/title-47/chapter-I/subchapter-D/part-97/subpart-B/section-97.119)** — Station identification requirements for US amateur radio.
 
 ---
 

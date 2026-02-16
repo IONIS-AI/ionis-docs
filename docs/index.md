@@ -22,7 +22,7 @@ forward pass, six answers.
 
 ## Building on Traditional Prediction
 
-Tools like VOACAP represent decades of ionospheric research and remain valuable
+Tools like [VOACAP](https://www.voacap.com/) represent decades of ionospheric research and remain valuable
 references. But they have inherent limitations:
 
 - **Static models**: Based on historical averages, updated infrequently
@@ -45,7 +45,7 @@ IONIS is built on four pillars:
 1. **Massive observational data**: 13.18B+ radio contacts from four independent networks (WSPR, RBN, contest logs, and PSK Reporter)
 2. **Neural network with physics constraints**: The model can't violate known ionospheric physics
 3. **Mode-aware prediction**: One SNR prediction yields six operational verdicts (WSPR, FT8, CW, RTTY, SSB)
-4. **Closed-loop validation**: Live PSK Reporter data continuously scores the model against observations it has never seen
+4. **Closed-loop validation**: Live [PSK Reporter](https://pskreporter.info) data continuously scores the model against observations it has never seen
 
 The model predicts signal-to-noise ratio — a physical quantity that is mode-agnostic.
 The threshold layer applies mode-specific decode limits to determine operational
