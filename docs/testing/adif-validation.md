@@ -34,7 +34,7 @@ stripped immediately and never leave your machine.
 ## Usage
 
 ```bash
-ionis-validate adif my_log.adi --my-grid DN26
+ionis-validate adif my_log.adi
 ```
 
 ### Parameters
@@ -42,7 +42,6 @@ ionis-validate adif my_log.adi --my-grid DN26
 | Parameter | Required | Description |
 |-----------|----------|-------------|
 | `adif_file` | Yes | Path to your ADIF (.adi) file |
-| `--my-grid` | Yes | Your 4-character Maidenhead grid |
 | `--sfi` | No | Solar Flux Index (default: 150) |
 | `--kp` | No | Kp geomagnetic index (default: 2) |
 | `--export` | No | Export anonymized observations to JSON |
@@ -50,11 +49,12 @@ ionis-validate adif my_log.adi --my-grid DN26
 
 ### Model Input Requirements
 
-Each QSO must have these fields to be measured against the model:
+Both grids come from the log itself. Each QSO must have these fields to
+be measured against the model:
 
-| Requirement | ADIF Fields Used | If Missing |
-|-------------|------------------|------------|
-| TX grid | `MY_GRIDSQUARE` or `--my-grid` flag | Skipped (`no_grid`) |
+| Requirement | ADIF Field | If Missing |
+|-------------|------------|------------|
+| TX grid | `MY_GRIDSQUARE` | Skipped (`no_grid`) |
 | RX grid | `GRIDSQUARE` | Skipped (`no_grid`) |
 | HF band | `BAND` or derived from `FREQ` | Skipped (`no_band`) |
 
@@ -64,7 +64,7 @@ present. If missing, defaults are applied (12:00 UTC, June, Digital mode).
 ### Example
 
 ```bash
-ionis-validate adif ki7mt-eqsl-inbox.adi --my-grid DN26
+ionis-validate adif ki7mt-qrz.adi
 ```
 
 Output:
@@ -74,44 +74,45 @@ Output:
   IONIS V20 — ADIF Log Validation
 ======================================================================
 
-  Log file:      ki7mt-eqsl-inbox.adi
-  Your grid:     DN26
+  Log file:      ki7mt-qrz.adi
+  TX grids:      DN46 (47,200), DN23 (74), DN13 (35)
   Conditions:    SFI=150.0, Kp=2.0
 
-  Records skipped: 130
-    no_grid: 87
-    no_band: 42
+  Records skipped: 1,924
+    no_grid: 1,863
+    no_band: 60
     bad_grid: 1
 
-  Observations validated: 23,747
-  Band open (predicted):  7,108
-  Recall:                 29.93%
+  Observations validated: 47,309
+  Band open (predicted):  12,533
+  Recall:                 26.49%
 
   Date range:    2009 – 2025
 
   Recall by Mode:
-    CW           37.61%  (2,975 QSOs)
-    Digital      98.21%  (4,025 QSOs)
-    SSB           7.19%  (2,906 QSOs)
-    RTTY         13.20%  (13,841 QSOs)
+    CW           38.38%  (10,316 QSOs)
+    Digital      98.50%  (4,812 QSOs)
+    SSB           8.32%  (7,512 QSOs)
+    RTTY         13.01%  (24,669 QSOs)
 
   Recall by Band:
-    160m      5.28%  (776 QSOs)
-    80m       8.19%  (891 QSOs)
-    40m      30.24%  (5,049 QSOs)
-    30m      70.33%  (1,483 QSOs)
-    20m      23.11%  (9,183 QSOs)
-    17m      63.85%  (899 QSOs)
-    15m      27.90%  (3,516 QSOs)
-    12m      71.03%  (321 QSOs)
-    10m      31.86%  (1,629 QSOs)
+    160m      4.36%  (2,569 QSOs)
+    80m      10.34%  (1,954 QSOs)
+    60m       0.00%  (3 QSOs)
+    40m      25.87%  (9,848 QSOs)
+    30m      66.50%  (2,230 QSOs)
+    20m      23.17%  (17,909 QSOs)
+    17m      58.97%  (1,560 QSOs)
+    15m      26.68%  (7,042 QSOs)
+    12m      64.71%  (561 QSOs)
+    10m      24.14%  (3,633 QSOs)
 
-  SNR Comparison (3,455 QSOs with signal reports):
-    Pearson correlation:  -0.0815
-    RMSE:                13.4 dB
+  SNR Comparison (2,233 QSOs with signal reports):
+    Pearson correlation:  -0.1174
+    RMSE:                14.4 dB
 
 ======================================================================
-  Overall Recall: 29.93% on 23,747 QSOs
+  Overall Recall: 26.49% on 47,309 QSOs
 ======================================================================
 
   Each QSO is a contact that happened — the band was open.
@@ -127,37 +128,57 @@ Output:
 
 ## Exporting Your Log
 
-### From eQSL.cc
+!!! info "Your export must include both grids"
+    The tool reads `MY_GRIDSQUARE` (your grid) and `GRIDSQUARE` (their
+    grid) from each record. Exports that omit either field will have
+    those records skipped. See the notes below for each service.
 
-1. Log in to [eQSL.cc](https://www.eqsl.cc/)
-2. Go to **Log Page** > **Download ADIF File**
-3. Select your date range and download
-4. Save the `.adi` file
+### From QRZ.com (recommended)
 
-!!! note
-    eQSL limits the number of downloadable QSOs. If your inbox is large,
-    you may need to download in date-range batches.
-
-### From LoTW (ARRL Logbook of The World)
-
-1. Log in to [LoTW](https://lotw.arrl.org/)
-2. Go to **Your Logbook** > **Download Report**
-3. Select ADIF format and your date range
-4. Save the `.adi` file
-
-### From QRZ.com
+QRZ exports include both `MY_GRIDSQUARE` and `GRIDSQUARE` by default.
 
 1. Log in to [QRZ.com](https://www.qrz.com/)
 2. Go to **Logbook** > **Settings** > **Export**
 3. Select ADIF format
 4. Save the `.adi` file
 
+### From LoTW (ARRL Logbook of The World)
+
+LoTW includes `GRIDSQUARE` (the other station's grid) only when you
+check **both** detail options on the download form.
+
+1. Log in to [LoTW](https://lotw.arrl.org/)
+2. Go to **Your Logbook** > **Download Report**
+3. Check **Include QSL details**
+4. Check **Include QSO station details**
+5. Save the `.adi` file
+
+!!! warning
+    If you download without "Include QSL details" checked, the export
+    will have `MY_GRIDSQUARE` but not `GRIDSQUARE` — and every record
+    will be skipped.
+
+### From eQSL.cc
+
+eQSL exports include `GRIDSQUARE` (the other station's grid) but not
+`MY_GRIDSQUARE` (your grid). All records will be skipped.
+
+1. Log in to [eQSL.cc](https://www.eqsl.cc/)
+2. Go to **Log Page** > **Download ADIF File**
+3. Select your date range and download
+4. Save the `.adi` file
+
+!!! warning
+    eQSL does not include `MY_GRIDSQUARE` in its exports. Until this
+    changes, eQSL logs cannot be used with this tool. Use QRZ or LoTW
+    instead.
+
 ## Contributing Observations
 
 If you want to share your results to help improve the model:
 
 ```bash
-ionis-validate adif my_log.adi --my-grid DN26 --export observations.json
+ionis-validate adif my_log.adi --export observations.json
 ```
 
 This creates a JSON file containing **only anonymous observations**:
