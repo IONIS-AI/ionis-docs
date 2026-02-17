@@ -16,39 +16,57 @@ You need Python 3.9 or newer. No GPU, no database, no special hardware.
 
 ## Install
 
+!!! warning "Use a virtual environment"
+    We **strongly recommend** installing into a virtual environment, not
+    your system Python. This keeps your system clean and makes cleanup
+    easy — when you are done testing, just delete the folder.
+
+### Step 1 — Create a virtual environment
+
 === "Windows"
 
     Open **Command Prompt** or **PowerShell**:
 
     ```
-    pip install ionis-validate
+    python -m venv .venv
+    .venv\Scripts\activate
     ```
-
-    !!! note
-        If `pip` is not recognized, try `python -m pip install ionis-validate`.
-        If you have both Python 2 and 3 installed, use `pip3` instead.
 
 === "macOS"
 
     Open **Terminal**:
 
     ```
-    pip3 install ionis-validate
+    python3 -m venv .venv
+    source .venv/bin/activate
     ```
-
-    On macOS, the system Python may be outdated. If you installed Python via
-    [Homebrew](https://brew.sh/) or from python.org, `pip3` points to the
-    correct version.
 
 === "Linux"
 
     ```bash
-    pip3 install ionis-validate
+    python3 -m venv .venv
+    source .venv/bin/activate
     ```
 
-    Most distributions ship Python 3.9+. If yours doesn't, use your package
-    manager to install a newer Python first (e.g. `sudo apt install python3`
-    on Debian/Ubuntu).
+You should see `(.venv)` at the start of your prompt. This means the
+virtual environment is active and all installs will go into the `.venv`
+folder instead of your system Python.
+
+!!! tip "Using uv instead"
+    If you have [uv](https://docs.astral.sh/uv/) installed, you can use
+    it for faster setup:
+
+    ```
+    uv venv .venv
+    source .venv/bin/activate      # macOS / Linux
+    .venv\Scripts\activate         # Windows
+    ```
+
+### Step 2 — Install ionis-validate
+
+```
+pip install ionis-validate
+```
 
 This installs:
 
@@ -115,9 +133,14 @@ WSPR, FT8, CW, RTTY, and SSB — open or closed.
 The optional browser UI wraps every command in a point-and-click dashboard.
 It requires **Python 3.10+** and an additional install step.
 
+Create a separate virtual environment for the UI so you can remove it
+independently:
+
 === "Windows"
 
     ```
+    python -m venv .venv-ui
+    .venv-ui\Scripts\activate
     pip install "ionis-validate[ui]"
     ionis-validate ui
     ```
@@ -125,28 +148,48 @@ It requires **Python 3.10+** and an additional install step.
 === "macOS"
 
     ```
-    pip3 install "ionis-validate[ui]"
+    python3 -m venv .venv-ui
+    source .venv-ui/bin/activate
+    pip install "ionis-validate[ui]"
     ionis-validate ui
     ```
 
 === "Linux"
 
     ```bash
-    pip3 install "ionis-validate[ui]"
+    python3 -m venv .venv-ui
+    source .venv-ui/bin/activate
+    pip install "ionis-validate[ui]"
     ionis-validate ui
     ```
 
-This opens a browser tab at `http://localhost:8765` with four tabs:
-
-- **Predict** — single path prediction form
-- **Custom** — paste or upload a JSON test file
-- **ADIF** — upload your QSO log and see recall stats
-- **Info** — model version, checkpoint metrics, system details
+This opens a browser tab at `http://localhost:8765` with tabs for
+Predict, Custom, ADIF, Report, and Info.
 
 !!! info "Python 3.10+ required for the UI"
-    If you're on Python 3.9, the base CLI works fine — only the browser UI
+    If your Python is 3.9, the base CLI works fine — only the browser UI
     needs 3.10+. The `ionis-validate ui` command will tell you if your
     Python version is too old.
+
+## Cleanup
+
+When you are done testing, deactivate the virtual environment and delete
+the folder. Nothing else to uninstall.
+
+=== "Windows"
+
+    ```
+    deactivate
+    rmdir /s /q .venv
+    rmdir /s /q .venv-ui
+    ```
+
+=== "macOS / Linux"
+
+    ```bash
+    deactivate
+    rm -rf .venv .venv-ui
+    ```
 
 ## What's Next
 
