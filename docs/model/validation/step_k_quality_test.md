@@ -5,7 +5,7 @@
 **Result**: IONIS showed +0.35 correlation improvement over reference model
 
 !!! note "V20 Production"
-    V20 Golden Master achieves Pearson **+0.4879** — a substantial improvement
+    IONIS V20 achieves Pearson **+0.4879** — a substantial improvement
     from the +0.3675 measured in this initial test.
 
 ---

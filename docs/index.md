@@ -54,7 +54,7 @@ it does.
 
 ## Current Status
 
-**IONIS V20 Golden Master** is the production model. Trained on 20M WSPR + 4.55M DXpedition (50x) + 6.34M Contest signatures (~31M rows). It correctly predicts:
+**IONIS V20** is the production model. Trained on 20M WSPR + 4.55M DXpedition (50x) + 6.34M Contest signatures (~31M rows). It correctly predicts:
 
 - Higher solar flux (SFI) improves propagation (+0.482σ, ~3.2 dB benefit, monotonic)
 - Geomagnetic storms (Kp) degrade propagation (+3.487σ, ~23.4 dB cost, monotonic)

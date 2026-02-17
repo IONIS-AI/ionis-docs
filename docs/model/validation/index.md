@@ -2,10 +2,10 @@
 
 Automated test results from IONIS model evaluations.
 
-## Current Status: V20 Golden Master (2026-02-11)
+## Current Status: IONIS V20 (2026-02-11)
 
 !!! success "V20 Production Locked — All Criteria Met"
-    IONIS V20 Golden Master validates the physics constraints in a clean, config-driven codebase.
+    IONIS V20 validates the physics constraints in a clean, config-driven codebase.
 
     | Metric | Target | V20 Final | Status |
     |--------|--------|-----------|--------|
@@ -94,7 +94,7 @@ coefficients. It has no concept of digital mode decode thresholds.
     100K high-confidence signatures (spot_count > 50), per-band Pearson correlation.
     IONIS showed higher correlation on 9 of 10 bands. VOACAP anti-correlated on low bands (160/80/60/40/30m).
 
-    **Note:** V20 Golden Master achieves Pearson **+0.4879**
+    **Note:** IONIS V20 achieves Pearson **+0.4879**
     — a substantial improvement from the original +0.3675 measurement.
 
     See [Prediction Quality](step_k_quality_test.md) for full band-by-band results.

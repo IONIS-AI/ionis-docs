@@ -1,6 +1,6 @@
 # IonisGate Architecture
 
-!!! success "Production: V20 Golden Master"
+!!! success "Production: IONIS V20"
     IonisGate architecture validated with V20 production checkpoint.
 
     - **Pearson**: +0.4879

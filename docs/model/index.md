@@ -4,7 +4,7 @@ IONIS (Ionospheric Neural Inference System) predicts HF radio signal-to-noise
 ratio (SNR) for any transmitter-receiver path. One model, one forward pass,
 six mode-aware operational verdicts — from WSPR at -28 dB to SSB at +5 dB.
 
-## Current Production: V20 Golden Master
+## Current Production: IONIS V20
 
 | Metric | Value |
 |--------|-------|
