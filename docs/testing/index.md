@@ -18,32 +18,33 @@ with the shipped checkpoint.
 | `ionis-validate adif` | Validate the model against your own QSO log |
 | `ionis-validate report` | Generate a structured report for GitHub Issues |
 | `ionis-validate info` | Show model version, system info, and diagnostics |
+| `ionis-validate ui` | Launch browser-based validation dashboard |
 
 ## Requirements
 
-- Rocky Linux 9 / RHEL 9 / Fedora (x86_64)
 - Python 3.9+
 - ~1 GB disk (PyTorch + model checkpoint)
 - No GPU required (CPU inference)
+- Works on **Windows**, **macOS**, and **Linux**
+
+!!! note "Browser UI"
+    The optional `ionis-validate ui` command requires Python 3.10+ and
+    an additional install step. See [Getting Started](getting-started.md#browser-ui)
+    for details.
 
 ## Quick Start
 
-```bash
-# Enable the COPR repository
-sudo dnf copr enable ki7mt/ionis-ai
+```
+pip install ionis-validate
+```
 
-# Install the validation package
-sudo dnf install ionis-training-validate
-
-# Install Python dependencies
-pip3 install -r /usr/share/ionis-training/requirements-validate.txt
-
-# Verify installation
+```
 ionis-validate info
-
-# Run the test suite
 ionis-validate test
 ```
+
+See [Getting Started](getting-started.md) for platform-specific setup
+instructions.
 
 ## Documentation
 
