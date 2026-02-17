@@ -21,15 +21,12 @@ with the shipped checkpoint.
 
 ## Requirements
 
-- Python 3.9+
+- Python 3.9+ for CLI tools
+- Python 3.10+ for Browser UI
 - ~1 GB disk (PyTorch + model checkpoint)
 - No GPU required (CPU inference)
+- No database, no special hardware
 - Works on **Windows**, **macOS**, and **Linux**
-
-!!! note "Browser UI"
-    The optional `ionis-validate ui` command requires Python 3.10+ and
-    an additional install step. See [Getting Started](getting-started.md#browser-ui)
-    for details.
 
 ## Quick Start
 

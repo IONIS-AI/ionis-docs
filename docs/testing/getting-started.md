@@ -2,7 +2,9 @@
 
 ## Prerequisites
 
-You need Python 3.9 or newer. No GPU, no database, no special hardware.
+- Python 3.9+ for CLI tools
+- Python 3.10+ for Browser UI
+- No GPU, no database, no special hardware
 
 !!! tip "Check your Python version"
     Open a terminal (or Command Prompt on Windows) and run:
