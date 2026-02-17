@@ -112,11 +112,11 @@ solar conditions. This gives us a baseline to compare across all testers.
 
 **Expected results:**
 
-- Predicted dB: approximately **-2 to -5 dB**
+- Predicted dB: **-18.8 dB** (exactly, on all platforms)
 - WSPR: **OPEN**
 - FT8: **OPEN**
-- CW: **OPEN**
-- SSB: OPEN or closed (marginal)
+- CW: **closed** (below the -15 dB threshold)
+- SSB: **closed**
 
 **Record:** The exact predicted dB value and all five mode verdicts.
 
@@ -160,9 +160,9 @@ This tests whether the model correctly identifies marginal openings.
 
 **Expected results:**
 
-- Predicted dB: approximately **-18 to -25 dB**
+- Predicted dB: **-19.4 dB** (exactly, on all platforms)
 - WSPR: **OPEN**
-- FT8: marginal (near the -21 dB threshold)
+- FT8: **OPEN** (just above the -21 dB threshold)
 - CW: **closed**
 - SSB: **closed**
 
@@ -208,12 +208,12 @@ This tests whether the model correctly identifies marginal openings.
 
 **Expected results:**
 
-- Predicted dB should be **significantly lower** than your Test-3 result
-- The storm penalty is real — if the Kp 7 prediction is not worse than
-  the Kp 2 prediction, that is a finding worth reporting
+- Predicted dB: **-25.2 dB** (exactly, on all platforms)
+- This is **6.4 dB worse** than the Kp 2 result in Test-3 — the storm
+  sidecar is applying a real penalty
+- If your value does not match, that is a finding worth reporting
 
-**Record:** The exact predicted dB value. Compare it to your Test-3 dB
-value and note the difference.
+**Record:** The exact predicted dB value. Confirm it is worse than Test-3.
 
 ---
 
@@ -372,9 +372,9 @@ Open a new issue here and paste your report:
 |------|------|-----------|---------------|
 | Test-1 | Verify install | `ionis-validate info` | V20, 203,573 params |
 | Test-2 | Automated suite | `ionis-validate test` | 62/62 pass |
-| Test-3 | Good path | FN31 > IO91, 20m, Kp 2 | ~-2 to -5 dB, CW OPEN |
-| Test-4 | Marginal path | DN46 > PM95, 15m, SFI 120 | ~-18 to -25 dB |
-| Test-5 | Storm path | FN31 > IO91, 20m, Kp 7 | Worse than Test-3 |
+| Test-3 | Good path | FN31 > IO91, 20m, Kp 2 | -18.8 dB, FT8 OPEN |
+| Test-4 | Marginal path | DN46 > PM95, 15m, SFI 120 | -19.4 dB, FT8 OPEN |
+| Test-5 | Storm path | FN31 > IO91, 20m, Kp 7 | -25.2 dB (6.4 dB worse) |
 | Test-6 | Your good path | Your grids, your band | Matches your experience |
 | Test-7 | Your bad path | A path you know is dead | Predicts closed |
 | Test-8 | ADIF log | Your QSO log file | Recall %, mode/band split |
