@@ -49,6 +49,7 @@ instructions.
 ## Documentation
 
 - [Getting Started](getting-started.md) — Installation and first run
+- [Beta Test Plan](beta-test-plan.md) — Step-by-step testing checklist (start here after install)
 - [Test Suite](test-suite.md) — What the 62 tests cover and how to read results
 - [Single Path Prediction](predict.md) — Predict any HF path from the command line
 - [Custom Path Tests](custom-paths.md) — Define your own test paths in JSON

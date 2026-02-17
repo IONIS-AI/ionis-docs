@@ -64,6 +64,7 @@ nav:
   - Testing:
     - testing/index.md
     - Getting Started: testing/getting-started.md
+    - Beta Test Plan: testing/beta-test-plan.md
     - Test Suite: testing/test-suite.md
     - Single Path Prediction: testing/predict.md
     - Custom Path Tests: testing/custom-paths.md
