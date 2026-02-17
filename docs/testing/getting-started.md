@@ -164,7 +164,7 @@ independently:
     ```
 
 This opens a browser tab at `http://localhost:8765` with tabs for
-Predict, Custom, ADIF, Report, and Info.
+Predict, Custom, Report, and Info.
 
 !!! info "Python 3.10+ required for the UI"
     If your Python is 3.9, the base CLI works fine — only the browser UI
@@ -196,4 +196,3 @@ the folder. Nothing else to uninstall.
 - [Test Suite](test-suite.md) — understand what each test group validates
 - [Single Path Prediction](predict.md) — full CLI reference
 - [Custom Path Tests](custom-paths.md) — batch-test your own paths
-- [ADIF Log Validation](adif-validation.md) — validate the model against your own QSO log

@@ -276,52 +276,7 @@ conditions.
 
 ---
 
-## Test-8: ADIF Log Validation (Optional)
-
-**Objective:** Validate the model against your actual QSO history. This
-is the most statistically meaningful test — hundreds or thousands of
-real contacts compared to the model's predictions.
-
-!!! info "Where to get your ADIF file"
-    Export from your logger:
-
-    - **QRZ**: Logbook > Export > ADIF (recommended — most reliable)
-    - **LoTW**: Log Downloads > check both "Include QSL details" and
-      "Include QSO station details"
-    - **eQSL**: may be missing `MY_GRIDSQUARE` — QRZ is more reliable
-
-=== "CLI"
-
-    ```
-    ionis-validate adif my_log.adi
-    ```
-
-    Replace `my_log.adi` with the path to your file.
-
-=== "Browser UI"
-
-    Click the **ADIF** tab. Upload your `.adi` or `.adif` file. Leave SFI
-    at 150 and Kp at 2 (defaults). Click **Validate**.
-
-**What to record:**
-
-| Metric | Where to find it |
-|--------|-----------------|
-| Overall recall % | The headline number |
-| Observations count | How many QSOs were validated |
-| Skipped count | How many were skipped (and why) |
-| Recall by mode | Digital, CW, RTTY, SSB breakdown |
-| Recall by band | Which bands score highest and lowest |
-| Pearson correlation | Shown if you have FT8 QSOs with signal reports |
-
-!!! note "What recall means"
-    Every QSO in your log is a contact that happened — the band was open.
-    Recall measures how often the model agrees. 80% recall means the model
-    correctly predicted "band open" for 80% of your actual contacts.
-
----
-
-## Test-9: Submit Your Results
+## Test-8: Submit Your Results
 
 **Objective:** Generate a report and submit it so we can review your
 findings.
@@ -361,8 +316,7 @@ Open a new issue here and paste your report:
 2. Your Test-3, Test-4, Test-5 dB values (reference predictions)
 3. Your Test-6 and Test-7 results (did the model agree with your
    experience?)
-4. Your Test-8 recall percentage (if you ran it)
-5. Anything that surprised you — good or bad
+4. Anything that surprised you — good or bad
 
 ---
 
@@ -377,5 +331,4 @@ Open a new issue here and paste your report:
 | Test-5 | Storm path | FN31 > IO91, 20m, Kp 7 | -25.2 dB (6.4 dB worse) |
 | Test-6 | Your good path | Your grids, your band | Matches your experience |
 | Test-7 | Your bad path | A path you know is dead | Predicts closed |
-| Test-8 | ADIF log | Your QSO log file | Recall %, mode/band split |
-| Test-9 | Submit results | `ionis-validate report` | GitHub Issue filed |
+| Test-8 | Submit results | `ionis-validate report` | GitHub Issue filed |

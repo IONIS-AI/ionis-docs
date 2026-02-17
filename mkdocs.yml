@@ -68,7 +68,6 @@ nav:
     - Test Suite: testing/test-suite.md
     - Single Path Prediction: testing/predict.md
     - Custom Path Tests: testing/custom-paths.md
-    - ADIF Log Validation: testing/adif-validation.md
     - Reporting Issues: testing/reporting.md
   - Pipeline Apps:
     - tools/index.md
