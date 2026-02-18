@@ -40,7 +40,7 @@ Primary ingestion and query engine. This server forms the core of the lab.
 | **Boot Device** | Micron 7450 NVMe 980GB 22110 |
 | **Primary Storage** | 2x Samsung 9100 Pro NVMe 4TB, 3.6 TB ClickHouse, 3.6 TB working data |
 | **Bulk Storage** | HighPoint NVMe carrier with 4x Samsung 990 Pro 4 TB in a 2x2 ZFS |
-| **Primary NIC** | Intel X710-DAC 4-Port 10Gbe DAC |
+| **Primary NIC** | Intel X710 4-Port 10Gbe DAC |
 | **Spare NIC** | Mellanox ConnectIX-5 2-Port 25Gbe DAC |
 | **OS** | Rocky Linux 9.7 |
 
@@ -70,7 +70,7 @@ Backup, replica, and VM host (Proxmox).
 | **RAM** | 128 GB DDR4-3200 ECC (8-channel, ~204 GB/s bandwidth) |
 | **GPU** | NVIDIA RTX 5080 (16 GB VRAM) |
 | **Boot Device** | Micron 7450 NVMe 980GB 22110 |
-| **Primary NIC** | Intel X710-DAC 4-Port 10Gbe DAC |
+| **Primary NIC** | Intel X710 4-Port 10Gbe DAC |
 | **Spare NIC** | Mellanox ConnectIX-5 2-Port 25Gbe DAC |
 | **NVMe Storage** | 4x Samsung 970 EVO Plus 1 TB (NVMe mirror) |
 | **SSD Storage** | LSI HBA 9300-8i, 8x Samsung 870 EVO 2 TB (RAIDZ2) |
