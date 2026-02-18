@@ -10,12 +10,12 @@ query, and cross-system comparisons on 10.8 billion WSPR rows.
 │              IONIS SOVEREIGN AI DATA CENTER                     │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  INGEST ────────▶ STORE ────────▶ THINK                        │
+│  INGEST ────────▶   STORE ────────▶   THINK                     │
 │                                                                 │
-│  Threadripper       ClickHouse        DeepSeek-R1-70B          │
-│  9975WX             10.8B rows        RTX PRO 6000             │
-│  24.67 Mrps         ~200 GB           96 GB VRAM               │
-│  3.5 GB/s writes    60 GB/s scan      ~15 tok/s                │
+│  Threadripper       ClickHouse        DeepSeek-R1-70B           │
+│  9975WX             10.8B rows        RTX PRO 6000              │
+│  24.67 Mrps         ~200 GB           96 GB VRAM                │
+│  3.5 GB/s writes    60 GB/s scan      ~15 tok/s                 │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -37,7 +37,8 @@ Primary ingestion and query engine.
 | **CPU** | AMD Threadripper PRO 9975WX (32C/64T, 5.3 GHz boost, Zen 5) |
 | **RAM** | 128 GB DDR5 (8-channel, ~384 GB/s bandwidth) |
 | **GPU** | NVIDIA RTX PRO 6000 Blackwell (96 GB VRAM) |
-| **Storage** | 3x NVMe — 1 TB OS, 3.6 TB ClickHouse, 3.6 TB working data |
+| **Server Storage** | 3x NVMe — 1 TB OS, 3.6 TB ClickHouse, 3.6 TB working data |
+| **Bulk Storage** | HighPoint NVMe carrier with 4x Samsung 990 Pro 4 TB in a 2x2 ZFS |
 | **OS** | Rocky Linux 9.7 |
 
 I/O is decoupled: source files on one NVMe, ClickHouse writes to a separate

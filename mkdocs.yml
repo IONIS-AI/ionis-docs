@@ -85,7 +85,7 @@ nav:
   - User Guide:
     - userguide/index.md
     - Running Predictions: userguide/predictions.md
-  - IONIS Lab: benchmarks/index.md
+  - Lab: benchmarks/index.md
   - About:
     - about/index.md
     - Ethos: about/ethos.md
