@@ -30,15 +30,18 @@ query, and cross-system comparisons on 10.8 billion WSPR rows.
 
 ### Control Node — Threadripper 9975WX
 
-Primary ingestion and query engine.
+Primary ingestion and query engine. This server forms the core of the lab.
 
 | Spec | Value |
 |------|-------|
 | **CPU** | AMD Threadripper PRO 9975WX (32C/64T, 5.3 GHz boost, Zen 5) |
 | **RAM** | 128 GB DDR5 (8-channel, ~384 GB/s bandwidth) |
 | **GPU** | NVIDIA RTX PRO 6000 Blackwell (96 GB VRAM) |
-| **Server Storage** | 3x NVMe — 1 TB OS, 3.6 TB ClickHouse, 3.6 TB working data |
+| **Boot Device** | Micron 7450 NVMe 980GB 22110 |
+| **Primary Storage** | 2x Samsung 9100 Pro NVMe 4TB, 3.6 TB ClickHouse, 3.6 TB working data |
 | **Bulk Storage** | HighPoint NVMe carrier with 4x Samsung 990 Pro 4 TB in a 2x2 ZFS |
+| **Primary NIC** | Intel X710-DAC 4-Port 10Gbe DAC |
+| **Spare NIC** | Mellanox ConnectIX-5 2-Port 25Gbe DAC |
 | **OS** | Rocky Linux 9.7 |
 
 I/O is decoupled: source files on one NVMe, ClickHouse writes to a separate
@@ -64,6 +67,9 @@ Backup, replica, and VM host (Proxmox).
 | **CPU** | AMD EPYC 7302P (16C/32T, 3.0 GHz base, Zen 2) |
 | **RAM** | 128 GB DDR4-3200 ECC (8-channel, ~204 GB/s bandwidth) |
 | **GPU** | NVIDIA RTX 5080 (16 GB VRAM) |
+| **Boot Device** | Micron 7450 NVMe 980GB 22110 |
+| **Primary NIC** | Intel X710-DAC 4-Port 10Gbe DAC |
+| **Spare NIC** | Mellanox ConnectIX-5 2-Port 25Gbe DAC |
 | **Storage** | 4x Samsung 970 EVO Plus 1 TB (NVMe mirror), 8x Samsung 870 EVO 2 TB (RAIDZ2) |
 
 ### Storage Node — TrueNAS
@@ -74,6 +80,8 @@ NAS for bulk archive storage.
 |------|-------|
 | **CPU** | AMD Ryzen 9 5950X (16C/32T, Zen 3) |
 | **RAM** | 128 GB DDR4 ECC |
+| **Boot Device** | 2x Samsung 870 EVO 1TB 2x2 Mirror |
+| **Primary NIC** | Intel X710-DAC 4-Port 10Gbe DAC |
 | **Storage** | 8x Seagate IronWolf Pro 14 TB (3-way + 4-way mirror, ~28 TB usable) |
 
 ### DAC Network
