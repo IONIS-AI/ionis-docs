@@ -56,6 +56,8 @@ Model training and evaluation.
 | **SoC** | Apple M3 Ultra |
 | **RAM** | 96 GB unified memory |
 | **Backend** | PyTorch MPS |
+| **Management NIC** | 1x 10Gbe  |
+| **LAB NIC** | Thunderbold 5 40Gbe |
 | **Role** | V20 training (100 epochs in 4h 16m) |
 
 ### Forge Node — EPYC 7302P
