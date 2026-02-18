@@ -44,7 +44,7 @@ Both produce identical results — pick whichever you prefer.
 
 !!! failure "Stop condition"
     If any value is missing or wrong, do not continue. Skip to
-    [Test-9](#test-9-submit-your-results) and report the problem.
+    [Test-8](#test-8-submit-your-results) and report the problem.
 
 ---
 
@@ -69,7 +69,7 @@ Both produce identical results — pick whichever you prefer.
 
 !!! failure "Stop condition"
     If any test fails, do not continue. Skip to
-    [Test-9](#test-9-submit-your-results) and report the failure.
+    [Test-8](#test-8-submit-your-results) and report the failure.
     Failed automated tests on your system are high-priority findings.
 
 ---
