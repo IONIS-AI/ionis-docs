@@ -94,7 +94,7 @@ frames (MTU 9000). No switches.
 
 | Link | Subnet | Endpoints | Latency |
 |------|--------|-----------|---------|
-| Thunderbolt 4 | `10.60.1.0/24` | 9975WX — M3 Ultra | ~0.19 ms |
+| Thunderbolt 5 | `10.60.1.0/24` | 9975WX — M3 Ultra | ~0.19 ms |
 | x710 SFP+ AOC | `10.60.2.0/24` | 9975WX — Proxmox/EPYC | ~0.12 ms |
 | x710 SFP+ AOC | `10.60.3.0/24` | 9975WX — TrueNAS | ~0.03 ms |
 
