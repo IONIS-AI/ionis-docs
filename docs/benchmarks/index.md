@@ -70,7 +70,8 @@ Backup, replica, and VM host (Proxmox).
 | **Boot Device** | Micron 7450 NVMe 980GB 22110 |
 | **Primary NIC** | Intel X710-DAC 4-Port 10Gbe DAC |
 | **Spare NIC** | Mellanox ConnectIX-5 2-Port 25Gbe DAC |
-| **Storage** | 4x Samsung 970 EVO Plus 1 TB (NVMe mirror), 8x Samsung 870 EVO 2 TB (RAIDZ2) |
+| **NVMe Storage** | 4x Samsung 970 EVO Plus 1 TB (NVMe mirror) |
+| **SSD Storage** | LSI HBA 9300-8i, 8x Samsung 870 EVO 2 TB (RAIDZ2) |
 
 ### Storage Node — TrueNAS
 
