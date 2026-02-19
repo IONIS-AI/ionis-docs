@@ -111,7 +111,7 @@ Created by **Philip Gladstone, N1DQ**. MQTT feed provided by **Tom Sevart, M0LTE
 - **Mode mix**: 88.7% FT8, 9.1% WSPR, 1.5% FT4, 0.5% JS8
 - **Grid coverage**: 28% receiver grids, 15% sender grids (per-spot)
 - **Dual purpose**: Training feed for future models + validation feed for live scoring
-- **Stage 2** (future): `pskr-ingest` JSONL → ClickHouse `pskr.bronze`
+- **Stage 2** (live): `pskr-ingest` JSONL → ClickHouse `pskr.bronze` (hourly cron, watermark-tracked via `pskr.ingest_log`)
 
 ## Storage Layout (9975WX)
 

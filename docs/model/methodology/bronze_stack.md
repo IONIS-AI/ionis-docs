@@ -19,8 +19,8 @@ Bronze is self-contained — users who only need the dataset can stop here.
     - `/mnt/contest-logs` — CQ + ARRL Cabrillo log files
     - `/mnt/rbn-data` — RBN daily ZIP archives
     - `/mnt/pskr-data` — PSK Reporter MQTT collection (gzip JSONL)
-3. **RPM packages** installed (v3.0.3+):
-    - `ionis-core` — DDL schemas (29 files), population scripts (12 files), and static data
+3. **RPM packages** installed (v3.0.6+):
+    - `ionis-core` — DDL schemas (32 files), population scripts (12 files), and static data
     - `ionis-apps` — Go ingesters (wspr-turbo, rbn-ingest, contest-ingest, solar-backfill, pskr-ingest)
 
 ## Step 1: Apply DDL Schemas
@@ -37,7 +37,7 @@ done
 ```
 
 ```text
-DDL Files (29 total):
+DDL Files (32 total):
 
   #   File                              Database      Creates
   --  --------------------------------  -----------   ----------------------------------------
@@ -70,6 +70,9 @@ DDL Files (29 total):
   27  mode_thresholds.sql               validation    mode_thresholds
   28  pskr_ingest_log.sql               pskr          ingest_log
   29  rbn_dxpedition_signatures.sql     rbn           dxpedition_signatures
+  30  rbn_ingest_log.sql                rbn           ingest_log
+  31  wspr_ingest_log.sql               wspr          ingest_log
+  32  contest_ingest_log.sql            contest       ingest_log
 ```
 
 !!! note "DDL 09 depends on DDL 08"
@@ -166,16 +169,27 @@ clickhouse-client --query "SELECT count() FROM wspr.callsign_grid FINAL"
 ## Step 6: Load PSK Reporter Data
 
 Ingest collected PSK Reporter MQTT spots from gzip JSONL files.
+Uses `pskr.ingest_log` watermark to track loaded files.
 
 ```bash
-pskr-ingest /mnt/pskr-data/
+# First run: load all collected files
+pskr-ingest --src /mnt/pskr-data --host 192.168.1.90:9000
+
+# Subsequent runs (cron): only loads new files since last run
+pskr-ingest --src /mnt/pskr-data --host 192.168.1.90:9000
 ```
+
+The `--min-age` flag (default 5 min) automatically skips the currently-open
+hourly rotation file being written by `pskr-collector`.
 
 Verification:
 
 ```bash
 clickhouse-client --query "SELECT count() FROM pskr.bronze"
 # Expected: varies (depends on collection window; ~26M spots/day since 2026-02-10)
+
+clickhouse-client --query "SELECT count() FROM pskr.ingest_log FINAL WHERE row_count > 0"
+# Shows how many files have been loaded
 ```
 
 ## QA Actuals

@@ -5,15 +5,18 @@ running IONIS installation.
 
 ## Cron Schedule
 
-Five automated jobs keep solar indices and propagation data current.
+Seven automated jobs keep solar indices and propagation data current.
+Downloaders write to disk; ingesters read from disk into ClickHouse.
 
 | Job | Schedule | Command | Purpose |
 |-----|----------|---------|---------|
 | `solar-live-update` | Every 15 min | `solar-live-update` | Real-time solar indices → `wspr.live_conditions` |
 | `solar-history-load` | Every 6 hours | `solar-history-load` | Training-quality solar data → `solar.bronze` |
-| `pskr-ingest` | Hourly at H+5 | `pskr-ingest` | JSONL files → `pskr.bronze` |
+| `pskr-ingest` | Hourly at H+5 | `pskr-ingest` | JSONL files → `pskr.bronze` (watermark: `pskr.ingest_log`) |
 | `rbn-download` | 16:00 UTC daily | `rbn-download` | Daily RBN ZIP archive → `/mnt/rbn-data` |
+| `rbn-ingest` | 16:30 UTC daily | `rbn-ingest` | RBN ZIPs → `rbn.bronze` (watermark: `rbn.ingest_log`) |
 | `wspr-download` | 18:00 UTC daily | `wspr-download` | Daily WSPR archive → `/mnt/wspr-data` |
+| `wspr-turbo` | 19:00 UTC daily | `wspr-turbo` | WSPR archives → `wspr.bronze` (watermark: `wspr.ingest_log`) |
 
 !!! note "Solar data freshness"
     `solar.bronze` (GFZ Potsdam source) lags ~1 day behind real-time. For
@@ -114,12 +117,50 @@ If the `pskr.bronze` schema changes, replay collected JSONL files:
 # Stop the collector to avoid conflicts
 sudo systemctl stop pskr-collector
 
-# Re-ingest from stored files
-pskr-ingest -src /mnt/pskr-data -host 192.168.1.90:9000
+# Full re-ingest (ignores watermark, reloads all files)
+pskr-ingest --full --src /mnt/pskr-data --host 192.168.1.90:9000
 
 # Restart collector
 sudo systemctl start pskr-collector
 ```
+
+### Watermark Bootstrap (New Install or Schema Change)
+
+After a fresh install or schema change, bootstrap watermarks so
+incremental mode knows what's already loaded:
+
+```bash
+# Prime all four ingest_log tables (marks files as loaded, row_count=0)
+pskr-ingest --prime --src /mnt/pskr-data --host 192.168.1.90:9000
+rbn-ingest --prime --src /mnt/rbn-data --host 192.168.1.90:9000
+wspr-turbo --prime --source-dir /mnt/wspr-data --ch-host 192.168.1.90:9000
+contest-ingest --prime --src /mnt/contest-logs --host 192.168.1.90:9000
+
+# Verify watermark counts
+clickhouse-client --query "
+SELECT 'pskr' AS src, count() FROM pskr.ingest_log FINAL
+UNION ALL SELECT 'rbn', count() FROM rbn.ingest_log FINAL
+UNION ALL SELECT 'wspr', count() FROM wspr.ingest_log FINAL
+UNION ALL SELECT 'contest', count() FROM contest.ingest_log FINAL
+ORDER BY 1
+FORMAT PrettyCompact
+"
+```
+
+After priming, subsequent cron runs will only load new files.
+
+### Full Re-ingest (Any Source)
+
+All watermark-enabled ingesters support `--full` for complete reload:
+
+```bash
+rbn-ingest --full --src /mnt/rbn-data --host 192.168.1.90:9000
+wspr-turbo --full --source-dir /mnt/wspr-data --ch-host 192.168.1.90:9000
+contest-ingest --full --src /mnt/contest-logs --host 192.168.1.90:9000
+```
+
+`--full` drops partitions before reload and updates watermark entries.
+Use `--dry-run` to preview what would be processed.
 
 ### Manual Solar Backfill
 

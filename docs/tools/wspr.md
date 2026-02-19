@@ -9,12 +9,15 @@ using zero-copy decompression and double-buffered native blocks — no intermedi
 Part of `ionis-apps` (Go binary).
 
 ```text
-wspr-turbo v3.0.2 - Zero-Copy Streaming Pipeline
+wspr-turbo v3.0.5 - Zero-Copy Streaming Pipeline
 
 Usage: wspr-turbo [OPTIONS] [archives...]
 
 Streams tar.gz/csv.gz directly to ClickHouse Native Blocks.
 No intermediate disk I/O - bypasses the 'File Penalty'.
+
+Uses wspr.ingest_log watermark table for incremental loading.
+Detects cumulative monthly archive growth by comparing file sizes.
 
 Architecture:
   - Stream decompression (klauspost/gzip, ASM-optimized)
@@ -31,6 +34,12 @@ Architecture:
     	ClickHouse address (default "127.0.0.1:9000")
   -ch-table string
     	ClickHouse table (default "bronze")
+  -dry-run
+    	List files that would be processed, then exit
+  -full
+    	Full reload: drop monthly partitions and re-ingest all archives
+  -prime
+    	Bootstrap watermark for existing archives (no data loaded)
   -report-dir string
     	Report output directory (default "/mnt/ai-stack/wspr-data/reports-turbo")
   -source-dir string

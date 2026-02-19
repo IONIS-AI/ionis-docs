@@ -39,6 +39,7 @@ collector uses MQTT for real-time spot streaming.
 | App | Type | Package | Description |
 |-----|------|---------|-------------|
 | [pskr-collector](pskr.md#pskr-collector) | Go | ionis-apps | MQTT real-time spot collector → gzip JSONL (~22M spots/day) |
+| [pskr-ingest](pskr.md#pskr-ingest) | Go | ionis-apps | Incremental JSONL → ClickHouse loader with watermark tracking |
 
 ## Database
 

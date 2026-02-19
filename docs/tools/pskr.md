@@ -171,6 +171,73 @@ PARTITION BY toYYYYMM(timestamp)
 ORDER BY (band, timestamp, sender_grid, receiver_grid);
 ```
 
+## pskr-ingest
+
+Incremental JSONL → ClickHouse loader. Reads gzip JSONL files written by
+`pskr-collector` and bulk-inserts into `pskr.bronze`. Tracks loaded files
+via `pskr.ingest_log` watermark table for safe, idempotent cron-based
+loading. Part of `ionis-apps` (Go binary).
+
+```text
+pskr-ingest v3.0.2 — PSK Reporter JSONL → ClickHouse ingester
+
+Usage: pskr-ingest [flags]
+
+Reads gzip JSONL files from --src, parses spots, and inserts into
+ClickHouse using ch-go native protocol with LZ4 compression.
+
+Uses pskr.ingest_log watermark table to skip already-loaded files.
+
+  -batch int
+    	Rows per INSERT batch (default 100000)
+  -db string
+    	ClickHouse database (default "pskr")
+  -dry-run
+    	List files that would be processed, then exit
+  -host string
+    	ClickHouse host:port (default "192.168.1.90:9000")
+  -min-age duration
+    	Minimum file age to ingest (skip active file) (default 5m0s)
+  -prime
+    	Bootstrap watermark for existing files (no data loaded)
+  -src string
+    	Source directory (default "/mnt/pskr-data")
+  -table string
+    	ClickHouse table (default "bronze")
+  -workers int
+    	Parallel file workers (default 4)
+
+Examples:
+  pskr-ingest                                  # Incremental (default)
+  pskr-ingest --prime                          # Bootstrap watermark
+  pskr-ingest --dry-run                        # Preview what would load
+  pskr-ingest --src /mnt/pskr-data --host 10.60.1.1:9000
+```
+
+### Watermark Tracking
+
+`pskr-ingest` uses the `pskr.ingest_log` table (ReplacingMergeTree) to
+track which files have been loaded. Each successful file insert records
+`file_path`, `file_size`, `row_count`, `elapsed_ms`, and `hostname`.
+
+- **Incremental** (default): Skips files already in the watermark. Only
+  loads new files.
+- **`--prime`**: Marks all existing files as loaded (`row_count=0`) without
+  inserting data. Use this to bootstrap the watermark after a schema change
+  or on first install.
+- **`--dry-run`**: Lists files that would be processed without loading.
+- **`--min-age`**: Skips files newer than 5 minutes (default) to avoid
+  reading the currently-open hourly rotation file.
+
+### Cron Usage
+
+```cron
+5 * * * *   pskr-ingest --src /mnt/pskr-data --host 192.168.1.90:9000 2>&1 | logger -t pskr-ingest
+```
+
+Runs at 5 minutes past each hour. The 5-minute offset ensures the previous
+hour's file has been rotated and closed by `pskr-collector`.
+
 ### Data Source Attribution
 
 PSK Reporter is created and operated by **Philip Gladstone, N1DQ**.

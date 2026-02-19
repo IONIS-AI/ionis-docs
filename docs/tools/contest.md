@@ -69,7 +69,7 @@ Optionally enriches `wspr.callsign_grid` with grid locators.
 Part of `ionis-apps` (Go binary).
 
 ```text
-contest-ingest v3.0.2 — Parse Cabrillo contest logs into ClickHouse
+contest-ingest v3.0.5 — Parse Cabrillo contest logs into ClickHouse
 
 Usage: contest-ingest [flags]
 
@@ -77,16 +77,24 @@ Walks --src/{contest}/{yearmode}/*.log, parses Cabrillo headers
 and QSO lines, normalizes band via ADIF lookup, and inserts into
 ClickHouse using ch-go native protocol with LZ4 compression.
 
+Uses contest.ingest_log watermark table for incremental loading.
+
   -batch int
     	Rows per INSERT batch (default 100000)
   -contest string
     	Process only this contest key (empty = all)
   -db string
     	ClickHouse database (default "contest")
+  -dry-run
+    	List files that would be processed, then exit
   -enrich
     	Also insert GRID-LOCATOR into wspr.callsign_grid
+  -full
+    	Full reload: process all files regardless of watermark
   -host string
     	ClickHouse host:port (default "192.168.1.90:9000")
+  -prime
+    	Bootstrap watermark for existing files (no data loaded)
   -src string
     	Source directory with {contest}/{yearmode}/*.log (default "/mnt/contest-logs")
   -table string
@@ -97,6 +105,9 @@ ClickHouse using ch-go native protocol with LZ4 compression.
 Examples:
   contest-ingest --contest cq-ww --workers 4
   contest-ingest --enrich
+  contest-ingest --prime                           # Bootstrap watermark
+  contest-ingest --dry-run                         # Preview what would load
+  contest-ingest --full                            # Reload all files
   contest-ingest --src /mnt/contest-logs --host 10.60.1.1:9000
 ```
 
@@ -150,13 +161,15 @@ eras (11-column 2009–2010, 13-column 2011+) with automatic detection.
 Part of `ionis-apps` (Go binary).
 
 ```text
-rbn-ingest v3.0.2 — Stream RBN ZIP archives into ClickHouse
+rbn-ingest v3.0.5 — Stream RBN ZIP archives into ClickHouse
 
 Usage: rbn-ingest [flags]
 
 Reads daily ZIP files from --src/{year}/*.zip, parses CSV,
 normalizes band via ADIF lookup, and inserts into ClickHouse
 using ch-go native protocol with LZ4 compression.
+
+Uses rbn.ingest_log watermark table for incremental loading.
 
 Handles all three RBN CSV format eras:
   2009-2010: 11 columns (no speed/tx_mode)
@@ -166,8 +179,14 @@ Handles all three RBN CSV format eras:
     	Rows per INSERT batch (default 100000)
   -db string
     	ClickHouse database (default "rbn")
+  -dry-run
+    	List files that would be processed, then exit
+  -full
+    	Full reload: drop day partitions and re-ingest all files
   -host string
     	ClickHouse host:port (default "192.168.1.90:9000")
+  -prime
+    	Bootstrap watermark for existing files (no data loaded)
   -src string
     	Source directory with {year}/*.zip (default "/mnt/rbn-data")
   -table string
@@ -180,5 +199,8 @@ Handles all three RBN CSV format eras:
 Examples:
   rbn-ingest --year 2024 --workers 4
   rbn-ingest --workers 8
+  rbn-ingest --prime                               # Bootstrap watermark
+  rbn-ingest --dry-run                             # Preview what would load
+  rbn-ingest --full                                # Reload all files
   rbn-ingest --src /mnt/rbn-data --host 10.60.1.1:9000
 ```

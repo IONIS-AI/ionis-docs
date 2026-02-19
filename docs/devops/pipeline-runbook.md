@@ -36,7 +36,7 @@ rpm -q ionis-core ionis-apps
 
 ```bash
 ls /usr/share/ionis-core/ddl/*.sql | wc -l
-# Expected: 29
+# Expected: 32
 
 ls /usr/share/ionis-core/scripts/*.sh | wc -l
 # Expected: 12
@@ -65,7 +65,7 @@ for f in /usr/share/ionis-core/ddl/*.sql; do
 done
 ```
 
-### Step 2.2: DDL Inventory (29 files)
+### Step 2.2: DDL Inventory (32 files)
 
 ```text
   #   File                              Database      Creates
@@ -99,6 +99,9 @@ done
   27  mode_thresholds.sql               validation    mode_thresholds
   28  pskr_ingest_log.sql               pskr          ingest_log
   29  rbn_dxpedition_signatures.sql     rbn           dxpedition_signatures
+  30  rbn_ingest_log.sql                rbn           ingest_log
+  31  wspr_ingest_log.sql               wspr          ingest_log
+  32  contest_ingest_log.sql            contest       ingest_log
 ```
 
 !!! note "DDL 09 depends on DDL 08"
@@ -116,7 +119,7 @@ WHERE database NOT IN ('system', 'information_schema', 'INFORMATION_SCHEMA', 'de
   AND engine <> ''
   AND name NOT LIKE '.inner_id%'
 "
-# Expected: 35
+# Expected: 38
 ```
 
 See [Bronze Stack — Step 1](../model/methodology/bronze_stack.md#step-1-apply-ddl-schemas) for
@@ -146,30 +149,39 @@ clickhouse-client --query "OPTIMIZE TABLE solar.bronze FINAL"
 ### Step 3.2: WSPR ingest
 
 ```bash
-wspr-turbo /mnt/wspr-data/wsprspots-*.csv.gz
+wspr-turbo --full --source-dir /mnt/wspr-data --ch-host 192.168.1.90:9000
 ```
 
 !!! warning "Run wspr-turbo solo"
     With 16 workers, wspr-turbo consumes ~80 GB RAM. Do not run other
     ingesters concurrently.
 
+Use `--full` for clean-slate builds. Subsequent cron runs use incremental
+mode (default) which detects cumulative file growth via `wspr.ingest_log`.
+
 ### Step 3.3: RBN ingest
 
 ```bash
-rbn-ingest /mnt/rbn-data/
+rbn-ingest --full --src /mnt/rbn-data --host 192.168.1.90:9000
 ```
+
+Use `--full` for clean-slate builds. Daily cron uses incremental mode.
 
 ### Step 3.4: Contest ingest
 
 ```bash
-contest-ingest /mnt/contest-logs/
+contest-ingest --full --src /mnt/contest-logs --host 192.168.1.90:9000 --enrich
 ```
+
+Use `--full` for clean-slate builds. Weekly cron uses incremental mode.
 
 ### Step 3.5: PSK Reporter ingest
 
 ```bash
-pskr-ingest /mnt/pskr-data/
+pskr-ingest --src /mnt/pskr-data --host 192.168.1.90:9000
 ```
+
+Incremental by default (watermark-tracked via `pskr.ingest_log`).
 
 ### Step 3.6: Verify all bronze tables
 
@@ -448,11 +460,11 @@ python versions/v20/validate_v20_pskr.py
 ```text
 Phase 1: Install Packages
   1.1  dnf install ionis-core ionis-apps
-  1.2  Verify versions, DDL count (29), script count (12)
+  1.2  Verify versions, DDL count (32), script count (12)
 
 Phase 2: Schema
   2.1  ionis-db-init                                         (<1 min)
-  2.2  Verify table count (35)
+  2.2  Verify table count (38)
 
 Phase 3: Bronze Ingest
   3.1  solar-backfill                solar.bronze             (<1s)
