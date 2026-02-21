@@ -1,7 +1,7 @@
 # Solar Pipeline Apps
 
-Three Go binaries and three shell scripts for downloading and ingesting
-solar flux, geomagnetic, and X-ray data.
+Four Go binaries and three shell scripts for downloading and ingesting
+solar flux, geomagnetic, X-ray, and solar wind data.
 
 ## solar-download
 
@@ -106,6 +106,51 @@ Examples:
   solar-backfill -ch-host 192.168.1.90:9000 -start 2020-01-01
   solar-backfill -file /tmp/Kp_ap_Ap_SN_F107_since_1932.txt -dry-run
 ```
+
+## dscovr-ingest
+
+Downloads rolling 7-day magnetometer and plasma JSON from the
+[DSCOVR](https://www.swpc.noaa.gov/products/real-time-solar-wind) satellite at the Sun-Earth L1 Lagrange point and inserts into
+ClickHouse `solar.dscovr`. The key column for model training is Bz
+(IMF southward component), which provides 15-45 minutes of predictive
+lead over the Kp index.
+Part of `ionis-apps` (Go binary).
+
+```text
+dscovr-ingest v3.2.0 — DSCOVR L1 Solar Wind Ingester
+
+Downloads 7-day magnetometer + plasma JSON from NOAA SWPC
+and inserts into ClickHouse solar.dscovr.
+
+Sources:
+  https://services.swpc.noaa.gov/products/solar-wind/mag-7-day.json
+  https://services.swpc.noaa.gov/products/solar-wind/plasma-7-day.json
+
+Usage: dscovr-ingest [OPTIONS]
+
+  -ch-host string
+    	ClickHouse native protocol address (default "192.168.1.90:9000")
+  -dry-run
+    	Download and parse only, skip insert
+  -timeout int
+    	HTTP timeout in seconds (default 60)
+
+Examples:
+  dscovr-ingest -ch-host 192.168.1.90:9000
+  dscovr-ingest -dry-run
+```
+
+**Columns ingested:**
+
+| Column | Type | Description |
+|--------|------|-------------|
+| bz_gsm | Float32 | IMF Bz, GSM coords (nT). Southward (negative) = storm coupling |
+| bt | Float32 | Total magnetic field magnitude (nT) |
+| bx_gsm | Float32 | IMF Bx, GSM coords (nT) |
+| by_gsm | Float32 | IMF By, GSM coords (nT) |
+| speed | Float32 | Solar wind bulk speed (km/s) |
+| density | Float32 | Solar wind proton density (protons/cm³) |
+| temperature | Float32 | Solar wind proton temperature (K) |
 
 ## solar-refresh
 
