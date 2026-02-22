@@ -1,3 +1,10 @@
+---
+description: >-
+  19 CLI apps for ingesting WSPR, RBN, PSK Reporter, contest, and solar data
+  into ClickHouse. Written in Go with native protocol support, processing
+  10.8 billion WSPR spots at 22 million rows per second.
+---
+
 # Pipeline Apps
 
 The IONIS data pipeline ships **19 CLI apps** across three packages, plus one

@@ -1,3 +1,10 @@
+---
+description: >-
+  Head-to-head comparison of IONIS and VOACAP on 1 million contest QSO paths.
+  IONIS achieves 96.38% recall vs VOACAP's 75.82% — a 20.56 percentage point
+  advantage on real amateur radio contacts from 2005 to 2025.
+---
+
 # IONIS vs VOACAP Comparison
 
 - **Date:** 2026-02-11

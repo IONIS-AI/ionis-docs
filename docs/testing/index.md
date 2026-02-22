@@ -1,3 +1,10 @@
+---
+description: >-
+  Install and run the IONIS V20 validation suite. 62 automated tests verify
+  physics constraints, link budgets, and propagation predictions. Available via
+  COPR (Rocky Linux), PPA (Ubuntu), or PyPI.
+---
+
 # Testing
 
 The IONIS validation suite lets you verify the V20 model against your own

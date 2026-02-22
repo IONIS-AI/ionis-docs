@@ -1,3 +1,10 @@
+---
+description: >-
+  V20 link budget profile battery results. Tests verify IONIS predictions against
+  known propagation physics: daytime high-band openings, nighttime low-band paths,
+  storm degradation, and solar flux enhancement.
+---
+
 # IONIS-V20-LB-01: Link Budget Profile Battery
 
 - **Timestamp**: 2026-02-11 18:45 UTC

@@ -1,3 +1,10 @@
+---
+description: >-
+  How IONIS uses monotonic neural network sidecars to enforce ionospheric physics.
+  The sun sidecar ensures higher solar flux always improves propagation. The storm
+  sidecar ensures higher Kp always degrades it. Neither can be overridden by the DNN.
+---
+
 # Monotonic Sidecars — Physics Constraints
 
 ## The Problem

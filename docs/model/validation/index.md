@@ -1,3 +1,9 @@
+---
+description: >-
+  IONIS model validation results: VOACAP comparison on 1M paths, link budget
+  battery, Pearson correlation analysis, and physics constraint verification.
+---
+
 # Validation Reports
 
 Automated test results from IONIS model evaluations.

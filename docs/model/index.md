@@ -1,3 +1,10 @@
+---
+description: >-
+  IonisGate neural network architecture for HF propagation prediction. Physics-constrained
+  sidecars enforce solar flux and geomagnetic storm behavior. V20 production model
+  achieves Pearson +0.49 and 96% recall on 1M contest paths.
+---
+
 # IONIS Model
 
 IONIS (Ionospheric Neural Inference System) predicts HF radio signal-to-noise

@@ -1,3 +1,10 @@
+---
+description: >-
+  How IONIS ingests 13 billion radio observations from WSPR, RBN, contest logs,
+  and PSK Reporter into ClickHouse at 22 million rows per second using custom
+  Go binaries with native protocol and LZ4 compression.
+---
+
 # Data Pipeline
 
 ## WSPR Ingestion

@@ -1,3 +1,10 @@
+---
+description: >-
+  How to use IONIS for HF propagation prediction. Run single-path predictions,
+  batch custom paths, and interpret mode-aware verdicts for WSPR, FT8, CW,
+  RTTY, and SSB.
+---
+
 # Getting Started
 
 ## What IONIS Predicts

@@ -1,3 +1,10 @@
+---
+description: >-
+  Go binaries for downloading and ingesting CQ contest Cabrillo logs and Reverse
+  Beacon Network CW/RTTY spots into ClickHouse. 195 million contest QSOs and
+  2.18 billion RBN spots from 2005-2025.
+---
+
 # Contest & RBN Apps
 
 Four Go binaries for downloading and ingesting amateur radio contest logs

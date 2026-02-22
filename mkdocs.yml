@@ -1,11 +1,15 @@
 site_name: IONIS — Ionospheric Neural Inference System
-site_description: HF Propagation Prediction powered by Neural Networks and Real-World Data
+site_description: >-
+  IONIS predicts HF radio propagation using physics-constrained neural networks
+  trained on 13 billion amateur radio observations from WSPR, RBN, contest logs,
+  and PSK Reporter. Open source, self-hosted, no cloud dependencies.
 site_author: Greg Beam, KI7MT
 site_url: https://ionis-ai.com/
 repo_url: https://github.com/IONIS-AI/ionis-docs
 
 theme:
   name: material
+  custom_dir: overrides
   palette:
     - scheme: default
       primary: indigo
@@ -39,6 +43,20 @@ markdown_extensions:
   - md_in_html
   - toc:
       permalink: true
+
+plugins:
+  - search
+  - social
+  - meta
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/IONIS-AI
+      name: IONIS-AI on GitHub
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/ionis-validate/
+      name: ionis-validate on PyPI
 
 nav:
   - Home: index.md

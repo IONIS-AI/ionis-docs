@@ -1,3 +1,10 @@
+---
+description: >-
+  Go binaries for downloading and ingesting WSPR beacon data into ClickHouse.
+  wspr-turbo achieves 22.55 million rows per second with 16 workers, streaming
+  directly from compressed archives via native protocol.
+---
+
 # WSPR Ingestion Apps
 
 Four Go binaries for downloading and ingesting WSPR spot data into ClickHouse.

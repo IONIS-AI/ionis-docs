@@ -1,3 +1,10 @@
+---
+description: >-
+  Performance benchmarks for the IONIS sovereign AI infrastructure. Threadripper
+  9975WX with RTX PRO 6000, Mac Studio M3 Ultra, ClickHouse on NVMe — ingestion,
+  query, and training benchmarks on 10.8 billion rows.
+---
+
 # IONIS Lab
 
 Performance benchmarks for the IONIS sovereign infrastructure — ingestion,

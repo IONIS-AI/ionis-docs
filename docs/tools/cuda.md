@@ -1,3 +1,9 @@
+---
+description: >-
+  CUDA signature embedding engine for IONIS. Generates float4 vectors from
+  WSPR and solar data on RTX PRO 6000, stored in ClickHouse for model training.
+---
+
 # CUDA Engine
 
 !!! note "Local Build Only"

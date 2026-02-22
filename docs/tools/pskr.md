@@ -1,3 +1,10 @@
+---
+description: >-
+  Real-time MQTT collector for PSK Reporter reception data. Captures 26 million
+  HF spots per day at 300 spots per second from the largest digital mode
+  reporting network in amateur radio.
+---
+
 # PSK Reporter Apps
 
 Real-time MQTT spot collector for PSK Reporter reception data.

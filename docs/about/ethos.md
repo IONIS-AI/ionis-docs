@@ -1,3 +1,10 @@
+---
+description: >-
+  The principles behind the IONIS Sovereign AI Lab: self-hosted infrastructure,
+  reproducible science, open source code, and community-driven HF propagation
+  research with zero cloud dependencies.
+---
+
 # The Sovereign AI Lab Ethos
 
 The IONIS exists to advance the understanding of High Frequency (HF) radio propagation through the ethical application of deep learning. We view the amateur radio spectrum not just as a hobbyist playground, but as a massive, distributed scientific instrument.

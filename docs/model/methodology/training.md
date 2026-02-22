@@ -1,3 +1,10 @@
+---
+description: >-
+  Training methodology for the IONIS HF propagation model on Mac Studio M3 Ultra.
+  Aggregated signatures from 13B observations, HuberLoss, differential learning
+  rates, and physics-constrained sidecars that enforce ionospheric behavior.
+---
+
 # Training Methodology
 
 ## Training Architecture

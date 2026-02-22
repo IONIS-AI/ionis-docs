@@ -1,3 +1,10 @@
+---
+description: >-
+  Solar index pipeline for IONIS: SFI, Kp, SSN, X-ray flux, and DSCOVR L1 solar
+  wind data from NOAA SWPC, SIDC, and GFZ Potsdam. 15-minute live updates
+  and historical backfill to 1932.
+---
+
 # Solar Pipeline Apps
 
 Four Go binaries and three shell scripts for downloading and ingesting

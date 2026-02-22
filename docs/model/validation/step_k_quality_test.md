@@ -1,3 +1,10 @@
+---
+description: >-
+  IONIS prediction quality measured by Pearson correlation against observed SNR.
+  V20 achieves +0.4879 on the validation set — 22x stronger correlation than
+  VOACAP's +0.0218 on the same paths.
+---
+
 # Prediction Quality (Pearson Correlation)
 
 **Date**: 2026-02-09

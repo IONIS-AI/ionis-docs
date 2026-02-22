@@ -1,3 +1,10 @@
+---
+description: >-
+  IONIS predicts HF propagation using physics-constrained neural networks trained
+  on 13 billion real amateur radio observations. Open source, self-hosted,
+  outperforms VOACAP by 20 percentage points on live PSK Reporter data.
+---
+
 # IONIS Sovereign AI Lab
 
 > *"The logs have been speaking for decades, but nobody is listening."*

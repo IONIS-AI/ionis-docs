@@ -1,3 +1,10 @@
+---
+description: >-
+  IonisGate is a 203K-parameter PyTorch model combining a DNN trunk with dual
+  monotonic sidecars for solar flux and geomagnetic storm physics. The architecture
+  prevents the Kp inversion problem through constrained gates.
+---
+
 # IonisGate Architecture
 
 !!! success "Production: IONIS V20"
