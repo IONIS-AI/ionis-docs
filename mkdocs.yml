@@ -62,6 +62,7 @@ nav:
   - Home: index.md
   - Model:
     - model/index.md
+    - "Physics vs ML": model/physics-vs-ml.md
     - Architecture:
       - IonisGate: model/architecture/ionisgate.md
       - Monotonic Sidecars: model/architecture/sidecars.md
