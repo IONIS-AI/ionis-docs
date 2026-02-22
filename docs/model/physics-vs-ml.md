@@ -7,6 +7,15 @@ description: >-
 
 # From Empirical Physics to Neural Prediction
 
+**While legacy tools like VOACAP rely on empirical formulas derived from 1960s
+ionospheric measurement campaigns, IONIS uses physics-constrained PyTorch
+neural networks to predict HF path viability from first principles of observed
+behavior. Trained on over 13 billion real amateur radio observations from WSPR,
+the Reverse Beacon Network, and contest logs, IONIS captures nonlinear
+ionospheric behaviors — sporadic-E openings, real-time solar variability,
+grey-line enhancement — that traditional mathematical models miss. On 1 million
+real contest paths, IONIS achieves 96.38% recall versus VOACAP's 75.82%.**
+
 VOACAP (Voice of America Coverage Analysis Program) has been the standard HF
 propagation prediction tool since the 1980s. Built on decades of ionospheric
 research at NTIA/ITS, it uses empirical ionospheric coefficients and ray-tracing
@@ -18,7 +27,7 @@ directly from 13 billion real radio observations, constrained by known physics.
 This page documents where we are, what we've proven, and what we're still
 working on.
 
-## V20: The Baseline Proves the Concept
+## Validating Neural Networks vs. VOACAP (V20 Baseline)
 
 IONIS V20 was the first production model validated against both historical
 contest data and live PSK Reporter observations. The results established that
@@ -60,13 +69,14 @@ neural network sidecars:
 These constraints cannot be overridden by the DNN trunk. See
 [Monotonic Sidecars](architecture/sidecars.md) for the full design.
 
-## V21–V22: Refining What the Model Knows
+## Refining the Deep Learning Architecture: Auroral Zones and Day/Night Physics
 
-V20 proved the architecture works. The V21–V22 series focuses on giving the
-model better tools to distinguish *when* and *where* propagation behaves
-differently.
+V20 proved the architecture works. The ongoing refinement series focuses on
+giving the model better tools to distinguish *when* and *where* propagation
+behaves differently — auroral zone vulnerability, band-specific day/night
+behavior, and the separation of storm physics from temporal artifacts.
 
-### Polar Path Exposure (V21)
+### Modeling Auroral Zone Vulnerability for Polar HF Paths
 
 **Problem**: V20 treated all paths equally during geomagnetic storms. In
 reality, a path crossing the auroral zone (high latitude) is far more
@@ -84,7 +94,7 @@ particles precipitate. Low vertex latitude means the path stays in the
 mid-latitudes where storms have minimal effect. This gives the Kp sidecar
 path-specific context instead of treating storms as a global scalar.
 
-### The 10 MHz Pivot: Day and Night Work Differently by Band (V22)
+### The 10 MHz Pivot: Mathematically Modeling Day and Night HF Bands
 
 **Problem**: Darkness helps low-band propagation (160m, 80m, 40m) but kills
 high-band propagation (10m, 15m, 17m, 20m). The crossover is around 10 MHz
@@ -104,7 +114,7 @@ daylight), propagation is degraded. When negative (high band + daylight, or
 low band + darkness), propagation is enhanced. The model learns the magnitude;
 the math enforces the direction.
 
-### Kp Distillation: Separating Storm Physics from Temporal Contamination
+### Isolating Geomagnetic Storm Physics from Temporal Artifacts
 
 An unexpected discovery during V21 training: the V20 storm sidecar's +3.49σ
 cost was approximately 60% temporal contamination. The sidecar had been
@@ -123,7 +133,7 @@ as ionization saturates. Geomagnetic storms act like a governor — D-layer
 absorption is violent and nonlinear with no ceiling. Building is bounded;
 destroying is not.
 
-### RBN Full Integration: The Pressure Vessel Test
+### Scaling Training Data: Integrating 2 Billion CW/RTTY Observations
 
 V17–V19 failed when RBN data (2.18B CW/RTTY spots) was added to training.
 The post-mortem revealed this wasn't because RBN data was poison — the
@@ -196,3 +206,11 @@ subtle effects buried in 13 billion data points.
 
 The logs were speaking for decades. Now we're listening — and teaching a model
 to understand what they're saying.
+
+## Project Resources
+
+- **Validation Suite**: [ionis-validate on PyPI](https://pypi.org/project/ionis-validate/) — run the 62-test physics battery locally
+- **Live Predictions**: [ham-stats.com](https://ham-stats.com) — band conditions and IONIS predictions updated every 3 hours
+- **Source Code**: [IONIS-AI on GitHub](https://github.com/IONIS-AI) — all repos, open source, GPLv3
+- **VOACAP Comparison Data**: [Full results by mode and band](validation/step_i_voacap_comparison.md)
+- **Model Architecture**: [IonisGate](architecture/ionisgate.md) and [Monotonic Sidecars](architecture/sidecars.md)
