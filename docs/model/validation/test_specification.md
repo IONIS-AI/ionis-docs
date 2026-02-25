@@ -777,7 +777,7 @@ Baseline tests to catch future regressions.
 |---------|------|---------|
 | 1.0 | 2026-02-05 | Initial specification |
 | 1.1 | 2026-02-05 | Added TST-500 (Robustness), TST-600 (Security), TST-700 (Bias), TST-800 (Regression) |
-| 1.2 | 2026-02-05 | Added TST-206 (Grey line twilight), automated TST-701 (Geographic bias) per Gemini review |
+| 1.2 | 2026-02-05 | Added TST-206 (Grey line twilight), automated TST-701 (Geographic bias) per Einstein review |
 | 2.0 | 2026-02-16 | Updated for IONIS V20; fixed script paths to `versions/v20/`; documented implementation status; renamed from `v12_test_specification.md` |
 | 2.1 | 2026-02-16 | **COMPLETE IMPLEMENTATION**: All 62 tests automated in modular test suite; TST-100 expanded to 30 global paths; TST-200 implemented with 6 physics tests; added `run_all.py` orchestrator |
 | 2.2 | 2026-02-16 | **SPEC RECONCILIATION**: TST-100 rewritten to match 30-test implementation (8 geographic categories); TST-200 actuals updated from 9975WX CPU test run; TST-400 status flags corrected (TST-402, TST-404 now IMPLEMENTED); TST-800 baselines corrected to match checkpoint values (RMSE 0.8617σ, Pearson +0.4879); verified 62/62 PASS on 9975WX |

@@ -126,7 +126,7 @@ The V20 link budget battery validates three key claims:
 
 2. **Station profiles provide a gearbox for operational predictions**. Adding +11 dB (QRP portable) jumps recall to 92%. Adding +31 dB (home station) reaches 100%. This matches amateur experience: marginal paths need power.
 
-3. **The ~92% QRP recall is "Goldilocks"**. Per Gemini Pro's architectural review: "The model is correctly identifying the 'grey line' where power actually matters. Do not tune the profiles further; you have found the 'truth.'"
+3. **The ~92% QRP recall is "Goldilocks"**. Per Einstein's architectural review: "The model is correctly identifying the 'grey line' where power actually matters. Do not tune the profiles further; you have found the 'truth.'"
 
 ### Key Metrics Summary
 
