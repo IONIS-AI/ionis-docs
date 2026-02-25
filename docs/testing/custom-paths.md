@@ -1,7 +1,7 @@
 # Custom Path Tests
 
 Define your own test paths in a JSON file and batch-validate them against the
-V20 model. This is the best way to check whether IONIS matches your on-air
+V22-gamma model. This is the best way to check whether IONIS matches your on-air
 experience.
 
 ## Usage
@@ -113,7 +113,7 @@ model and your experience diverge are exactly what we need to know about.
 
 ```
 ======================================================================
-  IONIS V20 — Custom Path Tests
+  IONIS V22-gamma — Custom Path Tests
 ======================================================================
 
   Stress test — 20 paths across good, marginal, bad, and storm conditions

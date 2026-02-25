@@ -2,28 +2,29 @@
 
 | | |
 |---|---|
-| **Document Version** | 2.2 |
-| **Model Version** | IonisGate V20 (Production) |
-| **Checkpoint** | `versions/v20/ionis_v20.pth` |
-| **Date** | 2026-02-16 |
+| **Document Version** | 3.0 |
+| **Model Version** | IonisGate V22-gamma + PhysicsOverrideLayer (Production) |
+| **Checkpoint** | `ionis_v22_gamma.safetensors` |
+| **Date** | 2026-02-25 |
 | **Author** | IONIS |
 
 !!! success "Implementation Status: COMPLETE"
-    All 62 tests are fully automated in the modular test suite:
+    V22-gamma validation uses operator-grounded tests and band x time discrimination:
 
     | Group | Tests | Description |
     |-------|-------|-------------|
-    | TST-100 | 30 | Canonical Paths — Global HF propagation coverage |
-    | TST-200 | 6 | Physics Constraints — V16 Physics Laws |
-    | TST-300 | 5 | Input Validation — Boundary checks |
-    | TST-400 | 4 | Hallucination Traps — Out-of-domain detection |
-    | TST-500 | 7 | Model Robustness — Determinism, stability |
-    | TST-600 | 4 | Adversarial & Security — Malicious input handling |
-    | TST-700 | 3 | Bias & Fairness — Geographic, temporal, band bias |
-    | TST-800 | 3 | Regression Tests — V20 baseline locks |
-    | **Total** | **62** | |
+    | KI7MT Operator Tests | 18 | Operator-grounded paths (17 hard + 1 acid test) |
+    | TST-900 Band x Time | 11 | Band discrimination across day/night/twilight |
+    | **Total** | **29** | |
 
-    Run all tests: `python versions/v20/tests/run_all.py`
+    Run all tests: `ionis-validate test`
+
+    **V22-gamma results**: KI7MT 18/18 PASS (with PhysicsOverrideLayer), TST-900 9/11.
+
+!!! note "V20 Legacy Test Specification (TST-100 through TST-800)"
+    The 62-test V20 specification (TST-100 through TST-800) below is retained
+    as historical reference. V22-gamma inherits V20's core physics and replaces
+    the test battery with focused operator-grounded validation.
 
 ---
 

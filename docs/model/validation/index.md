@@ -8,20 +8,22 @@ description: >-
 
 Automated test results from IONIS model evaluations.
 
-## Current Status: IONIS V20 (2026-02-11)
+## Current Status: IONIS V22-gamma + PhysicsOverrideLayer (Phase 4.0)
 
-!!! success "V20 Production Locked — All Criteria Met"
-    IONIS V20 validates the physics constraints in a clean, config-driven codebase.
+!!! success "V22-gamma Production — Best Physics Model"
+    V22-gamma extends V20 with solar depression features and a deterministic
+    PhysicsOverrideLayer for high-band night closure.
 
-    | Metric | Target | V20 Final | Status |
-    |--------|--------|-----------|--------|
-    | Pearson | > +0.48 | **+0.4879** | **PASS** |
-    | Kp sidecar | > +3.0σ | **+3.487σ** | **PASS** |
-    | SFI sidecar | > +0.4σ | **+0.482σ** | **PASS** |
-    | RMSE | — | **0.862σ** | Matched |
+    | Metric | V22-gamma | V20 Baseline |
+    |--------|-----------|--------------|
+    | Pearson | **+0.492** | +0.4879 |
+    | RMSE | **0.821σ** | 0.862σ |
+    | KI7MT operator tests | **17/17** | 16/17 |
+    | TST-900 band x time | **9/11** | — |
+    | Parameters | **205,621** | 203,573 |
 
-    Training: 100 epochs in 4h 16m on Mac Studio M3 Ultra (MPS backend).
-    Checkpoint: `versions/v20/ionis_v20.pth`
+    Checkpoint: `ionis_v22_gamma.safetensors` (805 KB)
+    PhysicsOverrideLayer: deterministic clamp for freq >= 21 MHz night paths.
 
 ## Mode-Aware Validation
 
@@ -140,21 +142,17 @@ The model learned the full dynamic range. WSPR alone only taught "marginal."
 
 ## Test Suite
 
-!!! note "62/62 Tests Pass"
-    The automated test suite validates physics constraints, canonical paths,
-    input validation, hallucination traps, robustness, adversarial inputs,
-    bias/fairness, and regression baselines.
+!!! note "V22-gamma: KI7MT 18/18, TST-900 9/11 (29 tests)"
+    The V22-gamma test suite validates operator-grounded physics and band x time
+    discrimination. Replaces the V20 62-test battery with focused physics gates.
 
-| Group | ID Range | Tests | Purpose |
-|-------|----------|-------|---------|
-| Canonical Paths | TST-100 | 30 | Global HF propagation coverage |
-| Physics Constraints | TST-200 | 6 | Monotonicity, sidecars |
-| Input Validation | TST-300 | 5 | Boundary checks |
-| Hallucination Traps | TST-400 | 4 | Out-of-domain detection |
-| Robustness | TST-500 | 7 | Determinism, stability |
-| Adversarial/Security | TST-600 | 4 | Malicious input handling |
-| Bias & Fairness | TST-700 | 3 | Geographic, temporal, band bias |
-| Regression | TST-800 | 3 | Catch silent degradation |
+| Group | Tests | Purpose |
+|-------|-------|---------|
+| KI7MT Operator Tests | 18 | Operator-grounded paths from 49K QSOs + 5.7M contest signatures |
+| TST-900 Band x Time | 11 | Band discrimination across day/night/twilight periods |
+
+The KI7MT tests include 4 gates: raw model (16/17), PhysicsOverrideLayer (17/17),
+zero regressions, and acid test verification.
 
 ## Documentation
 

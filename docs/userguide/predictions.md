@@ -87,48 +87,25 @@ The predictor returns three assessments:
 Version-specific oracle scripts evaluate the model against ground-truth
 signatures from ClickHouse.
 
-### Validate Against Signatures
+### Standalone Validation (ionis-validate)
+
+The easiest way to validate is with the `ionis-validate` CLI (no ClickHouse required):
 
 ```bash
-cd ionis-training/versions/v20
-
-python validate_v20.py --host 10.60.1.1
+pip install ionis-validate
+ionis-validate test
 ```
 
-This computes Pearson correlation and RMSE against `validation.quality_test_paths`
-(100K signatures stratified by band).
-
-### Validate Against Live PSK Reporter Data
-
-```bash
-python validate_v20_pskr.py --host 10.60.1.1
-```
-
-This tests the model against real-time PSK Reporter spots with current solar
-conditions — data the model has never seen during training.
+This runs 29 operator-grounded tests: KI7MT 18/18 + TST-900 9/11.
 
 ### Key Metrics
 
-| Metric | Description | V20 Result |
-|--------|-------------|------------|
-| Pearson r | Correlation between predicted and observed SNR | +0.4879 |
-| RMSE | Root mean squared error in sigma units | 0.862 |
-| SFI effect | SNR benefit from solar flux (should be positive, monotonic) | +0.482 sigma |
-| Kp effect | SNR cost from geomagnetic storms (should be negative, monotonic) | -3.487 sigma |
-
-## Comparing Against VOACAP
-
-To run a side-by-side comparison of IONIS vs VOACAP predictions:
-
-```bash
-cd ionis-training/versions/v20
-
-python validate_v20.py --host 10.60.1.1 --voacap
-```
-
-This evaluates both models against the same ground-truth paths and reports
-Pearson correlation for each. In Step K testing, IONIS achieved Pearson
-+0.3675 vs VOACAP +0.0218.
+| Metric | Description | V22-gamma Result |
+|--------|-------------|------------------|
+| Pearson r | Correlation between predicted and observed SNR | +0.492 |
+| RMSE | Root mean squared error in sigma units | 0.821σ |
+| KI7MT operator tests | Operator-grounded physics gates | 17/17 |
+| TST-900 band x time | Band discrimination across time periods | 9/11 |
 
 ## Training a New Model Version
 

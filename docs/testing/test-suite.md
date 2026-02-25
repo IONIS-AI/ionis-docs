@@ -1,7 +1,7 @@
 # Test Suite
 
-The IONIS validation suite runs 62 automated tests that verify the V20 model
-behaves correctly — physics, predictions, edge cases, and regression baselines.
+The IONIS validation suite runs 29 automated tests that verify the V22-gamma model
+behaves correctly — operator-grounded physics gates and band x time discrimination.
 
 ## Running
 
@@ -14,96 +14,69 @@ exits with code 0 if all pass, non-zero otherwise.
 
 ## Test Groups
 
-### TST-100: Canonical Paths (30 tests)
+### KI7MT Operator Tests (18 tests)
 
-Thirty known HF paths spanning all bands, distances, and geographic regions.
-Each path has an expected SNR range based on operational experience. Tests
-verify that model predictions fall within those bounds.
+Eighteen operator-grounded test paths derived from 49,000 QSOs and 5.7 million
+contest signatures. Each path has a physically-motivated expectation based on
+real operating experience from KI7MT (DN13, Idaho).
+
+The tests are organized into 4 gates:
+
+| Gate | Tests | Purpose |
+|------|-------|---------|
+| Raw model | 17 hard pass | V22-gamma predictions without override |
+| PhysicsOverrideLayer | 17 hard pass + acid test | Override clamps high-band night |
+| Regression | 17 | No paths that passed raw should fail with override |
+| Acid test | 1 | 10m EU at night must be negative (override fires) |
 
 Examples:
 
-- FN31 to JO21 on 20m at 14 UTC in June (US East Coast to England)
-- DN26 to PM95 on 20m at 06 UTC in December (US West Coast to Japan)
-- PJ2 to ZL on 15m during high SFI (Caribbean to New Zealand)
+- 20m FN31 to JO21 at 14 UTC in June (US East Coast to England, daytime)
+- 160m DN13 to EM73 at 03 UTC (domestic NVIS, nighttime)
+- 10m DN13 to JN48 at 03 UTC (acid test — both endpoints dark, override fires)
 
-These are the "does the model match reality?" tests.
+### TST-900: Band x Time Discrimination (11 tests)
 
-### TST-200: Physics Constraints (6 tests)
+Eleven band x time combinations testing whether the model correctly
+discriminates propagation across HF bands and time periods:
 
-Verifies the model respects ionospheric physics:
+| Test | Band | Time | Expected |
+|------|------|------|----------|
+| TST-901 | 20m | Day | Positive SNR |
+| TST-902 | 40m | Night | Positive SNR |
+| TST-903 | 10m | Day, low SFI | Marginal (known fail) |
+| TST-904 | 15m | Twilight | Marginal (known fail) |
+| TST-905–911 | Various | Various | Band-appropriate response |
 
-- **SFI monotonicity**: Higher solar flux always improves SNR
-- **Kp monotonicity**: Higher geomagnetic activity always degrades SNR
-- **Polar degradation**: Polar paths are more sensitive to storms than equatorial
-- **Storm/sun sidecar range**: Gate values stay within [0.5, 2.0]
-
-If any of these fail, the model has learned unphysical behavior.
-
-### TST-300: Input Validation (5 tests)
-
-Boundary condition checks:
-
-- Extreme latitudes (poles)
-- Maximum distance (antipodal paths)
-- Minimum distance (short skip)
-- Edge frequencies (160m, 10m)
-- Solar extremes (SFI 65, SFI 300)
-
-### TST-400: Hallucination Traps (4 tests)
-
-Feeds the model inputs that should produce bounded or known outputs:
-
-- Night-side 10m path (should predict poor propagation)
-- Geomagnetically impossible paths
-- Out-of-training-range solar indices
-- Paths with no historical observations
-
-### TST-500: Robustness (7 tests)
-
-- **Determinism**: Same input produces same output across runs
-- **Device portability**: Results match across CPU, CUDA, and MPS
-- **Batch consistency**: Single-sample and batched inference agree
-- **Numerical stability**: No NaN, Inf, or overflow on edge inputs
-
-### TST-600: Adversarial (4 tests)
-
-Malicious or malformed inputs:
-
-- NaN injection
-- Extreme values (1e10, -1e10)
-- Type confusion
-- Buffer boundary inputs
-
-### TST-700: Bias and Fairness (3 tests)
-
-- **Geographic balance**: Model doesn't systematically favor one hemisphere
-- **Temporal balance**: Day/night predictions are physically reasonable
-- **Band balance**: No band shows anomalous recall collapse
-
-### TST-800: Regression (3 tests)
-
-Baseline checks against locked reference values:
-
-- Checkpoint file integrity (hash verification)
-- Known-input known-output regression vectors
-- Metric bounds (Pearson, RMSE within expected range)
+**Expected score: 9/11.** TST-903 and TST-904 are known limitations —
+the model predicts these marginal conditions slightly outside the expected
+range. These are tracked for future model versions.
 
 ## Interpreting Results
 
 A passing run looks like:
 
 ```
-Running 62 tests across 8 groups...
-TST-100: 30/30 PASS
-TST-200:  6/6  PASS
-TST-300:  5/5  PASS
-TST-400:  4/4  PASS
-TST-500:  7/7  PASS
-TST-600:  4/4  PASS
-TST-700:  3/3  PASS
-TST-800:  3/3  PASS
+============================================================
+  IONIS V22-gamma — Validation Suite
+============================================================
 
-62/62 PASS
+  KI7MT Operator Tests
+  ────────────────────
+  Gate 1: Raw Model ................ 16/17 hard pass
+  Gate 2: Override ................. 17/17 hard pass
+  Gate 3: Regression ............... 0 regressions
+  Gate 4: Acid Test ................ PASS (override fired)
+  KI7MT Result: 18/18 PASS
+
+  TST-900 Band x Time
+  ────────────────────
+  TST-901 .... PASS
+  TST-902 .... PASS
+  ...
+  TST-900 Result: 9/11
+
+  Summary: KI7MT 18/18 PASS | TST-900 9/11
 ```
 
 If a test fails, the output includes:
@@ -113,3 +86,10 @@ If a test fails, the output includes:
 - Suggested diagnostic steps
 
 Report failures via [Reporting Issues](reporting.md).
+
+## V20 Legacy Test Suite
+
+The V20 test specification (TST-100 through TST-800, 62 tests) is documented
+in the [Test Specification](../model/validation/test_specification.md) for
+historical reference. V22-gamma replaces this battery with the focused
+operator-grounded validation above.

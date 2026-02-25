@@ -13,18 +13,19 @@ IONIS (Ionospheric Neural Inference System) predicts HF radio signal-to-noise
 ratio (SNR) for any transmitter-receiver path given geographic coordinates,
 frequency, time of day, and solar conditions.
 
-The model learns from 13B+ real-world amateur radio observations — WSPR beacons,
-Reverse Beacon Network spots, and contest QSOs — combined with solar flux and
-geomagnetic indices. Unlike traditional tools such as VOACAP, IONIS captures
+The model learns from 14B+ real-world amateur radio observations — WSPR beacons,
+Reverse Beacon Network spots, contest QSOs, and PSK Reporter — combined with solar
+flux and geomagnetic indices. Unlike traditional tools such as VOACAP, IONIS captures
 empirical propagation patterns directly from observed data.
 
-**Key metrics (V20 Production):**
+**Key metrics (V22-gamma + PhysicsOverrideLayer):**
 
-| Metric | IONIS V20 | VOACAP |
-|--------|-----------|--------|
-| Pearson correlation | **+0.4879** | +0.0218 |
-| PSK Reporter recall | **84.14%** | — |
-| Training data | 31M signatures | Physics model |
+| Metric | IONIS V22-gamma | VOACAP |
+|--------|-----------------|--------|
+| Pearson correlation | **+0.492** | +0.0218 |
+| KI7MT operator tests | **17/17** | — |
+| TST-900 band x time | **9/11** | — |
+| RMSE | **0.821σ** | — |
 
 ## Installation
 

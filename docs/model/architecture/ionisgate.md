@@ -1,20 +1,22 @@
 ---
 description: >-
-  IonisGate is a 203K-parameter PyTorch model combining a DNN trunk with dual
-  monotonic sidecars for solar flux and geomagnetic storm physics. The architecture
-  prevents the Kp inversion problem through constrained gates.
+  IonisGate is a 205K-parameter PyTorch model combining a DNN trunk with dual
+  monotonic sidecars for solar flux and geomagnetic storm physics, plus a
+  PhysicsOverrideLayer for high-band night closure. The architecture prevents
+  the Kp inversion problem through constrained gates.
 ---
 
 # IonisGate Architecture
 
-!!! success "Production: IONIS V20"
-    IonisGate architecture validated with V20 production checkpoint.
+!!! success "Production: IONIS V22-gamma + PhysicsOverrideLayer"
+    IonisGate architecture validated with V22-gamma production checkpoint.
 
-    - **Pearson**: +0.4879
-    - **RMSE**: 0.862σ (~5.8 dB)
-    - **SFI benefit**: +0.482σ (~3.2 dB), monotonic
-    - **Kp storm cost**: +3.487σ (~23.4 dB), monotonic
-    - **Test Suite**: 62/62 PASS
+    - **Pearson**: +0.492
+    - **RMSE**: 0.821σ (~5.5 dB)
+    - **KI7MT operator tests**: 17/17 PASS
+    - **TST-900 band x time**: 9/11
+    - **Parameters**: 205,621
+    - **PhysicsOverrideLayer**: deterministic high-band night clamp
 
 ## Design Rationale
 
@@ -38,11 +40,11 @@ output = base_snr + sun_scaler × SunSidecar(sfi)
 The DNN splits into a **shared trunk** with **three heads**:
 
 ```
-Input (13 features)
+Input (17 features)
     │
-    ├── features 0-10 (geography/time)
+    ├── features 0-14 (geography/time/solar depression)
     │       │
-    │    Trunk: 11 → 512 → 256
+    │    Trunk: 15 → 512 → 256
     │       │
     │       ├── Base Head: 256 → 128 → 1  ──────────► base_snr
     │       │
@@ -50,9 +52,9 @@ Input (13 features)
     │       │                                              │
     │       └── Storm Scaler: 256 → 64 → 1 → gate() ──► storm_scaler ∈ [0.5, 2.0]
     │                                                      │
-    ├── feature 11 (sfi) ──► SunSidecar(8) ──────── × sun_scaler ──► sun_term
+    ├── feature 15 (sfi) ──► SunSidecar(8) ──────── × sun_scaler ──► sun_term
     │                                                                    │
-    └── feature 12 (kp_penalty) ──► StormSidecar(8) ── × storm_scaler ──► storm_term
+    └── feature 16 (kp_penalty) ──► StormSidecar(8) ── × storm_scaler ──► storm_term
                                                                           │
                                                 Output = base_snr + sun_term + storm_term
 ```
@@ -84,13 +86,30 @@ The gate acts as a **volume control**: it can turn the sidecar effect up (to 2x)
 
 | Component | Parameters |
 |-----------|-----------|
-| Trunk (11→512→256) | 137,472 |
+| Trunk (15→512→256) | 139,520 |
 | Base head (256→128→1) | 33,025 |
 | Sun scaler head (256→64→1) | 16,513 |
 | Storm scaler head (256→64→1) | 16,513 |
 | Sun Sidecar (1→8→1) | 25 |
 | Storm Sidecar (1→8→1) | 25 |
-| **Total** | **203,573** |
+| **Total** | **205,621** |
+
+### PhysicsOverrideLayer (Post-Inference)
+
+A deterministic, non-trainable clamp applied after model inference:
+
+```
+IF freq >= 21 MHz
+   AND tx_solar_depression < -6°
+   AND rx_solar_depression < -6°
+   AND prediction > -1.0σ
+THEN clamp prediction to -1.0σ
+```
+
+This closes high bands (15m, 12m, 10m) when both endpoints are in
+darkness. The override fires only when the neural network produces a
+physically impossible positive prediction for nighttime high-band paths.
+Pure numpy — no gradients, no training interference.
 
 ## Anti-Collapse Regularization
 

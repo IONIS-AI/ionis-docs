@@ -215,3 +215,9 @@ was specifically designed to perform. For digital modes (FT8, FT4, WSPR) and CW 
 well below VOACAP's design point, IONIS provides predictions where no comparable
 reference model exists. See the [Validation Overview](index.md) for the mode-aware
 recall staircase.
+
+!!! info "V22-gamma Note"
+    This is a V20 historical validation report. V22-gamma (Pearson +0.492,
+    RMSE 0.821σ) inherits V20's core physics and improves on it with solar
+    depression features and PhysicsOverrideLayer. The VOACAP comparison
+    methodology and results validated here remain foundational.

@@ -1,7 +1,7 @@
 ---
 description: >-
   How IONIS replaces empirical VOACAP physics with physics-constrained PyTorch
-  neural networks trained on 13 billion real amateur radio observations. V20
+  neural networks trained on 14 billion real amateur radio observations. V20
   results, ongoing refinements, and the path toward IRI-derived features.
 ---
 
@@ -10,7 +10,7 @@ description: >-
 **While legacy tools like VOACAP rely on empirical formulas derived from 1960s
 ionospheric measurement campaigns, IONIS uses physics-constrained PyTorch
 neural networks to predict HF path viability from first principles of observed
-behavior. Trained on over 13 billion real amateur radio observations from WSPR,
+behavior. Trained on over 14 billion real amateur radio observations from WSPR,
 the Reverse Beacon Network, and contest logs, IONIS captures nonlinear
 ionospheric behaviors — sporadic-E openings, real-time solar variability,
 grey-line enhancement — that traditional mathematical models miss. On 1 million
@@ -22,7 +22,7 @@ research at NTIA/ITS, it uses empirical ionospheric coefficients and ray-tracing
 geometry to estimate circuit reliability for voice communication.
 
 IONIS takes a fundamentally different approach: learn propagation behavior
-directly from 13 billion real radio observations, constrained by known physics.
+directly from 14 billion real radio observations, constrained by known physics.
 
 This page documents where we are, what we've proven, and what we're still
 working on.
@@ -188,7 +188,7 @@ frequency is above or below the MUF at each point along the path.
 
 These features would replace the global SFI scalar with a path-specific
 ionospheric scalpel — giving the model the same physics VOACAP has, plus
-everything it learns from 13 billion observations that VOACAP has never seen.
+everything it learns from 14 billion observations that VOACAP has never seen.
 
 ## The Larger Picture
 
@@ -202,14 +202,14 @@ network is weak, use ionospheric models to provide features the neural network
 can't derive from radio data alone, and use the neural network to capture
 patterns that no empirical model can express — sporadic-E openings,
 trans-equatorial propagation, grey-line enhancement, and the thousands of
-subtle effects buried in 13 billion data points.
+subtle effects buried in 14 billion data points.
 
 The logs were speaking for decades. Now we're listening — and teaching a model
 to understand what they're saying.
 
 ## Project Resources
 
-- **Validation Suite**: [ionis-validate on PyPI](https://pypi.org/project/ionis-validate/) — run the 62-test physics battery locally
+- **Validation Suite**: [ionis-validate on PyPI](https://pypi.org/project/ionis-validate/) — run the 29-test operator-grounded physics battery locally
 - **Live Predictions**: [ham-stats.com](https://ham-stats.com) — band conditions and IONIS predictions updated every 3 hours
 - **Source Code**: [IONIS-AI on GitHub](https://github.com/IONIS-AI) — all repos, open source, GPLv3
 - **VOACAP Comparison Data**: [Full results by mode and band](validation/step_i_voacap_comparison.md)

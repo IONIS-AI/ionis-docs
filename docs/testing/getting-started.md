@@ -2,8 +2,7 @@
 
 ## Prerequisites
 
-- Python 3.9+ for CLI tools
-- Python 3.10+ for Browser UI
+- Python 3.10+
 - No GPU, no database, no special hardware
 
 !!! tip "Check your Python version"
@@ -13,7 +12,7 @@
     python --version
     ```
 
-    If you see `Python 3.9` or higher, you're good. If you don't have Python
+    If you see `Python 3.10` or higher, you're good. If you don't have Python
     installed, download it from [python.org](https://www.python.org/downloads/).
 
 ## Install
@@ -73,8 +72,8 @@ pip install ionis-validate
 This installs:
 
 - `ionis-validate` — the CLI tool
-- The V20 model checkpoint and config (~50 MB)
-- PyTorch and NumPy (pulled automatically, ~800 MB)
+- The V22-gamma model checkpoint and config (safetensors, ~50 MB)
+- PyTorch, NumPy, and safetensors (pulled automatically, ~800 MB)
 
 ## Verify Installation
 
@@ -82,8 +81,8 @@ This installs:
 ionis-validate info
 ```
 
-Expected output includes model version (V20), parameter count (203,573),
-checkpoint metrics, and your system's PyTorch device (CPU, CUDA, or MPS).
+Expected output includes model version (V22-gamma), parameter count (205,621),
+PhysicsOverrideLayer status, and your system's PyTorch device (CPU, CUDA, or MPS).
 
 ## First Run
 
@@ -93,20 +92,15 @@ Run the full test suite:
 ionis-validate test
 ```
 
-This executes 62 tests across 8 groups:
+This executes 29 tests across 2 groups:
 
 | Group | Tests | What It Checks |
 |-------|-------|----------------|
-| TST-100 | 30 | Canonical paths — global HF coverage |
-| TST-200 | 6 | Physics — SFI helps, storms hurt, polar degrades |
-| TST-300 | 5 | Input validation — boundary checks |
-| TST-400 | 4 | Hallucination traps — out-of-domain detection |
-| TST-500 | 7 | Robustness — determinism, device portability |
-| TST-600 | 4 | Adversarial — malicious input handling |
-| TST-700 | 3 | Bias — geographic, temporal, band fairness |
-| TST-800 | 3 | Regression — catch silent degradation |
+| KI7MT Operator Tests | 18 | Operator-grounded paths from 49K QSOs + 5.7M contest signatures |
+| TST-900 Band x Time | 11 | Band discrimination across day/night/twilight periods |
 
-All 62 should pass. If any fail, see [Reporting Issues](reporting.md).
+Expected: KI7MT 18/18 PASS, TST-900 9/11 (TST-903 and TST-904 are known).
+If any KI7MT test fails, see [Reporting Issues](reporting.md).
 
 ## Try a Prediction
 
@@ -115,7 +109,7 @@ Predict a 20m path from your grid:
 === "Windows"
 
     ```
-    ionis-validate predict --tx-grid FN20 --rx-grid IO91 --band 20m --sfi 150 --kp 2 --hour 14 --month 6
+    ionis-validate predict --tx-grid FN20 --rx-grid IO91 --band 20m --sfi 150 --kp 2 --hour 14 --month 6 --day-of-year 172
     ```
 
 === "macOS / Linux"
@@ -124,7 +118,7 @@ Predict a 20m path from your grid:
     ionis-validate predict \
         --tx-grid FN20 --rx-grid IO91 \
         --band 20m --sfi 150 --kp 2 \
-        --hour 14 --month 6
+        --hour 14 --month 6 --day-of-year 172
     ```
 
 The output shows predicted SNR (in sigma and dB) and per-mode verdicts:
@@ -133,45 +127,15 @@ WSPR, FT8, CW, RTTY, and SSB — open or closed.
 ## Browser UI
 
 The optional browser UI wraps every command in a point-and-click dashboard.
-It requires **Python 3.10+** and an additional install step.
+Install the UI extras and launch:
 
-Create a separate virtual environment for the UI so you can remove it
-independently:
-
-=== "Windows"
-
-    ```
-    python -m venv .venv-ui
-    .venv-ui\Scripts\activate
-    pip install "ionis-validate[ui]"
-    ionis-validate ui
-    ```
-
-=== "macOS"
-
-    ```
-    python3 -m venv .venv-ui
-    source .venv-ui/bin/activate
-    pip install "ionis-validate[ui]"
-    ionis-validate ui
-    ```
-
-=== "Linux"
-
-    ```bash
-    python3 -m venv .venv-ui
-    source .venv-ui/bin/activate
-    pip install "ionis-validate[ui]"
-    ionis-validate ui
-    ```
+```
+pip install "ionis-validate[ui]"
+ionis-validate ui
+```
 
 This opens a browser tab at `http://localhost:8765` with tabs for
 Predict, Custom, Report, and Info.
-
-!!! info "Python 3.10+ required for the UI"
-    If your Python is 3.9, the base CLI works fine — only the browser UI
-    needs 3.10+. The `ionis-validate ui` command will tell you if your
-    Python version is too old.
 
 ## Cleanup
 
@@ -183,14 +147,13 @@ the folder. Nothing else to uninstall.
     ```
     deactivate
     rmdir /s /q .venv
-    rmdir /s /q .venv-ui
     ```
 
 === "macOS / Linux"
 
     ```bash
     deactivate
-    rm -rf .venv .venv-ui
+    rm -rf .venv
     ```
 
 ## What's Next

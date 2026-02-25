@@ -124,3 +124,9 @@ IONIS learned the "Deep-Tissue Physics" of the ionosphere from 10.8B observation
 
 *Generated: 2026-02-09*
 *IONIS — Ionospheric Neural Inference System (V20 Production)*
+
+!!! info "V22-gamma Note"
+    This is a V20 historical quality test. V22-gamma (Pearson +0.492,
+    RMSE 0.821σ) inherits V20's per-band prediction quality and improves
+    aggregate metrics through solar depression features. The per-band
+    Pearson analysis methodology validated here applies to V22-gamma.

@@ -1,7 +1,7 @@
 ---
 description: >-
   Training methodology for the IONIS HF propagation model on Mac Studio M3 Ultra.
-  Aggregated signatures from 13B observations, HuberLoss, differential learning
+  Aggregated signatures from 14B observations, HuberLoss, differential learning
   rates, and physics-constrained sidecars that enforce ionospheric behavior.
 ---
 
@@ -16,8 +16,8 @@ This strips site-level noise and reveals the atmospheric transfer function.
 |---------|-----------|----------------------|
 | Training rows | 10M spots | 20M signatures |
 | Target | Individual SNR | Median SNR per bucket |
-| RMSE | 2.48 dB | **0.862σ** (V20) |
-| Pearson | +0.24 | **+0.4879** (V20) |
+| RMSE | 2.48 dB | **0.821σ** (V22-gamma) |
+| Pearson | +0.24 | **+0.492** (V22-gamma) |
 
 ## Differential Learning Rate
 
@@ -72,5 +72,5 @@ The DNN receives **zero** direct solar/storm features. This forces the model to:
 ## Convergence
 
 Physics constraints remain positive throughout training. Aggregated signatures produce
-stronger physics response than raw spots. V20 production achieves Pearson +0.4879
-after 100 epochs (4h 16m on MPS).
+stronger physics response than raw spots. V22-gamma production achieves Pearson +0.492
+and RMSE 0.821σ after 100 epochs on MPS.

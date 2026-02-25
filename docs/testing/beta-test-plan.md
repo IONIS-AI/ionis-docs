@@ -1,4 +1,4 @@
-# V20 Beta Test Plan
+# V22-gamma Beta Test Plan
 
 This page walks you through every test we need you to run. Follow the
 tests in order. Each test tells you exactly what to enter, what to
@@ -9,7 +9,7 @@ Both produce identical results — pick whichever you prefer.
 
 !!! tip "Before you start"
     Complete the [Getting Started](getting-started.md) installation first.
-    Run `ionis-validate --version` and confirm you see `0.2.0` or later.
+    Run `ionis-validate --version` and confirm you see `4.0.0` or later.
 
 ---
 
@@ -35,9 +35,9 @@ Both produce identical results — pick whichever you prefer.
 
 | Field | Expected Value |
 |-------|----------------|
-| Version | V20 (production) |
+| Version | V22-gamma + PhysicsOverrideLayer |
 | Architecture | IonisGate |
-| Parameters | 203,573 |
+| Parameters | 205,621 |
 | Device | cpu, cuda, or mps |
 
 **Record:** Your device type (cpu, cuda, or mps).
@@ -50,7 +50,7 @@ Both produce identical results — pick whichever you prefer.
 
 ## Test-2: Automated Test Suite
 
-**Objective:** Run all 62 physics, robustness, and regression tests.
+**Objective:** Run all 29 operator-grounded and band x time tests.
 
 === "CLI"
 
@@ -63,9 +63,9 @@ Both produce identical results — pick whichever you prefer.
     Click the **Report** tab. Leave "Include test suite results" on.
     Click **Generate Report**. The test results appear in the report body.
 
-**Expected result:** `62/62` — every group shows `PASS`.
+**Expected result:** KI7MT 18/18 PASS, TST-900 9/11 (TST-903/904 are known).
 
-**Record:** Total pass count (should be 62/62).
+**Record:** KI7MT pass count and TST-900 score.
 
 !!! failure "Stop condition"
     If any test fails, do not continue. Skip to
@@ -82,7 +82,7 @@ solar conditions. This gives us a baseline to compare across all testers.
 === "CLI (Windows)"
 
     ```
-    ionis-validate predict --tx-grid FN31 --rx-grid IO91 --band 20m --sfi 150 --kp 2 --hour 14 --month 6
+    ionis-validate predict --tx-grid FN31 --rx-grid IO91 --band 20m --sfi 150 --kp 2 --hour 14 --month 6 --day-of-year 172
     ```
 
 === "CLI (macOS / Linux)"
@@ -91,7 +91,7 @@ solar conditions. This gives us a baseline to compare across all testers.
     ionis-validate predict \
         --tx-grid FN31 --rx-grid IO91 \
         --band 20m --sfi 150 --kp 2 \
-        --hour 14 --month 6
+        --hour 14 --month 6 --day-of-year 172
     ```
 
 === "Browser UI"
@@ -107,12 +107,13 @@ solar conditions. This gives us a baseline to compare across all testers.
     | Kp | 2 |
     | Hour UTC | 14 |
     | Month | 6 |
+    | Day of Year | 172 |
 
     Click **Predict**.
 
 **Expected results:**
 
-- Predicted dB: **-18.8 dB** (exactly, on all platforms)
+- Predicted dB: **-18.9 dB** (exactly, on all platforms)
 - WSPR: **OPEN**
 - FT8: **OPEN**
 - CW: **closed** (below the -15 dB threshold)
@@ -130,7 +131,7 @@ This tests whether the model correctly identifies marginal openings.
 === "CLI (Windows)"
 
     ```
-    ionis-validate predict --tx-grid DN46 --rx-grid PM95 --band 15m --sfi 120 --kp 2 --hour 6 --month 12
+    ionis-validate predict --tx-grid DN46 --rx-grid PM95 --band 15m --sfi 120 --kp 2 --hour 6 --month 12 --day-of-year 350
     ```
 
 === "CLI (macOS / Linux)"
@@ -139,7 +140,7 @@ This tests whether the model correctly identifies marginal openings.
     ionis-validate predict \
         --tx-grid DN46 --rx-grid PM95 \
         --band 15m --sfi 120 --kp 2 \
-        --hour 6 --month 12
+        --hour 6 --month 12 --day-of-year 350
     ```
 
 === "Browser UI"
@@ -155,14 +156,15 @@ This tests whether the model correctly identifies marginal openings.
     | Kp | 2 |
     | Hour UTC | 6 |
     | Month | 12 |
+    | Day of Year | 350 |
 
     Click **Predict**.
 
 **Expected results:**
 
-- Predicted dB: **-19.4 dB** (exactly, on all platforms)
+- Predicted dB: **-17.1 dB** (exactly, on all platforms)
 - WSPR: **OPEN**
-- FT8: **OPEN** (just above the -21 dB threshold)
+- FT8: **OPEN**
 - CW: **closed**
 - SSB: **closed**
 
@@ -178,7 +180,7 @@ This tests whether the model correctly identifies marginal openings.
 === "CLI (Windows)"
 
     ```
-    ionis-validate predict --tx-grid FN31 --rx-grid IO91 --band 20m --sfi 150 --kp 7 --hour 14 --month 6
+    ionis-validate predict --tx-grid FN31 --rx-grid IO91 --band 20m --sfi 150 --kp 7 --hour 14 --month 6 --day-of-year 172
     ```
 
 === "CLI (macOS / Linux)"
@@ -187,7 +189,7 @@ This tests whether the model correctly identifies marginal openings.
     ionis-validate predict \
         --tx-grid FN31 --rx-grid IO91 \
         --band 20m --sfi 150 --kp 7 \
-        --hour 14 --month 6
+        --hour 14 --month 6 --day-of-year 172
     ```
 
 === "Browser UI"
@@ -203,14 +205,16 @@ This tests whether the model correctly identifies marginal openings.
     | Kp | 7 |
     | Hour UTC | 14 |
     | Month | 6 |
+    | Day of Year | 172 |
 
     Click **Predict**.
 
 **Expected results:**
 
-- Predicted dB: **-25.2 dB** (exactly, on all platforms)
-- This is **6.4 dB worse** than the Kp 2 result in Test-3 — the storm
+- Predicted dB: **-24.1 dB** (exactly, on all platforms)
+- This is **5.2 dB worse** than the Kp 2 result in Test-3 — the storm
   sidecar is applying a real penalty
+- FT8 is now **closed** (below -21 dB threshold) — the storm killed the opening
 - If your value does not match, that is a finding worth reporting
 
 **Record:** The exact predicted dB value. Confirm it is worse than Test-3.
@@ -228,7 +232,7 @@ use, and the time and month when you typically make the contact.
 === "CLI"
 
     ```
-    ionis-validate predict --tx-grid YOURGRID --rx-grid THEIRGRID --band 20m --sfi 150 --kp 2 --hour 14 --month 6
+    ionis-validate predict --tx-grid YOURGRID --rx-grid THEIRGRID --band 20m --sfi 150 --kp 2 --hour 14 --month 6 --day-of-year 172
     ```
 
     Replace `YOURGRID`, `THEIRGRID`, band, hour, and month with your real
@@ -324,11 +328,11 @@ Open a new issue here and paste your report:
 
 | Test | What | Key Input | Pass Criteria |
 |------|------|-----------|---------------|
-| Test-1 | Verify install | `ionis-validate info` | V20, 203,573 params |
-| Test-2 | Automated suite | `ionis-validate test` | 62/62 pass |
-| Test-3 | Good path | FN31 > IO91, 20m, Kp 2 | -18.8 dB, FT8 OPEN |
-| Test-4 | Marginal path | DN46 > PM95, 15m, SFI 120 | -19.4 dB, FT8 OPEN |
-| Test-5 | Storm path | FN31 > IO91, 20m, Kp 7 | -25.2 dB (6.4 dB worse) |
+| Test-1 | Verify install | `ionis-validate info` | V22-gamma, 205,621 params |
+| Test-2 | Automated suite | `ionis-validate test` | KI7MT 18/18, TST-900 9/11 |
+| Test-3 | Good path | FN31 > IO91, 20m, Kp 2 | -18.9 dB, FT8 OPEN |
+| Test-4 | Marginal path | DN46 > PM95, 15m, SFI 120 | -17.1 dB, FT8 OPEN |
+| Test-5 | Storm path | FN31 > IO91, 20m, Kp 7 | -24.1 dB (5.2 dB worse) |
 | Test-6 | Your good path | Your grids, your band | Matches your experience |
 | Test-7 | Your bad path | A path you know is dead | Predicts closed |
 | Test-8 | Submit results | `ionis-validate report` | GitHub Issue filed |

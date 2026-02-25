@@ -1,6 +1,6 @@
 ---
 description: >-
-  How IONIS ingests 13 billion radio observations from WSPR, RBN, contest logs,
+  How IONIS ingests 14 billion radio observations from WSPR, RBN, contest logs,
   and PSK Reporter into ClickHouse at 22 million rows per second using custom
   Go binaries with native protocol and LZ4 compression.
 ---
@@ -9,7 +9,7 @@ description: >-
 
 ## WSPR Ingestion
 
-**Source**: 10.8B WSPR spots from [wsprnet.org](https://wsprnet.org) CSV archives
+**Source**: 10.94B WSPR spots from [wsprnet.org](https://wsprnet.org) CSV archives
 
 | Tool | Method | Throughput |
 |------|--------|------------|
@@ -59,12 +59,12 @@ Generates float4 embeddings from WSPR+solar data:
 
 ## RBN Ingestion
 
-**Source**: 2.18B [Reverse Beacon Network](https://reversebeacon.net) spots from daily ZIP archives (2009-02-21 to 2025)
+**Source**: 2.26B [Reverse Beacon Network](https://reversebeacon.net) spots from daily ZIP archives (2009-02-21 to 2026)
 
 | Tool | Method | Throughput |
 |------|--------|------------|
 | `rbn-download` | Daily ZIP download → `/mnt/rbn-data` | 6,183 daily files |
-| `rbn-ingest` | CSV → ClickHouse (`rbn.bronze`) | 2.18B rows in 3m35s (10.15 Mrps) |
+| `rbn-ingest` | CSV → ClickHouse (`rbn.bronze`) | 2.26B rows in 3m35s (10.15 Mrps) |
 
 - **Archive**: `https://data.reversebeacon.net/rbn_history/YYYYMMDD.zip`
 - **Size**: ~21 GB compressed, ~135 GB uncompressed
@@ -80,7 +80,7 @@ Generates float4 embeddings from WSPR+solar data:
 | Tool | Method | Throughput |
 |------|--------|------------|
 | `contest-download` | Index scrape + hash-based download → `/mnt/contest-logs` | 491K files, 3.5 GB |
-| `contest-ingest` | Cabrillo V2/V3 parser → ClickHouse (`contest.bronze`) | 195M QSOs |
+| `contest-ingest` | Cabrillo V2/V3 parser → ClickHouse (`contest.bronze`) | 234M QSOs |
 
 ### Contests Downloaded
 
@@ -100,9 +100,9 @@ Four pillars of propagation truth, each on a dedicated ZFS dataset:
 
 | Source | Tool | Volume | Modes | Grid Quality |
 |--------|------|--------|-------|-------------|
-| **WSPR** | `wspr-turbo` | 10.8B spots | WSPR only | 4-char [Maidenhead](https://en.wikipedia.org/wiki/Maidenhead_Locator_System) |
-| **RBN** | `rbn-ingest` | 2.18B spots | CW, RTTY | DXCC prefix only (24% geocoded via Rosetta Stone) |
-| **Contest Logs** | `contest-ingest` | 195M QSOs (491K files) | CW/SSB/RTTY/Digi | HQ-GRID-LOCATOR (98.5% ARRL) + callsign lookup |
+| **WSPR** | `wspr-turbo` | 10.94B spots | WSPR only | 4-char [Maidenhead](https://en.wikipedia.org/wiki/Maidenhead_Locator_System) |
+| **RBN** | `rbn-ingest` | 2.26B spots | CW, RTTY | DXCC prefix only (24% geocoded via Rosetta Stone) |
+| **Contest Logs** | `contest-ingest` | 234M QSOs (491K files) | CW/SSB/RTTY/Digi | HQ-GRID-LOCATOR (98.5% ARRL) + callsign lookup |
 | **PSK Reporter** | `pskr-collector` | ~26M HF spots/day (live since 2026-02-10) | FT8/FT4/WSPR/JS8/CW | 4-6 char Maidenhead |
 
 ### PSK Reporter (Forward Collection — Active)
@@ -152,14 +152,15 @@ Each dataset can be independently snapshotted, replicated (`zfs send`), and quot
 
 | Table | Rows | Size | Purpose |
 |-------|------|------|---------|
-| `wspr.bronze` | 10.8B | 191 GiB | Raw WSPR spots |
-| `rbn.bronze` | 2.18B | 45.3 GiB | Raw RBN CW/RTTY spots |
-| `contest.bronze` | 234.3M | 4.1 GiB | Parsed contest QSOs (15 contests) |
+| `wspr.bronze` | 10.94B | 191 GiB | Raw WSPR spots |
+| `rbn.bronze` | 2.26B | 45.3 GiB | Raw RBN CW/RTTY spots |
+| `contest.bronze` | 234M | 4.1 GiB | Parsed contest QSOs (15 contests) |
 | `wspr.silver` | 4.4B | 41 GiB | CUDA float4 embeddings |
 | `wspr.signatures_v2_terrestrial` | 93.6M | 2.3 GiB | Aggregated signatures (training source, balloon-filtered) |
 | `wspr.callsign_grid` | 38.6K | — | Rosetta Stone: callsign → grid lookup |
 | `wspr.gold_continuous` | 10M | 218 MiB | IFW-weighted training set |
 | `wspr.gold_stratified` | 10M | 167 MiB | SSN-stratified training set |
 | `wspr.gold_v6` | 10M | 240 MiB | V6 training set (continuous + kp_penalty) |
-| `pskr.bronze` | — | — | PSK Reporter reception spots (accumulating) |
-| `solar.bronze` | 17.8K | 868 KiB | SSN, SFI, Kp daily/3-hourly |
+| `pskr.bronze` | 514M+ | — | PSK Reporter reception spots (accumulating since 2026-02-10) |
+| `solar.bronze` | 77K | 868 KiB | SSN, SFI, Kp daily/3-hourly |
+| `solar.dscovr` | 15K | — | DSCOVR L1 solar wind (Bz, speed, density) |

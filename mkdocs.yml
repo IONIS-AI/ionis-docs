@@ -1,7 +1,7 @@
 site_name: IONIS — Ionospheric Neural Inference System
 site_description: >-
   IONIS predicts HF radio propagation using physics-constrained neural networks
-  trained on 13 billion amateur radio observations from WSPR, RBN, contest logs,
+  trained on 14 billion amateur radio observations from WSPR, RBN, contest logs,
   and PSK Reporter. Open source, self-hosted, no cloud dependencies.
 site_author: Greg Beam, KI7MT
 site_url: https://ionis-ai.com/

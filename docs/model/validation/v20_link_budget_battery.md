@@ -162,3 +162,9 @@ The full 24-profile × 3-source battery (72 runs, ~13-16 hours) will provide:
 **Test ID**: IONIS-V20-LB-01
 **Author**: IONIS Team
 **Status**: PASS — Initial validation complete, full battery pending
+
+!!! info "V22-gamma Note"
+    This is a V20 historical validation report. V22-gamma inherits V20's core
+    IonisGate physics and adds solar depression features + PhysicsOverrideLayer
+    for high-band night closure. The link budget physics validated here remains
+    foundational to V22-gamma production.

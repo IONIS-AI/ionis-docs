@@ -1,7 +1,7 @@
 ---
 description: >-
   IONIS predicts HF propagation using physics-constrained neural networks trained
-  on 13 billion real amateur radio observations. Open source, self-hosted,
+  on 14 billion real amateur radio observations. Open source, self-hosted,
   outperforms VOACAP by 20 percentage points on live PSK Reporter data.
 ---
 
@@ -49,7 +49,7 @@ observational data reveals what actually happens.
 
 IONIS is built on four pillars:
 
-1. **Massive observational data**: 13.18B+ radio contacts from four independent networks (WSPR, RBN, contest logs, and PSK Reporter)
+1. **Massive observational data**: 14B+ radio contacts from four independent networks (WSPR, RBN, contest logs, and PSK Reporter)
 2. **Neural network with physics constraints**: The model can't violate known ionospheric physics
 3. **Mode-aware prediction**: One SNR prediction yields six operational verdicts (WSPR, FT8, CW, RTTY, SSB)
 4. **Closed-loop validation**: Live [PSK Reporter](https://pskreporter.info) data continuously scores the model against observations it has never seen
@@ -61,31 +61,32 @@ it does.
 
 ## Current Status
 
-**IONIS V20** is the production model. Trained on 20M WSPR + 4.55M DXpedition (50x) + 6.34M Contest signatures (~31M rows). It correctly predicts:
+**IONIS V22-gamma + PhysicsOverrideLayer** is the production model. Trained on 20M WSPR + 4.55M DXpedition (50x) + 6.34M Contest signatures (~31M rows), with a deterministic post-inference clamp for high-band night closure. It correctly predicts:
 
-- Higher solar flux (SFI) improves propagation (+0.482σ, ~3.2 dB benefit, monotonic)
-- Geomagnetic storms (Kp) degrade propagation (+3.487σ, ~23.4 dB cost, monotonic)
-- Path geometry, time of day, and seasonal effects
+- Higher solar flux (SFI) improves propagation (monotonic)
+- Geomagnetic storms (Kp) degrade propagation (monotonic)
+- Path geometry, time of day, seasonal effects, and solar depression angle
+- High-band closure at night (PhysicsOverrideLayer)
 
 | Metric | Value |
 |--------|-------|
-| **Pearson correlation** | +0.4879 |
-| **RMSE** | 0.862σ (~5.8 dB) |
-| **Recall (vs VOACAP)** | 96.38% (+20.56 pp vs VOACAP) |
-| **PSK Reporter Recall** | 84.14% (independent live data) |
-| **Physics Tests** | 4/4 PASS |
+| **Pearson correlation** | +0.492 |
+| **RMSE** | 0.821σ (~5.5 dB) |
+| **KI7MT operator tests** | 17/17 PASS |
+| **TST-900 band x time** | 9/11 |
+| **Parameters** | 205,621 |
 
-V20 demonstrates consistent improvement over the ITS/NTIA reference model (VOACAP) on 1M validated contest paths. PSK Reporter live validation confirms the model generalizes to data it has never seen. For digital modes (FT8, FT4, WSPR) and CW, IONIS provides predictions where no comparable reference model exists.
+V22-gamma demonstrates consistent improvement over the ITS/NTIA reference model (VOACAP) on validated contest paths. PSK Reporter live validation confirms the model generalizes to data it has never seen. For digital modes (FT8, FT4, WSPR) and CW, IONIS provides predictions where no comparable reference model exists.
 
 ## Data Sources
 
 | Source | Volume | Mode Coverage | Purpose |
 |--------|--------|---------------|---------|
-| **WSPR** | 10.8B spots | WSPR (-28 dB) | Signal floor, continuous baseline |
-| **RBN** | 2.18B spots | CW, RTTY | Machine-decoded SNR, DXpedition coverage |
-| **Contest Logs** | 195M QSOs | SSB, CW, RTTY, Digi | Ground truth — proof the band was open |
-| **PSK Reporter** | ~26M/day (live) | FT8, FT4, WSPR | Real-time validation and future training |
-| **Solar Indices** | 76K rows | — | SFI, Kp, SSN conditions (2000-2026) |
+| **WSPR** | 10.94B spots | WSPR (-28 dB) | Signal floor, continuous baseline |
+| **RBN** | 2.26B spots | CW, RTTY | Machine-decoded SNR, DXpedition coverage |
+| **Contest Logs** | 234M QSOs | SSB, CW, RTTY, Digi | Ground truth — proof the band was open |
+| **PSK Reporter** | 514M+ spots (~26M/day, live) | FT8, FT4, WSPR | Real-time validation and future training |
+| **Solar Indices** | 77K rows | — | SFI, Kp, SSN conditions (2000-2026) |
 
 ## Infrastructure
 
