@@ -16,7 +16,7 @@
   "@type": "SoftwareApplication",
   "name": "IONIS",
   "alternateName": "Ionospheric Neural Inference System",
-  "description": "Physics-constrained neural network for HF radio propagation prediction, trained on 13 billion amateur radio observations.",
+  "description": "Physics-constrained neural network for HF radio propagation prediction, trained on 14 billion amateur radio observations.",
   "applicationCategory": "ScientificApplication",
   "operatingSystem": "Linux",
   "author": {
@@ -41,7 +41,7 @@
   "@context": "https://schema.org",
   "@type": "Dataset",
   "name": "IONIS Propagation Dataset",
-  "description": "13 billion+ amateur radio observations from WSPR, Reverse Beacon Network, contest logs, and PSK Reporter — the largest curated HF propagation dataset on Earth.",
+  "description": "14 billion+ amateur radio observations from WSPR, Reverse Beacon Network, contest logs, PSK Reporter, and solar indices — the largest curated HF propagation dataset on Earth.",
   "url": "https://ionis-ai.com/",
   "license": "https://www.gnu.org/licenses/gpl-3.0.html",
   "creator": {
@@ -54,18 +54,31 @@
     {
       "@type": "DataDownload",
       "name": "WSPR",
-      "description": "10.8 billion WSPR beacon spots (2008-2025)",
+      "description": "10.9 billion WSPR beacon spots (2008-2026)",
+      "contentUrl": "https://ionis-ai.com/model/methodology/bronze_stack/",
+      "encodingFormat": "application/x-clickhouse",
       "contentSize": "191 GiB"
     },
     {
       "@type": "DataDownload",
       "name": "Reverse Beacon Network",
-      "description": "2.18 billion CW/RTTY spots (2009-2025)"
+      "description": "2.26 billion CW/RTTY/PSK31 spots (2009-2026)",
+      "contentUrl": "https://ionis-ai.com/sources/",
+      "encodingFormat": "application/x-clickhouse"
     },
     {
       "@type": "DataDownload",
       "name": "Contest Logs",
-      "description": "195 million SSB/CW/RTTY QSOs (2005-2025)"
+      "description": "234 million SSB/CW/RTTY QSOs (2005-2025)",
+      "contentUrl": "https://ionis-ai.com/sources/",
+      "encodingFormat": "application/x-clickhouse"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "PSK Reporter",
+      "description": "548 million+ FT8/FT4/WSPR spots (2025-2026, live collection)",
+      "contentUrl": "https://ionis-ai.com/sources/pskr/",
+      "encodingFormat": "application/x-clickhouse"
     }
   ]
 }
