@@ -60,6 +60,12 @@ extra:
 
 nav:
   - Home: index.md
+  - Research:
+    - papers/index.md
+    - "The Dialectical Engine": papers/the-dialectical-engine.md
+    - "From Nanometers to Neurons": papers/from-nanometers-to-neurons.md
+    - "Sovereign Infrastructure": papers/sovereign-infrastructure.md
+    - "Who Says Hermits Don't Have Friends": papers/who-says-hermits-dont-have-friends.md
   - Model:
     - model/index.md
     - "Physics vs ML": model/physics-vs-ml.md
