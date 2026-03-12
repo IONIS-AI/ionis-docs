@@ -49,6 +49,9 @@ plugins:
   - social
   - meta
 
+extra_css:
+  - stylesheets/papers.css
+
 extra:
   social:
     - icon: fontawesome/brands/github

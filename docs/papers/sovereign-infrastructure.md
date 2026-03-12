@@ -20,6 +20,41 @@ keywords:
 toc: true
 ---
 
+<div class="paper-article" markdown>
+
+<div class="paper-header" markdown>
+
+<p class="paper-title">Sovereign Infrastructure for Citizen Science</p>
+<p class="paper-subtitle">Building a Self-Hosted Research Lab for Radio Propagation Analysis</p>
+<p class="paper-authors">Greg Beam, KI7MT</p>
+<p class="paper-affiliation">KI7MT Sovereign AI Lab</p>
+<div class="paper-meta">
+<span>February 26, 2026</span>
+<span>Version 1.1</span>
+<span>RELEASE</span>
+</div>
+
+</div>
+
+<div class="paper-abstract" markdown>
+
+<p class="abstract-label">Abstract</p>
+
+This paper documents the design, implementation, and benchmarking of a self-hosted research computing infrastructure for HF radio propagation prediction. The system ingests 10.9 billion WSPR observations, 2.26 billion Reverse Beacon Network spots, and 552 million PSK Reporter spots, correlates them with solar indices from 10 NOAA/SIDC endpoints, and trains neural network models entirely on local hardware — 14.68 billion rows totaling 263 GiB on disk. We demonstrate that a carefully architected home lab can achieve 24.67 million rows per second ingestion, 60 GB/s analytical query throughput, and 30 tokens/second local LLM inference — performance sufficient for serious scientific research without cloud dependencies. The total hardware investment of approximately $28,000 provides capabilities that would cost $40,000–214,000 annually in cloud compute. This infrastructure enables the IONIS (Ionospheric Neural Inference System) project, which applies machine learning to one of the largest curated amateur radio propagation datasets we are aware of.
+
+</div>
+
+<div class="paper-keywords">
+<span class="kw-label">Keywords:</span>
+<span class="kw-tag">Amateur radio</span>
+<span class="kw-tag">HF propagation</span>
+<span class="kw-tag">WSPR</span>
+<span class="kw-tag">ClickHouse</span>
+<span class="kw-tag">Self-hosted infrastructure</span>
+<span class="kw-tag">Citizen science</span>
+<span class="kw-tag">Machine learning</span>
+</div>
+
 ## 1. Introduction
 
 ### 1.1 Motivation
@@ -660,6 +695,11 @@ This project exists because of the amateur radio community. To every operator wh
 
 - Lane, G., et al. (1993). *Voice of America Coverage Analysis Program (VOACAP)*. NTIA Report 93-299.
 
+<div class="paper-citation">
+<p class="cite-label">How to cite</p>
+<p>Beam, G. (KI7MT). "Sovereign Infrastructure for Citizen Science: Building a Self-Hosted Research Lab for Radio Propagation Analysis." <em>IONIS Project Technical Papers</em>, Version 1.1, February 2026. Available at: <a href="https://ionis-ai.com/papers/sovereign-infrastructure/">ionis-ai.com/papers/sovereign-infrastructure</a></p>
+</div>
+
 ---
 
 ## Appendix A: Bill of Materials
@@ -736,3 +776,5 @@ LIMIT 10
 -- Bytes/sec: 60.19 GB
 -- Peak memory: 828.79 MiB
 ```
+
+</div> <!-- /paper-article -->

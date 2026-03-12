@@ -30,6 +30,47 @@ keywords:
 toc: true
 ---
 
+<div class="paper-article" markdown>
+
+<div class="paper-header" markdown>
+
+<p class="paper-title">The Dialectical Engine</p>
+<p class="paper-subtitle">Multi-Agent Falsification in Scientific Software Development</p>
+<p class="paper-authors">Greg Beam, KI7MT (Judge) &middot; Patton (Failure Analyst) &middot; Einstein (Physics Consultant) &middot; Dr. Watson (Training Agent) &middot; Bob (Infrastructure Agent)</p>
+<p class="paper-affiliation">IONIS Project — KI7MT Sovereign AI Lab</p>
+<div class="paper-meta">
+<span>February 25, 2026</span>
+<span>Version 1.1</span>
+<span>RELEASE</span>
+</div>
+
+</div>
+
+<div class="paper-abstract" markdown>
+
+<p class="abstract-label">Abstract</p>
+
+Complex scientific software development presents a unique challenge: the optimizer's objective (minimize loss) often conflicts with the physicist's objective (learn correct causal relationships). We present a case study of IONIS, a neural network for HF radio propagation prediction trained on 14.24 billion observations, which encountered catastrophic failure when code refactoring inadvertently removed physics-enforcing constraints — and then encountered seven more failures as we attempted to fix the first.
+
+The project employed a five-agent collaboration model: a human domain expert (Judge), a failure analyst (Patton), a theoretical physicist (Einstein), and two implementation agents (Dr. Watson, Bob). When model versions V17 through V19 failed despite improved code quality, competing hypotheses emerged. Through dialectical analysis — where agents proposed, tested, and falsified hypotheses — we identified that the optimizer exploited missing weight clamping to collapse physics-encoding sidecars.
+
+Versions V20 through V22-gamma restored the physics, achieving 16/17 on operator-grounded tests. But one test — the "acid test" predicting 10m band closure at night — remained unsolved. Eight subsequent architectures (V23-V27, three audits) each failed: every fix that passed the acid test destroyed global physics; every architecture that preserved global physics failed the acid test.
+
+The resolution was not more training. We introduced a deterministic PhysicsOverrideLayer at inference time, encoding Appleton-Hartree constraints directly. The hybrid architecture achieves 17/17 tests with zero regressions. Phase 5.0 will attempt to eliminate the override through synthetic negative training data generated from first-principles physics.
+
+We introduce the "Iron Lung" methodology: using structural constraints to force neural networks to route gradients through physics-encoding components, preventing the optimizer's natural tendency toward shortcut learning.
+
+</div>
+
+<div class="paper-keywords">
+<span class="kw-label">Keywords:</span>
+<span class="kw-tag">Multi-agent systems</span>
+<span class="kw-tag">Physics-informed neural networks</span>
+<span class="kw-tag">Knowledge transfer</span>
+<span class="kw-tag">Constraint engineering</span>
+<span class="kw-tag">Scientific software development</span>
+</div>
+
 ## Introduction: The Problem
 
 VOACAP, the standard HF propagation prediction tool, achieves a Pearson correlation of approximately +0.02 against real-world observations. For practical purposes, this is noise. Amateur radio operators have better intuition than the software.
@@ -1183,7 +1224,9 @@ Phase 4.0 proved what the neural network could learn from observation. Phase 5.0
 - Ratcliffe, J. A. (1959). *The Magneto-Ionic Theory and Its Applications to the Ionosphere*. Cambridge University Press.
 
 
-**Document Version**: 1.1 RELEASE
-**Last Updated**: 2026-02-27
-**Phase**: 4.0 Complete
-**Authors**: Judge (KI7MT), Patton (Failure Analyst), Einstein (Physics Consultant), Dr. Watson (Training Agent), Bob (Infrastructure Agent)
+<div class="paper-citation">
+<p class="cite-label">How to cite</p>
+<p>Beam, G. (KI7MT), et al. "The Dialectical Engine: Multi-Agent Falsification in Scientific Software Development." <em>IONIS Project Technical Papers</em>, Version 1.1, February 2026. Available at: <a href="https://ionis-ai.com/papers/the-dialectical-engine/">ionis-ai.com/papers/the-dialectical-engine</a></p>
+</div>
+
+</div> <!-- /paper-article -->

@@ -18,15 +18,43 @@ keywords:
 toc: true
 ---
 
+<div class="paper-article" markdown>
+
+<div class="paper-header" markdown>
+
+<p class="paper-title">From Nanometers to Neurons</p>
+<p class="paper-subtitle">Applying Semiconductor Process Control to Machine Learning</p>
+<p class="paper-authors">Greg Beam, KI7MT (Judge)</p>
+<p class="paper-affiliation">IONIS Project — KI7MT Sovereign AI Lab</p>
+<div class="paper-meta">
+<span>February 25, 2026</span>
+<span>Version 1.1</span>
+<span>Phase 4.0 Release</span>
+</div>
+
+</div>
+
+<div class="paper-abstract" markdown>
+
+<p class="abstract-label">Abstract</p>
+
+Modern machine learning development relies heavily on hyperparameter sweeps, architecture search, and aggregate metric optimization. When a model fails, the standard response is to try a different configuration. Root cause analysis — standard practice in semiconductor manufacturing, automotive quality (Ford 8D), and aerospace — is rarely applied. This paper presents a case study from the IONIS project (Ionospheric Neural Inference System), where Closed Loop Corrective Action (CLCA) methodology from semiconductor process control was applied to a neural network predicting HF radio propagation. Over 16 model versions, systematic defect isolation identified six architectural dead ends, each with a documented root cause. The failure record proved more scientifically valuable than the successes, revealing fundamental insights about model behavior that aggregate metrics concealed.
+
+</div>
+
+<div class="paper-keywords">
+<span class="kw-label">Keywords:</span>
+<span class="kw-tag">Machine learning</span>
+<span class="kw-tag">Process control</span>
+<span class="kw-tag">Root cause analysis</span>
+<span class="kw-tag">CLCA methodology</span>
+<span class="kw-tag">Neural network debugging</span>
+</div>
+
 **Audience**: ML practitioners, industrial engineers, interdisciplinary researchers
 **Contributors**: Dr. Watson (training), Bob (infrastructure), Patton (failure analysis), Einstein (physics)
 
 > *This paper about engineering rigor over style was formatted as a Word document for people who care about style over engineering rigor. The audience proves the thesis.*
-
-
-## 1. The Problem: ML Treats Symptoms, Not Causes
-
-Modern machine learning development relies heavily on hyperparameter sweeps, architecture search, and aggregate metric optimization. When a model fails, the standard response is to try a different configuration. Root cause analysis — standard practice in semiconductor manufacturing, automotive quality (Ford 8D), and aerospace — is rarely applied. This paper presents a case study from the IONIS project (Ionospheric Neural Inference System), where Closed Loop Corrective Action (CLCA) methodology from semiconductor process control was applied to a neural network predicting HF radio propagation. Over 16 model versions, systematic defect isolation identified six architectural dead ends, each with a documented root cause. The failure record proved more scientifically valuable than the successes, revealing fundamental insights about model behavior that aggregate metrics concealed.
 
 
 ## 1. The Problem: ML Treats Symptoms, Not Causes
@@ -448,3 +476,10 @@ Phase 4.0 proved what empirical data can teach. Phase 5.0 will prove what physic
 - SEMI E10-0304. (2004). *Specification for Definition and Measurement of Equipment Reliability, Availability, and Maintainability*. SEMI International Standards.
 
 - Taleb, N. N. (2007). *The Black Swan: The Impact of the Highly Improbable*. Random House.
+
+<div class="paper-citation">
+<p class="cite-label">How to cite</p>
+<p>Beam, G. (KI7MT). "From Nanometers to Neurons: Applying Semiconductor Process Control to Machine Learning." <em>IONIS Project Technical Papers</em>, Version 1.1, February 2026. Available at: <a href="https://ionis-ai.com/papers/from-nanometers-to-neurons/">ionis-ai.com/papers/from-nanometers-to-neurons</a></p>
+</div>
+
+</div> <!-- /paper-article -->

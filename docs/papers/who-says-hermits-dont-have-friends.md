@@ -17,6 +17,38 @@ keywords:
 toc: true
 ---
 
+<div class="paper-article" markdown>
+
+<div class="paper-header" markdown>
+
+<p class="paper-title">Who Says Hermits Don't Have Friends</p>
+<p class="paper-subtitle">The Human Story Behind a Sovereign AI Lab</p>
+<p class="paper-authors">Greg Beam, KI7MT</p>
+<p class="paper-affiliation">KI7MT Sovereign AI Lab</p>
+<div class="paper-meta">
+<span>February 2026</span>
+<span>Version 1.0</span>
+<span>Collecting Moments</span>
+</div>
+
+</div>
+
+<div class="paper-abstract" markdown>
+
+<p class="abstract-label">Abstract</p>
+
+A ham radio operator in Idaho builds a sovereign AI research lab in his house. No cloud. No team in an office. No commute. Five AI agents, a 96GB GPU, a Thunderbolt cable, and a callsign. The hermit has more collaborators than most Silicon Valley startups — he just doesn't have to make small talk with any of them. This is the story of building IONIS — not the model, not the architecture, but the experience of running a five-agent AI team from a shack in rural Idaho.
+
+</div>
+
+<div class="paper-keywords">
+<span class="kw-label">Keywords:</span>
+<span class="kw-tag">AI collaboration</span>
+<span class="kw-tag">Sovereign computing</span>
+<span class="kw-tag">Amateur radio</span>
+<span class="kw-tag">Multi-agent systems</span>
+</div>
+
 **Audience**: General — the human story behind the AI lab
 
 
@@ -153,3 +185,10 @@ The Hermit story in one beat: the human who enforces the process on the machines
 
 
 *"The neurons are smaller than the nanometers, but the engineering discipline is the same."*
+
+<div class="paper-citation">
+<p class="cite-label">How to cite</p>
+<p>Beam, G. (KI7MT). "Who Says Hermits Don't Have Friends: The Human Story Behind a Sovereign AI Lab." <em>IONIS Project Technical Papers</em>, Version 1.0, February 2026. Available at: <a href="https://ionis-ai.com/papers/who-says-hermits-dont-have-friends/">ionis-ai.com/papers/who-says-hermits-dont-have-friends</a></p>
+</div>
+
+</div> <!-- /paper-article -->
