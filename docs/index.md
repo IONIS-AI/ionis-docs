@@ -1,4 +1,5 @@
 ---
+template: home.html
 description: >-
   IONIS predicts HF propagation using physics-constrained neural networks trained
   on 14 billion real amateur radio observations. Open source, self-hosted,
