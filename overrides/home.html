@@ -479,15 +479,23 @@
 
     /* ── Responsive ────────────────────────────────────────── */
     @media (max-width: 768px) {
+      .top-nav {
+        gap: 0.6rem 1.2rem;
+        flex-wrap: wrap;
+        padding: 0.8rem 1rem;
+        font-size: 0.6rem;
+      }
+      .top-nav a { font-size: 0.6rem; letter-spacing: 0.1rem; }
+      .top-nav .nav-docs { padding: 0.2rem 0.5rem; }
+      .hero { top: 18%; }
       .hero h1 { font-size: 2.2rem; letter-spacing: 0.6rem; }
-      .hero .subtitle { font-size: 0.8rem; }
+      .hero .subtitle { font-size: 0.7rem; letter-spacing: 0.15rem; }
       .tagline p { font-size: 1rem; }
       .solar-hud { display: none; }
       .dashboard-grid { grid-template-columns: 1fr; gap: 2rem; }
       .big-numbers { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
       .big-num .number { font-size: 1.6rem; }
       .fleet-grid { grid-template-columns: repeat(3, 1fr); }
-      .top-nav { gap: 1.2rem; flex-wrap: wrap; }
     }
 
     /* ── Scroll reveal ─────────────────────────────────────── */
