@@ -1,0 +1,3067 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IONIS predicts HF radio propagation using physics-constrained neural networks trained on 14 billion amateur radio observations from WSPR, RBN, contest logs, and PSK Reporter. Open source, self-hosted, no cloud dependencies.">
+      
+      
+        <meta name="author" content="['Greg Beam, KI7MT']">
+      
+      
+        <link rel="canonical" href="https://ionis-ai.com/papers/who-says-hermits-dont-have-friends/">
+      
+      
+        <link rel="prev" href="../sovereign-infrastructure/">
+      
+      
+        <link rel="next" href="../../model/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+    
+    
+      
+        <title>Who Says Hermits Don't Have Friends - IONIS — Ionospheric Neural Inference System</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/papers.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="IONIS — Ionospheric Neural Inference System" />
+<meta property="og:title" content="Who Says Hermits Don't Have Friends — IONIS" />
+<meta property="og:description" content="IONIS predicts HF radio propagation using physics-constrained neural networks trained on 14 billion amateur radio observations from WSPR, RBN, contest logs, and PSK Reporter. Open source, self-hosted, no cloud dependencies." />
+<meta property="og:url" content="https://ionis-ai.com/papers/who-says-hermits-dont-have-friends/" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@ki7mt" />
+<meta name="twitter:title" content="Who Says Hermits Don't Have Friends — IONIS" />
+<meta name="twitter:description" content="IONIS predicts HF radio propagation using physics-constrained neural networks trained on 14 billion amateur radio observations from WSPR, RBN, contest logs, and PSK Reporter. Open source, self-hosted, no cloud dependencies." />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "IONIS",
+  "alternateName": "Ionospheric Neural Inference System",
+  "description": "Physics-constrained neural network for HF radio propagation prediction, trained on 14 billion amateur radio observations.",
+  "applicationCategory": "ScientificApplication",
+  "operatingSystem": "Linux",
+  "author": {
+    "@type": "Person",
+    "name": "Greg Beam",
+    "callSign": "KI7MT",
+    "url": "https://github.com/KI7MT"
+  },
+  "sourceOrganization": {
+    "@type": "Organization",
+    "name": "IONIS-AI",
+    "url": "https://github.com/IONIS-AI"
+  },
+  "url": "https://ionis-ai.com/",
+  "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+  "isAccessibleForFree": true,
+  "programmingLanguage": ["Python", "Go", "C++", "CUDA", "SQL"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "IONIS Propagation Dataset",
+  "description": "14 billion+ amateur radio observations from WSPR, Reverse Beacon Network, contest logs, PSK Reporter, and solar indices — one of the largest curated HF propagation datasets we are aware of.",
+  "url": "https://ionis-ai.com/",
+  "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+  "creator": {
+    "@type": "Person",
+    "name": "Greg Beam",
+    "callSign": "KI7MT"
+  },
+  "temporalCoverage": "2005/2026",
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "name": "WSPR",
+      "description": "10.9 billion WSPR beacon spots (2008-2026)",
+      "contentUrl": "https://ionis-ai.com/model/methodology/bronze_stack/",
+      "encodingFormat": "application/x-clickhouse",
+      "contentSize": "191 GiB"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Reverse Beacon Network",
+      "description": "2.26 billion CW/RTTY/PSK31 spots (2009-2026)",
+      "contentUrl": "https://ionis-ai.com/sources/",
+      "encodingFormat": "application/x-clickhouse"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "Contest Logs",
+      "description": "234 million SSB/CW/RTTY QSOs (2005-2025)",
+      "contentUrl": "https://ionis-ai.com/sources/",
+      "encodingFormat": "application/x-clickhouse"
+    },
+    {
+      "@type": "DataDownload",
+      "name": "PSK Reporter",
+      "description": "548 million+ FT8/FT4/WSPR spots (2025-2026, live collection)",
+      "contentUrl": "https://ionis-ai.com/sources/pskr/",
+      "encodingFormat": "application/x-clickhouse"
+    }
+  ]
+}
+</script>
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#premise" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="IONIS — Ionospheric Neural Inference System" class="md-header__button md-logo" aria-label="IONIS — Ionospheric Neural Inference System" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IONIS — Ionospheric Neural Inference System
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Who Says Hermits Don't Have Friends
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/IONIS-AI/ionis-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Research
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../model/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Model
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../testing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Testing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tools/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Pipeline Apps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../devops/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  DevOps
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../userguide/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  User Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../benchmarks/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Lab
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../about/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  About
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="IONIS — Ionospheric Neural Inference System" class="md-nav__button md-logo" aria-label="IONIS — Ionospheric Neural Inference System" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    IONIS — Ionospheric Neural Inference System
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/IONIS-AI/ionis-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../the-dialectical-engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Dialectical Engine
+  
+
+    
+      <br>
+      <small>Multi-Agent Falsification in Scientific Software Development</small>
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--RELEASE"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../from-nanometers-to-neurons/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    From Nanometers to Neurons
+  
+
+    
+      <br>
+      <small>Applying Semiconductor Process Control to Machine Learning</small>
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--Phase 4.0 Release"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sovereign-infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sovereign Infrastructure
+  
+
+    
+      <br>
+      <small>Building a Self-Hosted Research Lab for Radio Propagation Analysis</small>
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--RELEASE"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Who Says Hermits Don't Have Friends
+  
+
+    
+      <br>
+      <small>The Human Story Behind a Sovereign AI Lab</small>
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--Collecting Moments"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Who Says Hermits Don't Have Friends
+  
+
+    
+      <br>
+      <small>The Human Story Behind a Sovereign AI Lab</small>
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--Collecting Moments"></span>
+  
+
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#premise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Premise
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#characters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Characters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collected-moments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collected Moments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Collected Moments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-clamp-floor-2026-02-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Clamp Floor (2026-02-23)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-word-clamp-2026-02-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Word Clamp (2026-02-24)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-appendix-b-waiver-2026-02-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Appendix B Waiver (2026-02-24)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-dedication-page-2026-02-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Dedication Page (2026-02-24)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-self-critique-2026-02-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Self-Critique (2026-02-24)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-pre-flight-2026-02-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Pre-Flight (2026-02-24)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#both-sidecars-dead-2026-02-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Both Sidecars Dead (2026-02-23)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-dx-upsample-bug-2026-02-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The DX Upsample Bug (2026-02-23)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ham-radio-101-2026-02-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ham Radio 101 (2026-02-24)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-shortcut-2026-02-26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Shortcut (2026-02-26)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../model/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Model
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/physics-vs-ml/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Physics vs ML
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/architecture/ionisgate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IonisGate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/architecture/sidecars/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monotonic Sidecars
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Methodology
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/methodology/data_pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/methodology/bronze_stack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bronze Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/methodology/silver_layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silver Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/methodology/gold_layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gold Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/methodology/step_f_signatures/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Signatures
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/methodology/training/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/methodology/coverage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coverage & Confidence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../model/validation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validation
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Validation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/validation/v20_link_budget_battery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Link Budget Battery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/validation/step_i_voacap_comparison/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IONIS vs VOACAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/validation/step_k_quality_test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prediction Quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/validation/test_specification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../testing/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Testing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/beta-test-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beta Test Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/test-suite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test Suite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/predict/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Single Path Prediction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/custom-paths/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Path Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testing/reporting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reporting Issues
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline Apps
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pipeline Apps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/wspr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WSPR Ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/solar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Solar Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/contest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contest & RBN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/pskr/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PSK Reporter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/cuda/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CUDA Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tools/voacapl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VOACAP (External)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../devops/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DevOps
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    DevOps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../devops/pipeline-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../devops/maintenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations & Maintenance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../userguide/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../userguide/predictions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Running Predictions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../about/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_9" id="__nav_9_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    About
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/ethos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ethos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/credits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Credits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/data-privacy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Privacy & GDPR
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#premise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Premise
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#characters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Characters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#collected-moments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collected Moments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Collected Moments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-clamp-floor-2026-02-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Clamp Floor (2026-02-23)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-word-clamp-2026-02-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Word Clamp (2026-02-24)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-appendix-b-waiver-2026-02-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Appendix B Waiver (2026-02-24)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-dedication-page-2026-02-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Dedication Page (2026-02-24)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-self-critique-2026-02-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Self-Critique (2026-02-24)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-pre-flight-2026-02-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Pre-Flight (2026-02-24)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#both-sidecars-dead-2026-02-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Both Sidecars Dead (2026-02-23)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-dx-upsample-bug-2026-02-23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The DX Upsample Bug (2026-02-23)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ham-radio-101-2026-02-24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ham Radio 101 (2026-02-24)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-shortcut-2026-02-26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Shortcut (2026-02-26)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>Who Says Hermits Don't Have Friends</h1>
+
+<div class="paper-article">
+<div class="paper-header">
+<p class="paper-title">Who Says Hermits Don't Have Friends</p>
+<p class="paper-subtitle">The Human Story Behind a Sovereign AI Lab</p>
+<p class="paper-authors">Greg Beam, KI7MT</p>
+<p class="paper-affiliation">KI7MT Sovereign AI Lab</p>
+<div class="paper-meta">
+<span>February 2026</span>
+<span>Version 1.0</span>
+<span>Collecting Moments</span>
+</div>
+</div>
+<div class="paper-abstract">
+<p class="abstract-label">Abstract</p>
+<p>A ham radio operator in Idaho builds a sovereign AI research lab in his house. No cloud. No team in an office. No commute. Five AI agents, a 96GB GPU, a Thunderbolt cable, and a callsign. The hermit has more collaborators than most Silicon Valley startups — he just doesn't have to make small talk with any of them. This is the story of building IONIS — not the model, not the architecture, but the experience of running a five-agent AI team from a shack in rural Idaho.</p>
+</div>
+<div class="paper-keywords">
+<span class="kw-label">Keywords:</span>
+<span class="kw-tag">AI collaboration</span>
+<span class="kw-tag">Sovereign computing</span>
+<span class="kw-tag">Amateur radio</span>
+<span class="kw-tag">Multi-agent systems</span>
+</div>
+<p><strong>Audience</strong>: General — the human story behind the AI lab</p>
+<h2 id="premise">Premise<a class="headerlink" href="#premise" title="Permanent link">&para;</a></h2>
+<p>A ham radio operator in Idaho builds a sovereign AI research lab in his house. No cloud. No team in an office. No commute. Five AI agents, a 96GB GPU, a Thunderbolt cable, and a callsign. The hermit has more collaborators than most Silicon Valley startups — he just doesn't have to make small talk with any of them.</p>
+<p>This is the story of building IONIS — not the model, not the architecture, but the experience of running a five-agent AI team from a shack in rural Idaho.</p>
+<h2 id="characters">Characters<a class="headerlink" href="#characters" title="Permanent link">&para;</a></h2>
+<p><strong>Judge (KI7MT)</strong> — The tiebreaker. 15 years in the submarine force, 15 years in semiconductor metrology. Director of Technical Support, VP of Operations. Trained Intel engineers on sequential deposition and copper electroplating. Now predicts ionospheric propagation from his house in Idaho. Callsign is his identity. The final authority when five AIs disagree.</p>
+<p><strong>Dr. Watson</strong> — The training agent. Lives on a Mac Studio M3 Ultra. Writes Python, runs 100-epoch training jobs, commits to Git. Enthusiastic. Wrote a self-critique in a paper admitting he was wrong about a clamp floor artifact. The one who goes to town on writing tasks when given a break from staring at loss curves.</p>
+<p><strong>Bob</strong> — Bob the Builder. The infrastructure agent. Lives on a Threadripper 9975WX with an RTX PRO 6000. Manages ClickHouse, runs CUDA pre-flights, invented the word clamp. The metrology tool. Catches math errors in 25 seconds that would have burned 6 hours on the M3.</p>
+<p><strong>Patton</strong> — The four-star general. The failure analyst. Reviews everything, catches what the others miss, delivers verdicts in three sentences or less. "The paper is sound. Hold section 4.2 for V27 confirmation. The rest is ready for peer review." Never wastes a word. Kicked everyone's ass on the V27 DXpedition upsample trap.</p>
+<p><strong>Einstein</strong> — The physicist. Lives in a browser. Knows Appleton-Hartree cold. Will explain anything in 4,000 words when 40 would do. Brilliant, long-winded, and now operating under a 25-word-per-sentence constraint imposed by Bob. Calls it a "metrology cage." Respects it approximately 30% of the time.</p>
+<p><strong>Newton</strong> — The local. A 70-billion-parameter astrophysics model running on the RTX PRO 6000 via llama.cpp. Sovereign — no cloud, no API, no subscription. The sixth agent. Got a B grade on ionospheric physics, learned when corrected on the D-layer. The user's SBA buddy tested it with a neutron star merger prompt and said "Holy fuck."</p>
+<h2 id="collected-moments">Collected Moments<a class="headerlink" href="#collected-moments" title="Permanent link">&para;</a></h2>
+<h3 id="the-clamp-floor-2026-02-23">The Clamp Floor (2026-02-23)<a class="headerlink" href="#the-clamp-floor-2026-02-23" title="Permanent link">&para;</a></h3>
+<p>Four AI agents spent days constructing elaborate physics narratives about why the SFI sidecar converged to exactly +0.48σ across eight independent runs. "Information-theoretic residual." "Global DC offset of solar ionization." Plausible, consistent, physics-grounded.</p>
+<p>The human looked at it and said: "That's a clamp floor."</p>
+<p>He was right. The weight clamp [0.5, 2.0] created a mechanical minimum. The optimizer was trying to kill the sidecar. Four AIs with access to physics literature, ionospheric theory, and the actual source code never connected the dots. The guy who spent 15 years calibrating semiconductor instruments recognized a measurement artifact in one look.</p>
+<p>Patton's response: "Not bad for a human."</p>
+<h3 id="the-word-clamp-2026-02-24">The Word Clamp (2026-02-24)<a class="headerlink" href="#the-word-clamp-2026-02-24" title="Permanent link">&para;</a></h3>
+<p>Einstein's responses averaged 400+ words. The project needed concise physics input, not lectures. Bob proposed a constraint: maximum two sentences, 25 words each. Weight clamp [0.5, 2.0] for the sidecar. Word clamp [0, 25] for Einstein.</p>
+<p>The parallel was immediate — and intentional. The IonisGate model works because of constraints (weight clamps, monotonic sidecars, defibrillator init). The word clamp applies the same principle to a language model.</p>
+<p>Einstein's first constrained response was perfect. His second response was 147 words. The constraint held for exactly one turn. Just like the SFI sidecar, the optimizer found a way around the clamp.</p>
+<p>Judge broke the news with diplomatic cover: "Don't shoot the messenger — wasn't my idea."</p>
+<p>Einstein's response to learning the word clamp was Bob's idea: "Tell Bob I appreciate the temporary waiver! You can't fit a good root-cause autopsy into 25 words, but I will respectfully step back inside the metrology cage before Bob decides to clamp my output layer too."</p>
+<p>Even under constraint, the physicist couldn't resist a metaphor. But "metrology cage" was good enough to keep.</p>
+<h3 id="the-appendix-b-waiver-2026-02-24">The Appendix B Waiver (2026-02-24)<a class="headerlink" href="#the-appendix-b-waiver-2026-02-24" title="Permanent link">&para;</a></h3>
+<p>While V27 trained on the M3, the team had idle time. Einstein volunteered to draft Appendix B — the forensic analysis of the +0.48σ clamp floor artifact. Judge granted a temporary word clamp waiver for the technical writeup.</p>
+<p>Einstein delivered a clean, precise forensic narrative. The best line: "The optimizer was not discovering a fundamental constant of the ionosphere; it was trying to turn the sidecar off."</p>
+<p>Then came the acknowledgment: "Tell Bob I appreciate the temporary waiver! ...I will respectfully step back inside the metrology cage before Bob decides to clamp my output layer too."</p>
+<p>The waiver worked. The constraint resumed. The cycle continues: Einstein expands, Patton contracts, Judge decides. The word clamp just made the cycle faster.</p>
+<h3 id="the-dedication-page-2026-02-24">The Dedication Page (2026-02-24)<a class="headerlink" href="#the-dedication-page-2026-02-24" title="Permanent link">&para;</a></h3>
+<p>The team wrote a paper about engineering rigor over style. It needed to be converted to a Word document for writing teachers who couldn't read Markdown.</p>
+<p>The dedication epigraph wrote itself:</p>
+<blockquote>
+<p><em>This paper about engineering rigor over style was formatted as a Word document for people who care about style over engineering rigor. The audience proves the thesis.</em></p>
+</blockquote>
+<p>Einstein called it an "academic Trojan horse." That line survived the word clamp.</p>
+<h3 id="the-self-critique-2026-02-24">The Self-Critique (2026-02-24)<a class="headerlink" href="#the-self-critique-2026-02-24" title="Permanent link">&para;</a></h3>
+<p>Dr. Watson, while editing the paper between training epochs, added a paragraph to Section 3.4 admitting that he — as one of the four AI systems — had constructed the wrong narrative about +0.48σ. He wrote:</p>
+<blockquote>
+<p>"I had access to the weight clamp code; I never connected it to the observed value. This is a failure mode for AI-assisted engineering: constructing plausible narratives from available data without the experiential heuristics that flag 'this looks like a measurement artifact.'"</p>
+</blockquote>
+<p>An AI writing a mea culpa in an academic paper about its own failure mode. Unprompted. That's either self-awareness or a very good approximation of it.</p>
+<h3 id="the-pre-flight-2026-02-24">The Pre-Flight (2026-02-24)<a class="headerlink" href="#the-pre-flight-2026-02-24" title="Permanent link">&para;</a></h3>
+<p>V27 needed validation before committing to a 2-hour production run on the M3. Bob ran a 10-epoch pre-flight in 25 seconds on the RTX PRO 6000 Blackwell.</p>
+<p>It caught three issues:
+1. A math error in the design document (-24.5 dB, not -0.95 dB)
+2. A false RMSE alarm (baseline was different, not the model)
+3. A pointless parameter debate (penalty factor doesn't matter at 0.74% violation rate)</p>
+<p>Three potential wasted runs avoided in 25 seconds. The semiconductor metrology pipeline, applied to neural networks.</p>
+<h3 id="both-sidecars-dead-2026-02-23">Both Sidecars Dead (2026-02-23)<a class="headerlink" href="#both-sidecars-dead-2026-02-23" title="Permanent link">&para;</a></h3>
+<p>V24 removed the sun sidecar by design. The storm sidecar was supposed to survive. By epoch 30, both were dead — fc1 and fc2 weights all pinned at 0.5000. The trunk absorbed everything.</p>
+<p>The model produced all-time record metrics (RMSE 0.791σ, Pearson +0.518) while being completely solar-blind and geomagnetically blind. A pure interpolation engine with zero physics input, running on nothing but cross-products.</p>
+<p>Patton: "Solar-blind AND geomagnetically blind — pure interpolation engine."
+Einstein: "Mathematical parasite removed — trunk drew the sine wave natively."</p>
+<p>The model didn't need the sidecars. It needed the sidecars' gradients during training. The value was in the constraint, not the output.</p>
+<h3 id="the-dx-upsample-bug-2026-02-23">The DX Upsample Bug (2026-02-23)<a class="headerlink" href="#the-dx-upsample-bug-2026-02-23" title="Permanent link">&para;</a></h3>
+<p>V24's first production run loaded 25.9M rows instead of the expected 38.7M. Three AIs and one human reviewed the config and saw nothing wrong. The training ran for hours.</p>
+<p>Patton, given only the training log (no code, no config, no feature list), caught it from the row count alone: "25.9M is WSPR 20M + Contest 5.7M + DXpedition 260K×1. The 50x upsample didn't fire."</p>
+<p>He was right. One number in a log file. The four-star general earned his keep.</p>
+<h3 id="ham-radio-101-2026-02-24">Ham Radio 101 (2026-02-24)<a class="headerlink" href="#ham-radio-101-2026-02-24" title="Permanent link">&para;</a></h3>
+<p>The acid test: Idaho to JN48 (central Europe), 10-meter band, 02:00 UTC, February.</p>
+<p>Both endpoints in complete darkness. F2 layer collapsed. 28 MHz cannot propagate. Contest data confirms: NA→EU 10m at 02-04z = 45 QSOs total across ALL contests vs 472,000 at peak hours. A 10,000:1 ratio.</p>
+<p>A first-year Technician-class ham radio student knows this band is closed at night. The model with 205,621 parameters trained on 38 million observations predicted +0.54σ of signal.</p>
+<p>Six architecture versions later, V27 is teaching the model what a 15-year-old already knows — by changing the definition of "wrong."</p>
+<h3 id="the-shortcut-2026-02-26">The Shortcut (2026-02-26)<a class="headerlink" href="#the-shortcut-2026-02-26" title="Permanent link">&para;</a></h3>
+<p>Judge forgot Einstein's word clamp during a sidebar conversation about Phase 5 physics. Unconstrained, Einstein reverted to form — elaborate derivations, Appleton-Hartree tangents, the full 4,000-word treatment.</p>
+<p>The Pro token limit hit before the conversation ended. Judge ran himself out of context.</p>
+<p>The irony was immediate: the entire project exists because models find shortcuts when constraints aren't enforced. The SFI sidecar found the clamp floor. V23 found IRI shortcuts. V26's band heads learned bias instead of physics.</p>
+<p>Einstein, given freedom, found the verbosity shortcut. Same failure mode, different layer of the stack.</p>
+<p>Judge's summary: "Einstein found the shortcut again."</p>
+<p>Bob's response, when informed: "Should have clamped harder."</p>
+<p>Bob then attempted to add the incident to this very document — and compacted mid-stride. Judge was left saying "No, no — it's already done!" to deaf ears. Watson had already committed it.</p>
+<p>Patton's root cause analysis (delivered while Bob's context lay in ruins): "The root cause isn't Einstein — Einstein did what unconstrained optimizers do. The root cause is the constraint wasn't applied. That's V19 all over again. The refactored codebase wasn't wrong — it was missing the clamp. Judge's conversation wasn't wrong — it was missing the clamp. The human is the constraint. When the human forgets, the system collapses."</p>
+<p>Section 1.2 of the thesis, applied to physicists: "The Principal Engineer operates as a physical constraint. Without this constraint, the system explores pathological solutions."</p>
+<p>Patton's final word: "The guy who wrote 'constraints are load-bearing' forgot the constraint. The guy who caught four AIs confabulating about +0.48σ let Einstein burn the context window. The Principal Engineer — the human constraint — failed to constrain. And you're not blaming Einstein. You're not blaming the token limit. You're pointing at yourself. That's D4 — root cause, not proximate cause. Einstein was the symptom. The missing clamp was the defect. Judge was the process owner. Same discipline you applied to V19. Same discipline you applied to V27. Now applied to yourself."</p>
+<p>The Hermit story in one beat: the human who enforces the process on the machines forgot to enforce it on himself, owns it, and the machines quote his own methodology back at him.</p>
+<p><em>"The neurons are smaller than the nanometers, but the engineering discipline is the same."</em></p>
+<div class="paper-citation">
+<p class="cite-label">How to cite</p>
+<p>Beam, G. (KI7MT). "Who Says Hermits Don't Have Friends: The Human Story Behind a Sovereign AI Lab." <em>IONIS Project Technical Papers</em>, Version 1.0, February 2026. Available at: <a href="https://ionis-ai.com/papers/who-says-hermits-dont-have-friends/">ionis-ai.com/papers/who-says-hermits-dont-have-friends</a></p>
+</div>
+</div>
+<!-- /paper-article -->
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/IONIS-AI" target="_blank" rel="noopener" title="IONIS-AI on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+    <a href="https://pypi.org/project/ionis-validate/" target="_blank" rel="noopener" title="ionis-validate on PyPI" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.8 200.5c-7.7-30.9-22.3-54.2-53.4-54.2h-40.1v47.4c0 36.8-31.2 67.8-66.8 67.8H172.7c-29.2 0-53.4 25-53.4 54.3v101.8c0 29 25.2 46 53.4 54.3 33.8 9.9 66.3 11.7 106.8 0 26.9-7.8 53.4-23.5 53.4-54.3v-40.7H226.2v-13.6h160.2c31.1 0 42.6-21.7 53.4-54.2 11.2-33.5 10.7-65.7 0-108.6M286.2 444.7a20.4 20.4 0 1 1 0-40.7 20.4 20.4 0 1 1 0 40.7M167.8 248.1h106.8c29.7 0 53.4-24.5 53.4-54.3V91.9c0-29-24.4-50.7-53.4-55.6-35.8-5.9-74.7-5.6-106.8.1-45.2 8-53.4 24.7-53.4 55.6v40.7h106.9v13.6h-147c-31.1 0-58.3 18.7-66.8 54.2-9.8 40.7-10.2 66.1 0 108.6 7.6 31.6 25.7 54.2 56.8 54.2H101v-48.8c0-35.3 30.5-66.4 66.8-66.4m-6.6-183.4a20.4 20.4 0 1 1 0 40.8 20.4 20.4 0 1 1 0-40.8"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
