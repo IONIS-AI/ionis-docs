@@ -7,8 +7,8 @@
 
 set -euo pipefail
 
-REPO_DIR="/mnt/ai-stack/ionis-ai/ionis-docs"
-VENV="/mnt/ai-stack/ionis-ai/.venv/bin/python"
+REPO_DIR="${IONIS_REPO_DIR:-/mnt/ai-stack/ionis-ai/ionis-docs}"
+VENV="${IONIS_VENV:-/mnt/ai-stack/ionis-ai/.venv/bin/python}"
 SCRIPT="${REPO_DIR}/scripts/update_landing.py"
 
 cd "$REPO_DIR"
