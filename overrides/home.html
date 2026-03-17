@@ -881,77 +881,20 @@
     const earthGeo = new THREE.SphereGeometry(earthRadius, 128, 64);
     const sunDir = new THREE.Vector3(1, 0.3, 0.5).normalize();
 
-    const earthMat = new THREE.ShaderMaterial({
-      uniforms: {
-        uDayMap:  { value: dayMap },
-        uNightMap: { value: nightMap },
-        uSpecMap: { value: specMap },
-        uSunDir:  { value: sunDir },
-        uTime:    { value: 0 },
-      },
-      vertexShader: `
-        varying vec3 vNormal;
-        varying vec3 vPosition;
-        varying vec2 vUv;
-        varying vec3 vWorldNormal;
-        void main() {
-          vNormal = normalize(normalMatrix * normal);
-          vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
-          vWorldNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
-          vUv = uv;
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform sampler2D uDayMap;
-        uniform sampler2D uNightMap;
-        uniform sampler2D uSpecMap;
-        uniform vec3 uSunDir;
-        uniform float uTime;
-        varying vec3 vNormal;
-        varying vec3 vPosition;
-        varying vec2 vUv;
-        varying vec3 vWorldNormal;
+    // Directional light as the sun
+    const sunLight = new THREE.DirectionalLight(0xffffff, 2.5);
+    sunLight.position.copy(sunDir).multiplyScalar(10);
+    scene.add(sunLight);
 
-        void main() {
-          vec3 n = normalize(vNormal);
-          vec3 wn = normalize(vWorldNormal);
-          vec3 sun = normalize(uSunDir);
-          vec3 view = normalize(-vPosition);
-
-          // Day / night transition from sun angle
-          float NdotL = dot(wn, sun);
-          float day = smoothstep(-0.15, 0.25, NdotL);
-
-          // Sample textures
-          vec3 dayCol = texture2D(uDayMap, vUv).rgb;
-          vec3 nightCol = texture2D(uNightMap, vUv).rgb * 2.0;
-          float specMask = texture2D(uSpecMap, vUv).r;
-
-          // Day / night blend
-          vec3 color = mix(nightCol, dayCol, day);
-
-          // Twilight terminator band — warm orange glow
-          float tw = smoothstep(-0.2, 0.0, NdotL) * smoothstep(0.2, 0.0, NdotL);
-          color += vec3(0.5, 0.15, 0.03) * tw * 0.5;
-
-          // Ocean specular highlights (day side only)
-          vec3 h = normalize(sun + view);
-          float sp = pow(max(dot(n, h), 0.0), 120.0) * specMask * day;
-          color += vec3(0.5, 0.6, 0.8) * sp * 0.5;
-
-          // Atmospheric rim glow with sun-dependent color
-          float rim = pow(1.0 - max(dot(n, view), 0.0), 3.5);
-          vec3 atmos = mix(
-            vec3(0.6, 0.2, 0.04),
-            vec3(0.15, 0.4, 0.9),
-            smoothstep(-0.25, 0.75, NdotL)
-          );
-          color += atmos * rim * 0.5;
-
-          gl_FragColor = vec4(color, 1.0);
-        }
-      `,
+    // MeshPhongMaterial — proven texture pipeline, no shader bugs
+    const earthMat = new THREE.MeshPhongMaterial({
+      map: dayMap,
+      specularMap: specMap,
+      specular: new THREE.Color(0.15, 0.2, 0.4),
+      shininess: 20,
+      emissiveMap: nightMap,
+      emissive: new THREE.Color(1, 0.9, 0.7),
+      emissiveIntensity: 2.0,
     });
 
     const earth = new THREE.Mesh(earthGeo, earthMat);
@@ -1226,9 +1169,9 @@
       // Slowly orbit sun direction
       const sa = elapsed * 0.02;
       sunDir.set(Math.cos(sa), 0.3, Math.sin(sa)).normalize();
+      sunLight.position.copy(sunDir).multiplyScalar(10);
 
       // Update shader time uniforms
-      earthMat.uniforms.uTime.value = elapsed;
       ionoMat.uniforms.uTime.value = elapsed;
 
       // Animate signal paths
