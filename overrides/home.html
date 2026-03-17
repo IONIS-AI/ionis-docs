@@ -879,7 +879,21 @@
     // ── Earth ──────────────────────────────────────────────────
     const earthRadius = 1.0;
     const earthGeo = new THREE.SphereGeometry(earthRadius, 128, 64);
-    const sunDir = new THREE.Vector3(1, 0.3, 0.5).normalize();
+    // Calculate sun direction from real UTC time
+    const _now = new Date();
+    const _utcH = _now.getUTCHours() + _now.getUTCMinutes() / 60;
+    // Subsolar longitude: 0° at 12:00 UTC, moves 15°/hr westward
+    const _subLon = (12 - _utcH) * 15;
+    // Convert subsolar point to model-space direction (equinox, lat≈0)
+    const _sunTheta = (_subLon + 180) * Math.PI / 180;
+    const _smx = -Math.cos(_sunTheta), _smz = Math.sin(_sunTheta);
+    // Rotate by earth's initial rotation to get world-space sun direction
+    const _er = -Math.PI * 0.4;
+    const sunDir = new THREE.Vector3(
+      _smx * Math.cos(_er) + _smz * Math.sin(_er),
+      0.2,
+      -_smx * Math.sin(_er) + _smz * Math.cos(_er)
+    ).normalize();
 
     // Directional light as the sun
     const sunLight = new THREE.DirectionalLight(0xffffff, 2.5);
@@ -1148,13 +1162,8 @@
       requestAnimationFrame(animate);
       const dt = clock.getDelta(), elapsed = clock.getElapsedTime();
 
-      // Rotate earth slowly
-      earth.rotation.y += dt * 0.03;
-
-      // Slowly orbit sun direction
-      const sa = elapsed * 0.02;
-      sunDir.set(Math.cos(sa), 0.3, Math.sin(sa)).normalize();
-      sunLight.position.copy(sunDir).multiplyScalar(10);
+      // Rotate earth slowly under fixed sun (real terminator position)
+      earth.rotation.y += dt * 0.005;
 
       // Update shader time uniforms
       ionoMat.uniforms.uTime.value = elapsed;
