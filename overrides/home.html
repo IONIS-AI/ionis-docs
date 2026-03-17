@@ -875,7 +875,6 @@
     const dayMap = loadTex('earth_atmos_2048.jpg', true);
     const nightMap = loadTex('earth_lights_2048.png', true);
     const specMap = loadTex('earth_specular_2048.jpg', false);
-    const cloudMap = loadTex('earth_clouds_1024.png', false);
 
     // ── Earth ──────────────────────────────────────────────────
     const earthRadius = 1.0;
@@ -887,7 +886,6 @@
         uDayMap:  { value: dayMap },
         uNightMap: { value: nightMap },
         uSpecMap: { value: specMap },
-        uCloudMap: { value: cloudMap },
         uSunDir:  { value: sunDir },
         uTime:    { value: 0 },
       },
@@ -908,7 +906,6 @@
         uniform sampler2D uDayMap;
         uniform sampler2D uNightMap;
         uniform sampler2D uSpecMap;
-        uniform sampler2D uCloudMap;
         uniform vec3 uSunDir;
         uniform float uTime;
         varying vec3 vNormal;
@@ -928,15 +925,8 @@
 
           // Sample textures
           vec3 dayCol = texture2D(uDayMap, vUv).rgb;
-          vec3 nightCol = texture2D(uNightMap, vUv).rgb;
+          vec3 nightCol = texture2D(uNightMap, vUv).rgb * 2.0;
           float specMask = texture2D(uSpecMap, vUv).r;
-          float cloud = texture2D(uCloudMap, vUv).r;
-
-          // Blend clouds into day surface
-          dayCol = mix(dayCol, vec3(0.9, 0.9, 0.95), cloud * 0.55);
-
-          // Dim city lights under clouds, boost visible lights
-          nightCol = nightCol * (1.0 - cloud * 0.8) * 2.0;
 
           // Day / night blend
           vec3 color = mix(nightCol, dayCol, day);
