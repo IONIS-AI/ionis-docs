@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IONIS — Ionospheric Neural Inference System</title>
+  <meta name="description" content="IONIS predicts HF radio propagation using physics-constrained neural networks trained on 14 billion amateur radio observations from WSPR, RBN, contest logs, and PSK Reporter. Open source, self-hosted, no cloud dependencies.">
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="IONIS — Ionospheric Neural Inference System" />
+  <meta property="og:title" content="IONIS — Ionospheric Neural Inference System" />
+  <meta property="og:description" content="IONIS predicts HF radio propagation using physics-constrained neural networks trained on 14 billion amateur radio observations from WSPR, RBN, contest logs, and PSK Reporter. Open source, self-hosted, no cloud dependencies." />
+  <meta property="og:url" content="https://ionis-ai.com/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@ki7mt" />
+  <meta name="twitter:title" content="IONIS — Ionospheric Neural Inference System" />
+  <meta name="twitter:description" content="IONIS predicts HF radio propagation using physics-constrained neural networks trained on 14 billion amateur radio observations from WSPR, RBN, contest logs, and PSK Reporter. Open source, self-hosted, no cloud dependencies." />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "IONIS",
+    "alternateName": "Ionospheric Neural Inference System",
+    "description": "Physics-constrained neural network for HF radio propagation prediction, trained on 14 billion amateur radio observations.",
+    "applicationCategory": "ScientificApplication",
+    "operatingSystem": "Linux",
+    "author": {
+      "@type": "Person",
+      "name": "Greg Beam",
+      "callSign": "KI7MT",
+      "url": "https://github.com/KI7MT"
+    },
+    "sourceOrganization": {
+      "@type": "Organization",
+      "name": "IONIS-AI",
+      "url": "https://github.com/IONIS-AI"
+    },
+    "url": "https://ionis-ai.com/",
+    "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+    "isAccessibleForFree": true,
+    "programmingLanguage": ["Python", "Go", "C++", "CUDA", "SQL"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "IONIS Propagation Dataset",
+    "description": "14 billion+ amateur radio observations from WSPR, Reverse Beacon Network, contest logs, PSK Reporter, and solar indices — one of the largest curated HF propagation datasets we are aware of.",
+    "url": "https://ionis-ai.com/",
+    "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+    "creator": {
+      "@type": "Person",
+      "name": "Greg Beam",
+      "callSign": "KI7MT"
+    },
+    "temporalCoverage": "2005/2026"
+  }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace;
+      overflow-x: hidden;
+    }
+
+    /* ── Hero section (viewport height) ─────────────────────── */
+    .hero-section {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #canvas-container {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+    }
+
+    .overlay {
+      position: absolute;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .hero {
+      top: 8%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: 200;
+      letter-spacing: 1.2rem;
+      color: #fff;
+      text-shadow: 0 0 40px rgba(64, 156, 255, 0.5);
+      margin-bottom: 0.5rem;
+    }
+
+    .hero .subtitle {
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.3rem;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+    }
+
+    .tagline {
+      bottom: 12%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .tagline p {
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 0.15rem;
+    }
+
+    .tagline .stat {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.35);
+      margin-top: 0.8rem;
+      letter-spacing: 0.1rem;
+    }
+
+    .scroll-hint {
+      bottom: 4%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .scroll-hint span {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.25);
+      letter-spacing: 0.2rem;
+      text-transform: uppercase;
+    }
+
+    .scroll-hint .arrow {
+      display: block;
+      font-size: 1.2rem;
+      margin-top: 0.3rem;
+      color: rgba(64, 156, 255, 0.4);
+    }
+
+    /* ── Top nav ──────────────────────────────────────────── */
+    .top-nav {
+      position: absolute;
+      z-index: 10;
+      top: 0;
+      left: 0; right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      padding: 1.5rem 2rem;
+    }
+
+    .top-nav a {
+      color: rgba(255, 255, 255, 0.35);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.2rem;
+      text-transform: uppercase;
+      transition: color 0.3s, text-shadow 0.3s;
+      pointer-events: auto;
+    }
+
+    .top-nav a:hover {
+      color: rgba(64, 156, 255, 0.9);
+      text-shadow: 0 0 15px rgba(64, 156, 255, 0.4);
+    }
+
+    .top-nav .nav-docs {
+      color: rgba(64, 156, 255, 0.6);
+      border: 1px solid rgba(64, 156, 255, 0.2);
+      padding: 0.3rem 0.8rem;
+      border-radius: 3px;
+    }
+
+    .top-nav .nav-docs:hover {
+      border-color: rgba(64, 156, 255, 0.5);
+      background: rgba(64, 156, 255, 0.1);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+      50% { opacity: 1; transform: translateX(-50%) translateY(5px); }
+    }
+
+    .solar-hud {
+      top: 5%;
+      right: 5%;
+      text-align: right;
+      font-size: 0.75rem;
+      letter-spacing: 0.1rem;
+      color: rgba(255, 255, 255, 0.25);
+      line-height: 1.8;
+    }
+
+    .solar-hud .value { color: rgba(64, 156, 255, 0.6); }
+    .solar-hud .label { color: rgba(255, 255, 255, 0.2); text-transform: uppercase; }
+
+    /* ── Loading overlay ──────────────────────────────────── */
+    .loading-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+      transition: opacity 1.5s ease;
+      pointer-events: none;
+    }
+
+    .loading-overlay.loaded { opacity: 0; }
+
+    .loading-overlay span {
+      font-size: 0.8rem;
+      color: rgba(64, 156, 255, 0.4);
+      letter-spacing: 0.3rem;
+      text-transform: uppercase;
+    }
+
+    /* ── Data dashboard section ─────────────────────────────── */
+    .dashboard {
+      position: relative;
+      z-index: 20;
+      background: linear-gradient(180deg, #000 0%, #060a14 5%, #0a1020 50%, #060a14 95%, #000 100%);
+      padding: 6rem 2rem 4rem;
+    }
+
+    .dashboard-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      letter-spacing: 0.3rem;
+      text-transform: uppercase;
+      color: rgba(64, 156, 255, 0.5);
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+
+    /* ── Grid layout ───────────────────────────────────────── */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem 4rem;
+      margin-bottom: 4rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 1.8rem;
+    }
+
+    .card h3 {
+      font-size: 0.7rem;
+      letter-spacing: 0.2rem;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── Bar charts ────────────────────────────────────────── */
+    .bar-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+
+    .bar-label {
+      width: 50px;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.4);
+      text-align: right;
+      padding-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 1.5s ease-out;
+      position: relative;
+    }
+
+    .bar-fill::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 2px; height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .bar-value {
+      width: 65px;
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.3);
+      padding-left: 8px;
+      flex-shrink: 0;
+    }
+
+    /* Band colors */
+    .band-160m { background: linear-gradient(90deg, rgba(180, 60, 60, 0.6), rgba(180, 60, 60, 0.3)); }
+    .band-80m  { background: linear-gradient(90deg, rgba(200, 100, 30, 0.6), rgba(200, 100, 30, 0.3)); }
+    .band-40m  { background: linear-gradient(90deg, rgba(50, 180, 70, 0.6), rgba(50, 180, 70, 0.3)); }
+    .band-30m  { background: linear-gradient(90deg, rgba(40, 150, 140, 0.6), rgba(40, 150, 140, 0.3)); }
+    .band-20m  { background: linear-gradient(90deg, rgba(50, 120, 220, 0.6), rgba(50, 120, 220, 0.3)); }
+    .band-17m  { background: linear-gradient(90deg, rgba(80, 90, 200, 0.6), rgba(80, 90, 200, 0.3)); }
+    .band-15m  { background: linear-gradient(90deg, rgba(120, 50, 220, 0.6), rgba(120, 50, 220, 0.3)); }
+    .band-12m  { background: linear-gradient(90deg, rgba(180, 50, 180, 0.6), rgba(180, 50, 180, 0.3)); }
+    .band-10m  { background: linear-gradient(90deg, rgba(220, 70, 100, 0.6), rgba(220, 70, 100, 0.3)); }
+
+    /* Dataset colors */
+    .ds-wspr   { background: linear-gradient(90deg, rgba(50, 120, 220, 0.7), rgba(50, 120, 220, 0.3)); }
+    .ds-rbn    { background: linear-gradient(90deg, rgba(50, 180, 70, 0.7), rgba(50, 180, 70, 0.3)); }
+    .ds-pskr   { background: linear-gradient(90deg, rgba(200, 100, 30, 0.7), rgba(200, 100, 30, 0.3)); }
+    .ds-contest{ background: linear-gradient(90deg, rgba(120, 50, 220, 0.7), rgba(120, 50, 220, 0.3)); }
+    .ds-solar  { background: linear-gradient(90deg, rgba(220, 180, 40, 0.7), rgba(220, 180, 40, 0.3)); }
+
+    /* ── MCP Fleet grid ────────────────────────────────────── */
+    .fleet-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .fleet-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      padding: 0.6rem 0.8rem;
+      text-align: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .fleet-item:hover {
+      border-color: rgba(64, 156, 255, 0.3);
+      background: rgba(64, 156, 255, 0.05);
+    }
+
+    .fleet-item .name {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.6);
+      letter-spacing: 0.05rem;
+    }
+
+    .fleet-item .tools {
+      font-size: 0.6rem;
+      color: rgba(64, 156, 255, 0.5);
+      margin-top: 0.2rem;
+    }
+
+    /* ── Timeline ──────────────────────────────────────────── */
+    .timeline {
+      position: relative;
+      height: 60px;
+      margin-top: 1rem;
+    }
+
+    .timeline-track {
+      position: absolute;
+      top: 30px;
+      left: 0; right: 0;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .timeline-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(64, 156, 255, 0.1), rgba(64, 156, 255, 0.5));
+      border-radius: 1px;
+    }
+
+    .timeline-labels {
+      display: flex;
+      justify-content: space-between;
+      position: absolute;
+      top: 0;
+      left: 0; right: 0;
+    }
+
+    .timeline-label {
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.25);
+      position: relative;
+    }
+
+    .timeline-label::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      width: 1px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .timeline-events {
+      position: absolute;
+      top: 38px;
+      left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .timeline-event {
+      font-size: 0.55rem;
+      color: rgba(255, 255, 255, 0.2);
+      text-align: center;
+      max-width: 80px;
+    }
+
+    /* ── Big numbers ───────────────────────────────────────── */
+    .big-numbers {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-bottom: 4rem;
+      text-align: center;
+    }
+
+    .big-num {
+      padding: 1rem;
+    }
+
+    .big-num .number {
+      font-size: 2.2rem;
+      font-weight: 200;
+      color: rgba(64, 156, 255, 0.7);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .big-num .unit {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.25);
+      letter-spacing: 0.15rem;
+      text-transform: uppercase;
+    }
+
+    /* ── Footer links ──────────────────────────────────────── */
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      padding: 3rem 0 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.3);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.15rem;
+      text-transform: uppercase;
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: rgba(64, 156, 255, 0.9);
+      text-shadow: 0 0 15px rgba(64, 156, 255, 0.4);
+    }
+
+    .copyright {
+      text-align: center;
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.15);
+      padding-bottom: 2rem;
+      letter-spacing: 0.1rem;
+    }
+
+    /* ── Responsive ────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .top-nav {
+        gap: 0.6rem 1.2rem;
+        flex-wrap: wrap;
+        padding: 0.8rem 1rem;
+        font-size: 0.6rem;
+      }
+      .top-nav a { font-size: 0.6rem; letter-spacing: 0.1rem; }
+      .top-nav .nav-docs { padding: 0.2rem 0.5rem; }
+      .hero { top: 18%; }
+      .hero h1 { font-size: 2.2rem; letter-spacing: 0.6rem; }
+      .hero .subtitle { font-size: 0.7rem; letter-spacing: 0.15rem; }
+      .tagline p { font-size: 1rem; }
+      .solar-hud { display: none; }
+      .dashboard-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .big-numbers { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .big-num .number { font-size: 1.6rem; }
+      .fleet-grid { grid-template-columns: repeat(3, 1fr); }
+      .footer-links {
+        flex-wrap: wrap;
+        gap: 1rem 1.5rem;
+        padding: 2rem 1rem 1.5rem;
+      }
+      .footer-links a { font-size: 0.7rem; }
+    }
+
+    /* ── Scroll reveal ─────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- HERO — Three.js Globe                                    -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <section class="hero-section">
+    <nav class="top-nav">
+      <a href="https://github.com/qso-graph" target="_blank">GitHub</a>
+      <a href="https://github.com/IONIS-AI" target="_blank">IONIS-AI</a>
+      <a href="https://ham-stats.com" target="_blank">Ham Stats</a>
+      <a href="https://pypi.org/search/?q=qso-graph" target="_blank">PyPI</a>
+      <a href="papers/" class="nav-docs">Research</a>
+      <a href="model/" class="nav-docs">Documentation</a>
+    </nav>
+    <div id="canvas-container"></div>
+
+    <div class="overlay hero">
+      <h1>IONIS</h1>
+      <div class="subtitle">Ionospheric Neural Inference System</div>
+    </div>
+
+    <div class="overlay solar-hud" id="solar-hud">
+      <div><span class="label">SFI </span><span class="value" id="hud-sfi">---</span></div>
+      <div><span class="label">Kp </span><span class="value" id="hud-kp">---</span></div>
+      <div><span class="label">Signals </span><span class="value" id="hud-signals">---</span></div>
+      <div><span class="label">Bands </span><span class="value" id="hud-bands">---</span></div>
+      <div style="margin-top:0.4rem;opacity:0.5;font-size:0.65rem;"><span id="hud-updated">2026-03-21 21:50Z</span></div>
+    </div>
+
+    <div class="loading-overlay" id="loading">
+      <span>Loading Earth...</span>
+    </div>
+
+    <div class="overlay tagline">
+      <p>14 billion observations. One prediction.</p>
+      <div class="stat">WSPR &middot; RBN &middot; Contest &middot; PSK Reporter &middot; Solar &middot; IRI-2020</div>
+    </div>
+
+    <div class="overlay scroll-hint">
+      <span>Explore the data</span>
+      <span class="arrow">&#8964;</span>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- DASHBOARD — Data visualization                           -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <section class="dashboard">
+    <div class="dashboard-inner">
+
+      <div class="section-title reveal">The Numbers</div>
+
+      <!-- Big hero numbers -->
+      <div class="big-numbers reveal">
+        <div class="big-num">
+          <div class="number">15.01B</div>
+          <div class="unit">Observations</div>
+        </div>
+        <div class="big-num">
+          <div class="number">167M</div>
+          <div class="unit">Signatures</div>
+        </div>
+        <div class="big-num">
+          <div class="number">277</div>
+          <div class="unit">GiB on Disk</div>
+        </div>
+        <div class="big-num">
+          <div class="number">18</div>
+          <div class="unit">Years of Data</div>
+        </div>
+      </div>
+
+      <!-- Charts grid -->
+      <div class="dashboard-grid">
+
+        <!-- Band observation distribution -->
+        <div class="card reveal">
+          <h3>Signature Distribution by Band</h3>
+          <div class="bar-row">
+            <span class="bar-label">160m</span>
+            <div class="bar-track"><div class="bar-fill band-160m" data-width="10"></div></div>
+            <span class="bar-value">5.0M</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">80m</span>
+            <div class="bar-track"><div class="bar-fill band-80m" data-width="29"></div></div>
+            <span class="bar-value">14.2M</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">40m</span>
+            <div class="bar-track"><div class="bar-fill band-40m" data-width="82"></div></div>
+            <span class="bar-value">40.0M</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">30m</span>
+            <div class="bar-track"><div class="bar-fill band-30m" data-width="40"></div></div>
+            <span class="bar-value">19.5M</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">20m</span>
+            <div class="bar-track"><div class="bar-fill band-20m" data-width="100"></div></div>
+            <span class="bar-value">49.0M</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">17m</span>
+            <div class="bar-track"><div class="bar-fill band-17m" data-width="18"></div></div>
+            <span class="bar-value">8.6M</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">15m</span>
+            <div class="bar-track"><div class="bar-fill band-15m" data-width="33"></div></div>
+            <span class="bar-value">16.3M</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">12m</span>
+            <div class="bar-track"><div class="bar-fill band-12m" data-width="6"></div></div>
+            <span class="bar-value">2.8M</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">10m</span>
+            <div class="bar-track"><div class="bar-fill band-10m" data-width="21"></div></div>
+            <span class="bar-value">10.4M</span>
+          </div>
+        </div>
+
+        <!-- Dataset volumes -->
+        <div class="card reveal">
+          <h3>Dataset Volumes</h3>
+          <div class="bar-row">
+            <span class="bar-label">WSPR</span>
+            <div class="bar-track"><div class="bar-fill ds-wspr" data-width="100.0"></div></div>
+            <span class="bar-value">11.12B</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">RBN</span>
+            <div class="bar-track"><div class="bar-fill ds-rbn" data-width="20.5"></div></div>
+            <span class="bar-value">2.28B</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">PSKR</span>
+            <div class="bar-track"><div class="bar-fill ds-pskr" data-width="12.5"></div></div>
+            <span class="bar-value">1.39B</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Contest</span>
+            <div class="bar-track"><div class="bar-fill ds-contest" data-width="2.1"></div></div>
+            <span class="bar-value">234M</span>
+          </div>
+          <div class="bar-row" style="margin-top: 1.2rem;">
+            <span class="bar-label">Solar</span>
+            <div class="bar-track"><div class="bar-fill ds-solar" data-width="40"></div></div>
+            <span class="bar-value">319M IRI</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">DSCOVR</span>
+            <div class="bar-track"><div class="bar-fill ds-solar" data-width="8"></div></div>
+            <span class="bar-value">60K L1</span>
+          </div>
+
+          <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05);">
+            <h3 style="margin-bottom: 1rem;">Data Coverage</h3>
+            <div class="timeline">
+              <div class="timeline-labels">
+                <span class="timeline-label">2005</span>
+                <span class="timeline-label">2008</span>
+                <span class="timeline-label">2012</span>
+                <span class="timeline-label">2016</span>
+                <span class="timeline-label">2020</span>
+                <span class="timeline-label">2026</span>
+              </div>
+              <div class="timeline-track">
+                <div class="timeline-fill" style="width: 100%;"></div>
+              </div>
+              <div class="timeline-events">
+                <span class="timeline-event">Contest<br>starts</span>
+                <span class="timeline-event">WSPR<br>begins</span>
+                <span class="timeline-event">RBN<br>grows</span>
+                <span class="timeline-event">Solar<br>Cycle 25</span>
+                <span class="timeline-event">10B<br>WSPR</span>
+                <span class="timeline-event">PSKR<br>live</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MCP Fleet -->
+        <div class="card reveal" style="grid-column: 1 / -1;">
+          <h3>MCP Server Fleet &mdash; 14 Servers, 87 Tools, All Open Source</h3>
+          <div class="fleet-grid">
+            <div class="fleet-item">
+              <div class="name">ionis-mcp</div>
+              <div class="tools">11 tools</div>
+            </div>
+            <div class="fleet-item">
+              <div class="name">solar-mcp</div>
+              <div class="tools">6 tools</div>
+            </div>
+            <div class="fleet-item">
+              <div class="name">wspr-mcp</div>
+              <div class="tools">8 tools</div>
+            </div>
+            <div class="fleet-item">
+              <div class="name">pota-mcp</div>
+              <div class="tools">7 tools</div>
+            </div>
+            <div class="fleet-item">
+              <div class="name">sota-mcp</div>
+              <div class="tools">4 tools</div>
+            </div>
+            <div class="fleet-item">
+              <div class="name">iota-mcp</div>
+              <div class="tools">6 tools</div>
+            </div>
+            <div class="fleet-item">
+              <div class="name">hamqth-mcp</div>
+              <div class="tools">7 tools</div>
+            </div>
+            <div class="fleet-item">
+              <div class="name">qrz-mcp</div>
+              <div class="tools">5 tools</div>
+            </div>
+            <div class="fleet-item">
+              <div class="name">lotw-mcp</div>
+              <div class="tools">5 tools</div>
+            </div>
+            <div class="fleet-item">
+              <div class="name">eqsl-mcp</div>
+              <div class="tools">5 tools</div>
+            </div>
+            <div class="fleet-item">
+              <div class="name">adif-mcp</div>
+              <div class="tools">8 tools</div>
+            </div>
+            <div class="fleet-item">
+              <div class="name">n1mm-mcp</div>
+              <div class="tools">8 tools</div>
+            </div>
+            <div class="fleet-item">
+              <div class="name">qsp-mcp</div>
+              <div class="tools">relay</div>
+            </div>
+            <div class="fleet-item">
+              <div class="name">inbox-mcp</div>
+              <div class="tools">5 tools</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="footer-links reveal">
+        <a href="https://github.com/qso-graph" target="_blank">GitHub</a>
+        <a href="https://github.com/IONIS-AI" target="_blank">IONIS-AI</a>
+        <a href="papers/">Research</a>
+        <a href="https://ham-stats.com" target="_blank">Ham Stats</a>
+        <a href="https://pypi.org/search/?q=qso-graph" target="_blank">PyPI</a>
+      </div>
+      <div class="copyright reveal">
+        KI7MT Sovereign AI Lab &middot; No cloud dependencies &middot; All data self-hosted
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- Three.js — Photorealistic Earth + HF Propagation         -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    // ── Scene ──────────────────────────────────────────────────
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0.6, 3.5);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.3;
+    document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+    // ── Orbit Controls ─────────────────────────────────────────
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.minDistance = 1.8;
+    controls.maxDistance = 10.0;
+    controls.enablePan = false;
+    controls.rotateSpeed = 0.5;
+    controls.zoomSpeed = 0.8;
+
+    // ── Stars ──────────────────────────────────────────────────
+    const starGeo = new THREE.BufferGeometry();
+    const starCount = 4000;
+    const starPos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+      const r = 60 + Math.random() * 140;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      starPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      starPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      starPos[i * 3 + 2] = r * Math.cos(phi);
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({
+      color: 0xffffff, size: 0.15, sizeAttenuation: true, transparent: true, opacity: 0.8,
+    })));
+
+    // ── Texture Loading ────────────────────────────────────────
+    const TEX = 'https://threejs.org/examples/textures/planets/';
+    const loadingDiv = document.getElementById('loading');
+    const manager = new THREE.LoadingManager(() => {
+      if (loadingDiv) loadingDiv.classList.add('loaded');
+    });
+    const ml = new THREE.TextureLoader(manager);
+
+    function loadTex(name, srgb) {
+      const tex = ml.load(TEX + name);
+      if (srgb) tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      return tex;
+    }
+
+    const dayMap = loadTex('earth_atmos_2048.jpg', true);
+    const nightMap = loadTex('earth_lights_2048.png', true);
+    const specMap = loadTex('earth_specular_2048.jpg', false);
+
+    // ── Earth ──────────────────────────────────────────────────
+    const earthRadius = 1.0;
+    const earthGeo = new THREE.SphereGeometry(earthRadius, 128, 64);
+    // Calculate sun direction from real UTC time
+    const _now = new Date();
+    const _utcH = _now.getUTCHours() + _now.getUTCMinutes() / 60;
+    // Subsolar longitude: 0° at 12:00 UTC, moves 15°/hr westward
+    const _subLon = (12 - _utcH) * 15;
+    // Convert subsolar point to model-space direction (equinox, lat≈0)
+    const _sunTheta = (_subLon + 180) * Math.PI / 180;
+    const _smx = -Math.cos(_sunTheta), _smz = Math.sin(_sunTheta);
+    // Rotate by earth's initial rotation to get world-space sun direction
+    const _er = -Math.PI * 0.4;
+    const sunDir = new THREE.Vector3(
+      _smx * Math.cos(_er) + _smz * Math.sin(_er),
+      0.2,
+      -_smx * Math.sin(_er) + _smz * Math.cos(_er)
+    ).normalize();
+
+    // Directional light as the sun
+    const sunLight = new THREE.DirectionalLight(0xffffff, 2.5);
+    sunLight.position.copy(sunDir).multiplyScalar(10);
+    scene.add(sunLight);
+
+    // MeshPhongMaterial — proven texture pipeline, no shader bugs
+    const earthMat = new THREE.MeshPhongMaterial({
+      map: dayMap,
+      specularMap: specMap,
+      specular: new THREE.Color(0.15, 0.2, 0.4),
+      shininess: 20,
+      emissiveMap: nightMap,
+      emissive: new THREE.Color(1, 0.9, 0.7),
+      emissiveIntensity: 2.0,
+    });
+
+    const earth = new THREE.Mesh(earthGeo, earthMat);
+    earth.rotation.y = -Math.PI * 0.4;
+    scene.add(earth);
+
+    // ── Atmosphere outer glow ──────────────────────────────────
+    const atmosMat = new THREE.ShaderMaterial({
+      uniforms: { uSunDir: { value: sunDir } },
+      vertexShader: `
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        varying vec3 vWorldPos;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+          vWorldPos = (modelMatrix * vec4(position, 1.0)).xyz;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 uSunDir;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        varying vec3 vWorldPos;
+        void main() {
+          vec3 view = normalize(-vPosition);
+          float fresnel = 1.0 - abs(dot(normalize(vNormal), view));
+          float rim = pow(max((fresnel - 0.6) / 0.4, 0.0), 3.0);
+          // Use world position to get outward normal (sphere at origin)
+          vec3 outN = normalize(vWorldPos);
+          float sunFace = dot(outN, normalize(uSunDir));
+          vec3 col = mix(vec3(0.6, 0.2, 0.04), vec3(0.2, 0.5, 1.0), smoothstep(-0.3, 0.8, sunFace));
+          float alpha = rim * 0.6 * smoothstep(-0.5, 0.5, sunFace);
+          gl_FragColor = vec4(col, alpha);
+        }
+      `,
+      transparent: true, side: THREE.BackSide, depthWrite: false,
+    });
+    scene.add(new THREE.Mesh(new THREE.SphereGeometry(earthRadius * 1.045, 64, 32), atmosMat));
+
+    // ── Ionosphere shell ───────────────────────────────────────
+    const ionoHeight = 0.25;
+    const ionoMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uSunDir: { value: sunDir },
+      },
+      vertexShader: `
+        varying vec3 vNormal; varying vec3 vPosition; varying vec2 vUv;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          vPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime; uniform vec3 uSunDir;
+        varying vec3 vNormal; varying vec3 vPosition; varying vec2 vUv;
+
+        float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+        float noise(vec2 p) {
+          vec2 i = floor(p); vec2 f = fract(p); f = f * f * (3.0 - 2.0 * f);
+          return mix(mix(hash(i), hash(i + vec2(1, 0)), f.x), mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), f.x), f.y);
+        }
+
+        void main() {
+          vec3 normal = normalize(vNormal);
+          float ionization = smoothstep(-0.3, 0.5, dot(normal, normalize(uSunDir)));
+          float shimmer = noise(vUv * 20.0 + uTime * 0.05) * 0.5 + 0.5;
+          float polar = abs(vUv.y - 0.5) * 2.0;
+          float aurora = smoothstep(0.7, 0.95, polar) * (0.5 + 0.5 * sin(uTime * 0.3 + vUv.x * 20.0));
+          vec3 ionoColor = mix(vec3(0.02, 0.05, 0.15), vec3(0.05, 0.2, 0.5), ionization);
+          ionoColor += vec3(0.1, 0.8, 0.3) * aurora * 0.3 + vec3(0.3, 0.1, 0.6) * aurora * 0.15;
+          float rim = pow(1.0 - max(dot(normal, normalize(-vPosition)), 0.0), 2.5);
+          gl_FragColor = vec4(ionoColor, rim * (0.06 + ionization * 0.1 + shimmer * 0.02 + aurora * 0.2));
+        }
+      `,
+      transparent: true, side: THREE.FrontSide, depthWrite: false,
+    });
+    scene.add(new THREE.Mesh(new THREE.SphereGeometry(earthRadius + ionoHeight, 64, 32), ionoMat));
+
+    // ── HF Signal paths ────────────────────────────────────────
+    const BAND_COLORS = {
+      '160m': new THREE.Color(0.8, 0.2, 0.2),
+      '80m':  new THREE.Color(0.9, 0.4, 0.1),
+      '40m':  new THREE.Color(0.2, 0.8, 0.3),
+      '30m':  new THREE.Color(0.2, 0.65, 0.65),
+      '20m':  new THREE.Color(0.2, 0.5, 1.0),
+      '17m':  new THREE.Color(0.35, 0.3, 0.9),
+      '15m':  new THREE.Color(0.5, 0.2, 1.0),
+      '12m':  new THREE.Color(0.8, 0.2, 0.8),
+      '10m':  new THREE.Color(1.0, 0.3, 0.5),
+    };
+
+    // Physics-based ionospheric reflection heights
+    const BAND_HEIGHTS = {
+      '160m': 0.08,   // E layer ~100 km
+      '80m':  0.12,   // E/F1 ~150 km
+      '40m':  0.18,   // F1/F2 ~250 km
+      '30m':  0.20,   // F2 ~300 km
+      '20m':  0.22,   // F2 ~350 km
+      '17m':  0.24,   // F2 ~370 km
+      '15m':  0.26,   // F2 ~400 km
+      '12m':  0.28,   // F2 ~420 km
+      '10m':  0.30,   // F2 peak ~450 km
+    };
+
+    const PATHS = [
+      // From DN13 (Boise, ID — KI7MT)
+      [43.6, -116.2,  48.8,    2.3, '20m', 2],   // → Paris
+      [43.6, -116.2,  35.7,  139.7, '20m', 3],   // → Tokyo
+      [43.6, -116.2, -33.9,   18.4, '15m', 3],   // → Cape Town
+      [43.6, -116.2,  55.7,   37.6, '40m', 2],   // → Moscow
+      [43.6, -116.2, -54.4,    3.4, '15m', 4],   // → Bouvet Island (3Y0K)
+      [43.6, -116.2,  64.1,  -21.9, '40m', 2],   // → Iceland
+      [43.6, -116.2, -41.3,  174.8, '20m', 4],   // → New Zealand
+      [43.6, -116.2, -22.9,  -43.2, '17m', 3],   // → Rio
+      [43.6, -116.2,   1.3,  103.8, '20m', 3],   // → Singapore
+      [43.6, -116.2,  21.3, -157.8, '10m', 1],   // → Hawaii
+      // Other global paths
+      [51.5,   -0.1, -33.9,  151.2, '10m', 3],   // London → Sydney
+      [-34.6, -58.4,  48.8,    2.3, '20m', 2],   // Buenos Aires → Paris
+      [35.7,  139.7, -33.9,   18.4, '20m', 3],   // Tokyo → Cape Town
+      [-22.9, -43.2,   1.3,  103.8, '20m', 3],   // Rio → Singapore
+      [51.5,   -0.1,  35.7,  139.7, '15m', 3],   // London → Tokyo
+      [55.7,   37.6, -33.9,  151.2, '15m', 3],   // Moscow → Sydney
+    ];
+
+    function latLonToVec3(lat, lon, r) {
+      const phi = (90 - lat) * Math.PI / 180, theta = (lon + 180) * Math.PI / 180;
+      return new THREE.Vector3(-r * Math.sin(phi) * Math.cos(theta), r * Math.cos(phi), r * Math.sin(phi) * Math.sin(theta));
+    }
+
+    function greatCircleInterp(v1, v2, t) {
+      const omega = Math.acos(Math.min(1, v1.dot(v2) / (v1.length() * v2.length())));
+      if (omega < 0.001) return v1.clone().lerp(v2, t);
+      const s = Math.sin(omega);
+      return new THREE.Vector3(
+        Math.sin((1 - t) * omega) / s * v1.x + Math.sin(t * omega) / s * v2.x,
+        Math.sin((1 - t) * omega) / s * v1.y + Math.sin(t * omega) / s * v2.y,
+        Math.sin((1 - t) * omega) / s * v1.z + Math.sin(t * omega) / s * v2.z,
+      );
+    }
+
+    function buildSignalPath(txLat, txLon, rxLat, rxLon, band, hops) {
+      const txPos = latLonToVec3(txLat, txLon, earthRadius);
+      const rxPos = latLonToVec3(rxLat, rxLon, earthRadius);
+      const height = BAND_HEIGHTS[band] || 0.22;
+      const pts = [], segs = hops * 2;
+      for (let i = 0; i <= segs; i++) {
+        const gp = greatCircleInterp(txPos, rxPos, i / segs).normalize();
+        const hopT = i / segs * hops, h = Math.sin((hopT - Math.floor(hopT)) * Math.PI);
+        pts.push(gp.clone().multiplyScalar(earthRadius + h * height));
+      }
+      return pts;
+    }
+
+    const signals = [];
+
+    function createSignal(pathDef) {
+      const [txLat, txLon, rxLat, rxLon, band, hops] = pathDef;
+      const curve = new THREE.CatmullRomCurve3(
+        buildSignalPath(txLat, txLon, rxLat, rxLon, band, hops),
+        false, 'centripetal', 0.3
+      );
+      const curvePoints = curve.getPoints(150);
+      const color = BAND_COLORS[band] || BAND_COLORS['20m'];
+
+      // Trail line
+      const geo = new THREE.BufferGeometry();
+      const positions = new Float32Array(curvePoints.length * 3);
+      const alphas = new Float32Array(curvePoints.length);
+      curvePoints.forEach((p, i) => {
+        positions[i * 3] = p.x; positions[i * 3 + 1] = p.y; positions[i * 3 + 2] = p.z;
+        alphas[i] = 0;
+      });
+      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geo.setAttribute('alpha', new THREE.BufferAttribute(alphas, 1));
+
+      const mat = new THREE.ShaderMaterial({
+        uniforms: { uColor: { value: color }, uOpacity: { value: 0 } },
+        vertexShader: `
+          attribute float alpha;
+          varying float vAlpha;
+          void main() { vAlpha = alpha; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
+        `,
+        fragmentShader: `
+          uniform vec3 uColor; uniform float uOpacity; varying float vAlpha;
+          void main() { gl_FragColor = vec4(uColor * 1.5, vAlpha * uOpacity); }
+        `,
+        transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      });
+      const line = new THREE.Line(geo, mat);
+      scene.add(line);
+
+      // Signal dot (small, subtle)
+      const dotMat = new THREE.MeshBasicMaterial({
+        color, transparent: true, opacity: 0, blending: THREE.AdditiveBlending,
+      });
+      const dot = new THREE.Mesh(new THREE.SphereGeometry(0.008, 6, 6), dotMat);
+      scene.add(dot);
+
+      signals.push({
+        curve, curvePoints, color, band,
+        progress: Math.random(),
+        speed: 0.12 + Math.random() * 0.08,
+        opacity: 0, fadeIn: true,
+        life: Math.random() * 5, maxLife: 8 + Math.random() * 6,
+        mesh: line, alphaAttr: geo.getAttribute('alpha'),
+        dot, dotMat,
+      });
+    }
+
+    PATHS.forEach(createSignal);
+
+    // Station markers (deduplicated endpoints)
+    const stationSet = new Set();
+    PATHS.forEach(([txLat, txLon, rxLat, rxLon]) => {
+      stationSet.add(`${txLat},${txLon}`);
+      stationSet.add(`${rxLat},${rxLon}`);
+    });
+    stationSet.forEach(key => {
+      const [lat, lon] = key.split(',').map(Number);
+      const m = new THREE.Mesh(
+        new THREE.SphereGeometry(0.004, 6, 6),
+        new THREE.MeshBasicMaterial({
+          color: 0x409cff, transparent: true, opacity: 0.5,
+          blending: THREE.AdditiveBlending,
+        })
+      );
+      m.position.copy(latLonToVec3(lat, lon, earthRadius * 1.002));
+      scene.add(m);
+    });
+
+    scene.add(new THREE.AmbientLight(0x111122, 0.3));
+
+    // ── HUD ────────────────────────────────────────────────────
+    const hudSfi = document.getElementById('hud-sfi');
+    const hudKp = document.getElementById('hud-kp');
+    const hudSignals = document.getElementById('hud-signals');
+    const hudBands = document.getElementById('hud-bands');
+    hudSfi.textContent = '107';
+    hudKp.textContent = '3.7';
+
+    // ── Animation ──────────────────────────────────────────────
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const dt = clock.getDelta(), elapsed = clock.getElapsedTime();
+
+      // Rotate earth slowly under fixed sun (real terminator position)
+      earth.rotation.y += dt * 0.005;
+
+      // Update shader time uniforms
+      ionoMat.uniforms.uTime.value = elapsed;
+
+      // Animate signal paths
+      let activeCount = 0;
+      const activeBands = new Set();
+
+      for (const sig of signals) {
+        sig.life += dt;
+        if (sig.life > sig.maxLife) {
+          sig.life = 0; sig.progress = 0; sig.opacity = 0; sig.fadeIn = true;
+        }
+        if (sig.fadeIn) {
+          sig.opacity = Math.min(1, sig.opacity + dt * 0.8);
+          if (sig.opacity >= 1) sig.fadeIn = false;
+        }
+        if (sig.life > sig.maxLife - 1.5) {
+          sig.opacity = Math.max(0, sig.opacity - dt * 0.7);
+        }
+        sig.progress += sig.speed * dt;
+        if (sig.progress > 1) sig.progress -= 1;
+
+        // Trail with glow
+        const trailLen = 0.18;
+        for (let i = 0; i < sig.curvePoints.length; i++) {
+          const d = sig.progress - i / (sig.curvePoints.length - 1);
+          const w = d < 0 ? d + 1 : d;
+          sig.alphaAttr.array[i] = (w < trailLen && w >= 0) ? (1 - w / trailLen) * 0.9 : 0;
+        }
+        sig.alphaAttr.needsUpdate = true;
+        sig.mesh.material.uniforms.uOpacity.value = sig.opacity;
+
+        // Signal dot position
+        const dp = sig.curve.getPointAt(Math.min(sig.progress, 0.999));
+        if (dp) {
+          sig.dot.position.copy(dp);
+          sig.dotMat.opacity = sig.opacity * 0.9;
+        }
+
+        if (sig.opacity > 0.1) { activeCount++; activeBands.add(sig.band); }
+      }
+
+      hudSignals.textContent = activeCount.toString();
+      hudBands.textContent = activeBands.size.toString();
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // ── Resize ─────────────────────────────────────────────────
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+
+  <!-- ── Scroll reveal + bar animation ────────────────────── -->
+  <script>
+    // Intersection Observer for reveal animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Animate bars inside this element
+          entry.target.querySelectorAll('.bar-fill').forEach(bar => {
+            bar.style.width = bar.dataset.width + '%';
+          });
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Initialize bars at zero width
+    document.querySelectorAll('.bar-fill').forEach(bar => { bar.style.width = '0%'; });
+  </script>
+
+</body>
+</html>
