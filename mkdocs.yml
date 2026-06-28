@@ -3,9 +3,10 @@ site_description: >-
   IONIS predicts HF radio propagation using physics-constrained neural networks
   trained on 14 billion amateur radio observations from WSPR, RBN, contest logs,
   and PSK Reporter. Open source, self-hosted, no cloud dependencies.
-site_author: Greg Beam, KI7MT
+site_author: Gregory A. Beam (KI7MT), Agentics Labs LLC
 site_url: https://ionis-ai.com/
 repo_url: https://github.com/IONIS-AI/ionis-docs
+copyright: "© 2026 Agentics Labs LLC — KI7MT Sovereign AI Lab"
 
 theme:
   name: material
