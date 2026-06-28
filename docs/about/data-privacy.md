@@ -150,7 +150,7 @@ wanting the source data should download it from the original providers.
 
 Questions about our data handling practices can be directed to:
 
-- **Greg Beam, KI7MT** — Project lead
+- **Gregory A. Beam (KI7MT)**, Agentics Labs LLC — Project lead
 - **Email**: See QRZ.com listing for KI7MT
 
 ---
