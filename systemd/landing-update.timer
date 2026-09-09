@@ -1,0 +1,12 @@
+[Unit]
+Description=IONIS landing page update every 3 hours
+
+[Timer]
+# :50 past, offset from hamstats-publish at :00 so two renderers on the same host do not
+# contend for the same ClickHouse reads and the same git remote at the same instant.
+OnCalendar=0/3:50:00
+Persistent=true
+Unit=landing-update.service
+
+[Install]
+WantedBy=timers.target
