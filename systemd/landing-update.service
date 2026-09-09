@@ -1,0 +1,23 @@
+[Unit]
+# Update the ionis-docs landing page numbers from ClickHouse and push.
+#
+# This unit was hand-written into /etc/systemd/system on the 9975, owned by no package and no
+# playbook — the same problem ionis-hamstats 1.1.0 fixed for its own units. It is packaged now,
+# and it runs on publish-1 rather than on the control node: it is a renderer, not an ingester.
+Description=IONIS landing page update from ClickHouse
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ionis
+WorkingDirectory=/srv/ionis/repos/ionis-docs
+Environment=HOME=/srv/ionis
+Environment=IONIS_REPO_DIR=/srv/ionis/repos/ionis-docs
+Environment=IONIS_VENV=/srv/ionis/.venv/bin/python
+# Which GitHub App identity git-credential-ghapp mints as. Shared with ham-stats: one service
+# account, one App installation, two repos.
+Environment=FLEET_AGENT=hamstats
+# CH_HOST — the DAC on publish-1, unset (localhost) anywhere ClickHouse is local.
+EnvironmentFile=-/etc/hamstats/env
+ExecStart=/bin/bash /srv/ionis/repos/ionis-docs/scripts/publish_landing.sh
