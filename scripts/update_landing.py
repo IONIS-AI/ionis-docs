@@ -120,11 +120,23 @@ def fetch_data(host: str) -> dict:
     data["dscovr_count"] = int(ch_scalar("SELECT count() FROM solar.dscovr", host))
 
     # ── Live conditions ──────────────────────────────────────
-    cond = ch_query("SELECT solar_flux, kp_index FROM wspr.live_conditions LIMIT 1", host)
+    # ORDER BY updated_at DESC is required now. wspr.live_conditions was an
+    # ENGINE = Memory table holding exactly one row, so a bare LIMIT 1 was unambiguous.
+    # It is a durable append-only MergeTree at 15-minute resolution as of
+    # ionis-core 25-live_conditions.sql, and LIMIT 1 against history returns an
+    # ARBITRARY row — a plausible SFI and Kp from any point in the last two years,
+    # indistinguishable on the page from current ones.
+    cond = ch_query(
+        "SELECT solar_flux, kp_index FROM wspr.live_conditions "
+        "ORDER BY updated_at DESC LIMIT 1", host)
     if cond:
         data["sfi"] = int(float(cond[0]["solar_flux"]))
         data["kp"] = round(float(cond[0]["kp_index"]), 1)
     else:
+        # Sentinels, not readings. SFI 0 is physically impossible (the quiet-Sun floor
+        # is ~64 sfu) and Kp 0.0 is a legal, calm-looking value — so the two are not
+        # equally safe to display. Whatever renders these must show "unavailable"
+        # rather than printing them as measurements.
         data["sfi"] = 0
         data["kp"] = 0.0
 
