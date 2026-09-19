@@ -1,3 +1,22 @@
+# SUPERSEDED — DO NOT BUILD OR PUBLISH (KI7MT/fleet-ops#183, decided 2026-09-10)
+#
+# This package exists because the landing publisher's systemd units were hand-placed in
+# /etc/systemd/system and owned by nothing. It was always an interim step: one package per site
+# does not scale, and the coupling it leaves behind is already visible — landing-update.service
+# runs under HAMSTATS' identity and reads /etc/hamstats/env, because that is where a HOST fact
+# (CH_HOST) happens to live.
+#
+# The replacement is ionis-publish: one package for the publishing TIER, carrying every
+# publisher unit, the ionis-publish service account and /etc/ionis-publish/env, with each site
+# keeping its own repo for content. It is lab-only, so it ships from the private repository
+# (KI7MT/fleet-ops#184) rather than Copr.
+#
+# STATE: never built in Copr. publish-1 runs ionis-docs-publisher 1.0.0 from a LOCAL install, so
+# this spec is still the only recipe for something that is currently serving a public website —
+# which is why the file stays until ionis-publish replaces it on that host, and only then is
+# deleted. Do not build it in the meantime; a Copr build would make a superseded design
+# installable by anyone.
+
 %global debug_package %{nil}
 
 Name:           ionis-docs-publisher
