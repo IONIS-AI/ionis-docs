@@ -48,8 +48,6 @@ DDL Files (32 total):
   05  geo_functions.sql                 geo           v_grid_validation_example
   06  lab_versions.sql                  data_mgmt     lab_versions, v_lab_versions_latest
   07  callsign_grid.sql                 wspr          callsign_grid
-  08  model_features.sql                wspr          silver
-  09  quality_distribution_mv.sql       wspr          v_quality_distribution (MV → silver)
   10  rbn_schema_v1.sql                 rbn           bronze
   11  contest_schema_v1.sql             contest       bronze
   12  signatures_v1.sql                 wspr          signatures_v1
@@ -57,9 +55,9 @@ DDL Files (32 total):
   14  training_continuous.sql           wspr          gold_continuous
   15  training_v6_clean.sql             wspr          gold_v6
   16  validation_step_i.sql             validation    step_i_paths, step_i_voacap
-  17  balloon_callsigns.sql             wspr          balloon_callsigns
+  17  rbn_ingest_log.sql                rbn           ingest_log
   18  validation_quality_test.sql       validation    quality_test_paths, quality_test_voacap
-  19  dxpedition_synthesis.sql          dxpedition    catalog; rbn.dxpedition_paths
+  19  dxpedition_synthesis.sql          multiple      dxpedition.catalog; rbn.dxpedition_paths
   20  signatures_v2_terrestrial.sql     wspr          signatures_v2_terrestrial
   21  balloon_callsigns_v2.sql          wspr          balloon_callsigns_v2
   22  pskr_schema_v1.sql                pskr          bronze
@@ -70,15 +68,24 @@ DDL Files (32 total):
   27  mode_thresholds.sql               validation    mode_thresholds
   28  pskr_ingest_log.sql               pskr          ingest_log
   29  rbn_dxpedition_signatures.sql     rbn           dxpedition_signatures
-  30  rbn_ingest_log.sql                rbn           ingest_log
-  31  wspr_ingest_log.sql               wspr          ingest_log
-  32  contest_ingest_log.sql            contest       ingest_log
+  30  wspr_ingest_log.sql               wspr          ingest_log
+  31  contest_ingest_log.sql            contest       ingest_log
+  32  training_runs.sql                 training      runs, epochs
+  33  solar_dscovr.sql                  solar         dscovr
+  34  solar_iri_lookup.sql              solar         iri_lookup
+  35  dxpedition_contest_paths.sql      validation    dxpedition_contest_paths
+  36  pskr_signatures.sql               pskr          signatures
+  37  contest_quarantine.sql            contest       quarantine
+  38  wspr_bronze_uniform.sql           wspr          bronze_uniform
+  39  validation_sfi_audit.sql          validation    sfi_audit_runs, tst900_results
+  40  contest_log_metadata.sql          contest       log_metadata
 ```
 
-!!! note "DDL 09 depends on DDL 08"
-    The `v_quality_distribution` materialized view reads from `wspr.silver`.
-    DDL 08 must be applied first. Sequential numbering handles this
-    automatically.
+!!! warning "Everything in `src/` is applied — there is no opt-in"
+    The `Makefile` and `ionis-core.spec` both glob `src/*.sql`, so every file in that
+    directory runs. Dropping a table without deleting its DDL means the next apply
+    recreates it. `scripts/verify_schema_complete.sh` checks the live database against
+    `src/` in both directions and is the fastest way to confirm a rebuild is honest.
 
 ## Step 2: Load Solar Data
 
@@ -211,5 +218,5 @@ Total wall time      ~35 min (sequential, excluding pskr)
 
 ## Next Steps
 
-- **Silver layer**: See [Silver Layer](silver_layer.md) for CUDA embeddings and aggregated signatures
+- **Silver layer**: retired 2026-09-22 — see [Silver Layer](silver_layer.md). Signatures are built from bronze; there is no intermediate layer.
 - **Gold layer**: See [Gold Layer](gold_layer.md) for training tables and CSV export

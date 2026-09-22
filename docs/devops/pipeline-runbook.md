@@ -70,15 +70,13 @@ done
 ```text
   #   File                              Database      Creates
   --  --------------------------------  -----------   ----------------------------------------
-  01  wspr_schema_v2.sql                wspr          bronze, mv_spots_daily
+  01  wspr_schema_v2.sql                wspr          bronze, v_schema_contract, v_data_integrity
   02  solar_indices.sql                 solar         bronze
   03  solar_silver.sql                  solar         v_daily_indices
   04  data_mgmt.sql                     data_mgmt     config
   05  geo_functions.sql                 geo           v_grid_validation_example
-  06  lab_versions.sql                  data_mgmt     lab_versions
+  06  lab_versions.sql                  data_mgmt     lab_versions, v_lab_versions_latest
   07  callsign_grid.sql                 wspr          callsign_grid
-  08  model_features.sql                wspr          silver
-  09  quality_distribution_mv.sql       wspr          v_quality_distribution (MV → silver)
   10  rbn_schema_v1.sql                 rbn           bronze
   11  contest_schema_v1.sql             contest       bronze
   12  signatures_v1.sql                 wspr          signatures_v1
@@ -86,9 +84,9 @@ done
   14  training_continuous.sql           wspr          gold_continuous
   15  training_v6_clean.sql             wspr          gold_v6
   16  validation_step_i.sql             validation    step_i_paths, step_i_voacap
-  17  balloon_callsigns.sql             wspr          balloon_callsigns
+  17  rbn_ingest_log.sql                rbn           ingest_log
   18  validation_quality_test.sql       validation    quality_test_paths, quality_test_voacap
-  19  dxpedition_synthesis.sql          dxpedition    catalog; rbn.dxpedition_paths
+  19  dxpedition_synthesis.sql          multiple      dxpedition.catalog; rbn.dxpedition_paths
   20  signatures_v2_terrestrial.sql     wspr          signatures_v2_terrestrial
   21  balloon_callsigns_v2.sql          wspr          balloon_callsigns_v2
   22  pskr_schema_v1.sql                pskr          bronze
@@ -99,15 +97,24 @@ done
   27  mode_thresholds.sql               validation    mode_thresholds
   28  pskr_ingest_log.sql               pskr          ingest_log
   29  rbn_dxpedition_signatures.sql     rbn           dxpedition_signatures
-  30  rbn_ingest_log.sql                rbn           ingest_log
-  31  wspr_ingest_log.sql               wspr          ingest_log
-  32  contest_ingest_log.sql            contest       ingest_log
+  30  wspr_ingest_log.sql               wspr          ingest_log
+  31  contest_ingest_log.sql            contest       ingest_log
+  32  training_runs.sql                 training      runs, epochs
+  33  solar_dscovr.sql                  solar         dscovr
+  34  solar_iri_lookup.sql              solar         iri_lookup
+  35  dxpedition_contest_paths.sql      validation    dxpedition_contest_paths
+  36  pskr_signatures.sql               pskr          signatures
+  37  contest_quarantine.sql            contest       quarantine
+  38  wspr_bronze_uniform.sql           wspr          bronze_uniform
+  39  validation_sfi_audit.sql          validation    sfi_audit_runs, tst900_results
+  40  contest_log_metadata.sql          contest       log_metadata
 ```
 
-!!! note "DDL 09 depends on DDL 08"
-    The `v_quality_distribution` materialized view reads from `wspr.silver`.
-    DDL 08 must be applied first. Sequential numbering handles this
-    automatically.
+!!! warning "Everything in `src/` is applied — there is no opt-in"
+    The `Makefile` and `ionis-core.spec` both glob `src/*.sql`, so every file in that
+    directory runs. Dropping a table without deleting its DDL means the next apply
+    recreates it. `scripts/verify_schema_complete.sh` checks the live database against
+    `src/` in both directions and is the fastest way to confirm a rebuild is honest.
 
 ### Step 2.3: Verify table count
 
@@ -308,32 +315,23 @@ FORMAT PrettyCompact
 
 ---
 
-## Phase 5: Silver Layer (~50 min, optional)
+## Phase 5: Silver Layer — RETIRED 2026-09-22
 
-Generate CUDA float4 embeddings from WSPR spots joined with solar indices.
+This phase no longer exists. `wspr.silver` was dropped; **skip straight from Phase 4 to
+Phase 6.** The gold tables are built from `wspr.bronze` in Phase 4 and never depended on
+this step.
 
-!!! note "GPU required"
-    `bulk-processor` requires an NVIDIA GPU. It is not yet packaged in the
-    `ionis-cuda` RPM — build locally:
-    `cd ionis-cuda && mkdir build && cd build && cmake .. && make`
+The table was found holding zero rows in the 2026-09-22 data audit. A QA rebuild had
+recorded 4.43B rows on 2026-02-07, so it was probably populated once, but ClickHouse's
+logs retain only back to 2026-09-06 and cannot say when it emptied. What is certain is
+that **nobody noticed for months**, because nothing read it: `bulk-processor` is unpackaged
+and hand-run, and every gold populate script in Phase 4 reads `wspr.bronze` directly.
 
-```bash
-bulk-processor --host 192.168.1.90
-```
+So the pipeline this runbook builds is `bronze → gold`, and always was. The
+`bronze → silver → gold` medallion chain described here and elsewhere was a design.
 
-| Target Table | Expected Rows | Time |
-|-------------|---------------|------|
-| `wspr.silver` | ~4.43B | ~45 min |
-| `wspr.v_quality_distribution` | ~6.1M | auto (MV) |
-
-Verification:
-
-```bash
-clickhouse-client --query "SELECT count() FROM wspr.silver"
-# Expected: ~4,430,000,000
-```
-
-See [Silver Layer](../model/methodology/silver_layer.md) for details.
+See [Silver Layer](../model/methodology/silver_layer.md) for the full retirement note, and
+`ionis-core/docs/DATA-DICTIONARY.md` for what every table in the lab actually is.
 
 ---
 
@@ -491,8 +489,7 @@ Phase 4: Population Scripts (Tier 1 → 2 → 3)
   ── Tier 3 ──
   4.12 populate_signatures_v2_terrestrial.sh  wspr.signatures_v2_terrestrial (~93.3M)
 
-Phase 5: Silver Layer (optional, requires GPU)
-  5.1  bulk-processor (CUDA)         wspr.silver              (~4.43B, ~45m)
+Phase 5: RETIRED — wspr.silver was dropped 2026-09-22. Skip to Phase 6.
 
 Phase 6: Export Training Data
   6.1  gold_v6.csv export + SCP to M3

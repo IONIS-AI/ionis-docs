@@ -1,81 +1,76 @@
-# Silver Layer
+# Silver Layer — retired 2026-09-22
 
-Derived tables built from the bronze stack. The silver layer transforms raw
-spots into embeddings and aggregated signatures for downstream analysis and
-model training.
+!!! danger "There is no silver layer. The pipeline is `bronze → gold`."
+    `wspr.silver` and `wspr.v_quality_distribution` were dropped on 2026-09-22. This page
+    is kept because the layer was documented for months and the links to it are load-bearing;
+    it now records what happened rather than instructing anyone to build it.
 
-## Prerequisites
+## What was found
 
-- Bronze stack fully populated (see [Bronze Stack](bronze_stack.md))
-- `solar.bronze` populated (required for all JOINs)
+The 2026-09-22 data audit found `wspr.silver` holding **zero rows**, against documentation —
+this page included — that advertised 4.4 billion embeddings across 41 GiB.
 
-## Step 1: Generate CUDA Embeddings
+It was probably not always empty. The QA table below recorded a clean-slate rebuild on
+2026-02-07 producing 4,430,000,000 rows. ClickHouse's `part_log` and `query_log` retain only
+back to 2026-09-06, so **when or how it emptied cannot be established.**
 
-The bulk-processor generates float4 embeddings from WSPR spots joined with
-solar indices, stored in `wspr.silver`.
+That uncertainty is the finding, not a gap in it. A table can shed four billion rows and go
+unnoticed for seven months only if nothing reads it.
 
-```bash
-bulk-processor --host 192.168.1.90
-```
+## Why nothing read it
 
-!!! warning "Requires NVIDIA GPU"
-    The bulk-processor requires an NVIDIA GPU with sufficient VRAM.
-    The RTX PRO 6000 (96 GB) processes all 10.8B spots in a single pass.
+| | |
+|---|---|
+| **Written by** | `bulk-processor`, a CUDA job in `ionis-cuda`. Not packaged in any RPM, no systemd unit, runs only by hand. |
+| **Read by** | `wspr.v_quality_distribution` — a materialized view that was also empty. |
+| **Used to build gold** | **No.** All fourteen populate scripts read `wspr.bronze` directly. `populate_stratified.sh` and `populate_continuous.sh` both join `wspr.bronze` to `solar.bronze`; `gold_v6` derives from `gold_continuous`. Not one script references silver. |
 
-!!! note "Not in RPM"
-    `bulk-processor` is not yet packaged in the `ionis-cuda` RPM.
-    Build locally: `cd ionis-cuda && mkdir build && cd build && cmake .. && make`
+So the `bronze → silver → gold` medallion chain in the architecture documents described a
+design. The build is `bronze → gold`, and the gold tables were never affected.
 
-Verification:
+## What was removed
 
-```bash
-clickhouse-client --query "SELECT count() FROM wspr.silver"
-# Expected: ~4,430,000,000
-```
+| Object | Where |
+|---|---|
+| `wspr.silver` | dropped from ClickHouse |
+| `wspr.v_quality_distribution` | dropped from ClickHouse |
+| `src/08-model_features.sql` | deleted from `ionis-core` — `src/*.sql` is globbed by the `Makefile` **and** by `ionis-core.spec`, so leaving the file would have recreated the table on the next apply |
+| `src/09-quality_distribution_mv.sql` | deleted from `ionis-core`, same reason |
+| `sql/01-model_features.sql` | in `ionis-cuda`, every statement commented out — reference schema only |
 
-The `v_quality_distribution` materialized view auto-populates as rows are
-inserted into `wspr.silver`:
+**`03-solar_silver.sql` was not touched.** Despite the name it creates `solar.v_daily_indices`,
+a view over `solar.bronze` that exists and is in active use. The filename is a leftover from the
+retired concept and has nothing to do with `wspr.silver`.
 
-```bash
-clickhouse-client --query "SELECT count() FROM wspr.v_quality_distribution"
-# Expected: ~6,100,000
-```
+## The CUDA engine is kept
 
-## Step 2: Build Aggregated Signatures
+`ionis-cuda` computes real float4 embeddings and the code is sound. What it lacks is a
+*consumer*. Before it runs again, decide what reads its output — not merely where to put it. An
+unconsumed table is exactly how this one sat empty without anyone noticing.
 
-Signatures compress 10.8B raw spots into ~93M median-bucketed entries — a
-115:1 compression ratio that strips site-level noise and reveals the
-atmospheric transfer function.
+## Historical QA record
 
-See [Aggregated Signatures](step_f_signatures.md) for full methodology
-and per-band distribution.
-
-```bash
-bash /usr/share/ionis-core/scripts/populate_signatures.sh
-# Or with custom host:
-# CH_HOST=10.60.1.1 bash /usr/share/ionis-core/scripts/populate_signatures.sh
-```
-
-Verification:
-
-```bash
-clickhouse-client --query "SELECT count() FROM wspr.signatures_v2_terrestrial"
-# Expected: ~93,600,000
-```
-
-## QA Actuals
-
-Clean-slate rebuild on 9975WX (2026-02-07):
+Kept for provenance. This is the run that reported 4.43B rows, and the claim this page carried
+until it was checked:
 
 ```text
-Table                   Rows            Time
-----------------------  --------------  ---------
-wspr.silver             4,430,000,000   ~45 min
-wspr.signatures_v2_terrestrial  93,600,000      3m31s
-v_quality_distribution  ~6,100,000      (auto)
+Clean-slate rebuild on 9975WX (2026-02-07)
+
+Table                           Rows            Time
+------------------------------  --------------  ---------
+wspr.silver                     4,430,000,000   ~45 min
+wspr.signatures_v2_terrestrial     93,600,000   3m31s
+v_quality_distribution              ~6,100,000   (auto)
 ```
 
-## Next Steps
+`wspr.signatures_v2_terrestrial` is real and current — 93.60M rows as of 2026-09-22. It is built
+from `wspr.signatures_v1`, which is built from `wspr.bronze`. It never involved silver.
 
-- **Gold layer**: See [Gold Layer](gold_layer.md) for training tables and CSV export
-- **Training**: See [Training](training.md) for model architecture and training methodology
+## Where to look instead
+
+- **[Bronze Stack](bronze_stack.md)** — the raw ingest tables
+- **[Gold Layer](gold_layer.md)** — the training tables, built from bronze
+- **[Aggregated Signatures](step_f_signatures.md)** — the 115:1 compression that does the work
+  this layer was supposed to do
+- **`ionis-core/docs/DATA-DICTIONARY.md`** — every table in the lab: source, writer, readers,
+  derivation. Authoritative; if a document disagrees with it, that document is wrong.

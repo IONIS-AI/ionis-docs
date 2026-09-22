@@ -13,10 +13,15 @@ description: >-
 
 ## bulk-processor
 
-GPU-accelerated float4 embedding generator for the WSPR silver layer. Reads
-date-ranged batches from `wspr.bronze`, JOINs with `solar.bronze` for solar/geomagnetic
-context, computes signature embeddings on the GPU, and writes results to `wspr.silver`.
-Part of `ionis-cuda` (CUDA binary).
+GPU-accelerated float4 embedding generator. Reads date-ranged batches from `wspr.bronze`,
+JOINs with `solar.bronze` for solar/geomagnetic context, and computes signature embeddings on
+the GPU. Part of `ionis-cuda` (CUDA binary).
+
+!!! danger "No destination table — not currently usable"
+    It wrote to `wspr.silver`, which was **dropped 2026-09-22**. The run now fails with
+    `Table wspr.silver does not exist`, which is deliberate: the engine has no consumer, and
+    retargeting it without one would repeat the mistake that left the table empty and
+    unnoticed for months. See [Silver Layer](../model/methodology/silver_layer.md).
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐

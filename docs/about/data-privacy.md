@@ -42,11 +42,12 @@ Full details: [WSPRNet Downloads](https://www.wsprnet.org/drupal/downloads) |
 
 ### Why Callsigns Appear in Our Pipeline
 
-Amateur radio callsigns appear in the bronze (raw ingest) and silver (enrichment)
-layers of our data pipeline for one reason only: **to link an observation to a
-geographic grid square** when the source record does not include one directly (e.g.,
-Reverse Beacon Network spots contain no grid square — only a callsign and DXCC
-prefix). This is the Rosetta Stone's sole function.
+Amateur radio callsigns appear in the bronze (raw ingest) layer of our data pipeline for
+one reason only: **to link an observation to a geographic grid square** when the source
+record does not include one directly (e.g., Reverse Beacon Network spots contain no grid
+square — only a callsign and DXCC prefix). This is the Rosetta Stone's sole function, and
+it is performed by a lookup against `wspr.callsign_grid` while the signatures tables are
+built. The callsign is read during that build and **never written to the output.**
 
 By the time data reaches the gold layer (training-ready, model-facing), **all
 callsigns have been removed**. The model receives only: grid-pair, band, time of
@@ -102,7 +103,7 @@ for scientific or historical research purposes and statistical purposes, provide
 appropriate technical and organizational measures are in place — particularly the
 principle of data minimization. Our pipeline exemplifies this:
 
-- Callsigns are used only where necessary (grid resolution in silver layer)
+- Callsigns are used only where necessary — a grid lookup during the signatures build
 - Callsigns are stripped as early as possible (before gold layer)
 - The model never receives any personal identifier
 - We do not attempt to identify, profile, or contact any individual
@@ -115,12 +116,24 @@ Our medallion architecture enforces data minimization structurally:
 | Layer | Contains Callsigns? | Purpose |
 |-------|-------------------|---------|
 | **Bronze** (raw ingest) | Yes — as received from source | Immutable archive, never modified |
-| **Silver** (enriched) | Yes — used for grid resolution | Cross-source validation, temporal grid matching |
-| **Gold** (training-ready) | **No** | Aggregated signatures: grid-pair, band, time, solar, SNR |
+| **`wspr.callsign_grid`** (lookup) | Yes — callsign → grid | The Rosetta Stone. Read during the signatures build; never joined into an output table. |
+| **Signatures** (aggregated) | **No** | Grid-pair, band, time, solar, SNR |
+| **Gold** (training-ready) | **No** | Derived from bronze; aggregated, no identifiers |
 
-The callsign does its job in the silver layer (linking observations to grids) and
-is permanently left behind. By the time any data touches the neural network, it
-contains only physics — no person.
+The callsign does its job during the signatures build — resolving an observation to a grid —
+and is permanently left behind. By the time any data touches the neural network it contains
+only physics, no person.
+
+!!! note "Verified, not asserted"
+    Checked against the live schema on 2026-09-22: `wspr.signatures_v1`,
+    `wspr.signatures_v2_terrestrial`, `wspr.gold_stratified`, `wspr.gold_continuous` and
+    `wspr.gold_v6` have **no callsign or reporter column of any kind**. The claim above is a
+    property of the schema, not a convention anyone has to remember to follow.
+
+    This section previously described a "silver (enrichment)" layer holding callsigns. There
+    is no such layer — `wspr.silver` was retired 2026-09-22 and, being empty, never held any
+    personal data. The minimization described here was always performed by the signatures
+    build. The correction is to the description, not to the practice.
 
 ### What We Do Not Do
 
