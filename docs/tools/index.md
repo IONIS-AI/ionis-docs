@@ -60,7 +60,7 @@ collector uses MQTT for real-time spot streaming.
 
 | App | Type | Package | Description |
 |-----|------|---------|-------------|
-| [bulk-processor](cuda.md#bulk-processor) | CUDA | ionis-cuda | Float4 embedding generator → wspr.silver |
+| [bulk-processor](cuda.md#bulk-processor) | CUDA | ionis-cuda | Float4 embedding generator — **retired, no destination table** |
 
 ## Validation (External)
 

@@ -17,11 +17,12 @@ training, and inference.
 | Archive storage | 2 TB | 4+ TB (ZFS recommended) |
 | OS | RHEL 9 / Rocky 9 / Fedora | Rocky Linux 9.7 |
 
-!!! note "GPU is optional"
-    GPU is only required for the silver layer (CUDA embeddings via
-    `bulk-processor`). Training runs on Mac or Linux with PyTorch (CPU or
-    MPS). You can skip straight from bronze to gold if you don't need
-    embeddings.
+!!! note "GPU is optional for the data pipeline"
+    Nothing in the build requires a GPU. The gold training tables are derived from
+    `wspr.bronze` directly — `bronze → gold`, with no intermediate layer. The CUDA
+    `bulk-processor` was the only GPU step and it is retired (see
+    [Silver Layer](../model/methodology/silver_layer.md)). Training itself runs on Mac or
+    Linux with PyTorch (CPU or MPS); a GPU helps there, but is not required to build the data.
 
 ## Reference Build
 

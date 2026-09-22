@@ -103,7 +103,7 @@ ls -lh data/gold_v6.csv
 ## Training Table Lineage
 
 ```text
-V1  training_set_v1   First attempt from silver. Dropped (no solar backfill).
+V1  training_set_v1   First attempt, from the since-retired silver layer. Dropped (no solar backfill).
 V2  (experimental)    Uniform random sampling. Never formalized.
 V3  (experimental)    Distance-weighted sampling. Never formalized.
 V4  gold_stratified   SSN-stratified quintile bins. Retained for ablation studies.
@@ -138,9 +138,8 @@ Phase 2: Bronze Ingest (see Bronze Stack)
   2c. rbn-ingest                 rbn.bronze            (~3m30s)
   2d. contest-ingest -enrich     contest.bronze        (~24m)
 
-Phase 3: Silver Layer (see Silver Layer)
-  3a. bulk-processor (CUDA)      wspr.silver           (~45m)
-  3b. populate_signatures.sh     wspr.signatures_v2_terrestrial  (~3m30s)
+Phase 3: Signatures (built from bronze -- there is no silver layer)
+  3a. populate_signatures.sh     wspr.signatures_v2_terrestrial  (~3m30s)
 
 Phase 4: Gold Layer (this page)
   4a. populate_stratified.sh     wspr.gold_stratified  (~7m)

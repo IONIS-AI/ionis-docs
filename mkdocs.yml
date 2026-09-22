@@ -74,7 +74,7 @@ nav:
     - Methodology:
       - Data Pipeline: model/methodology/data_pipeline.md
       - Bronze Layer: model/methodology/bronze_stack.md
-      - Silver Layer: model/methodology/silver_layer.md
+      - Silver Layer (retired): model/methodology/silver_layer.md
       - Gold Layer: model/methodology/gold_layer.md
       - Signatures: model/methodology/step_f_signatures.md
       - Training: model/methodology/training.md

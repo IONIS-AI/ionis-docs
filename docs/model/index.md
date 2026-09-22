@@ -43,12 +43,16 @@ Read more: [IonisGate Architecture](architecture/ionisgate.md) |
 
 ## Methodology
 
-The training pipeline transforms 14B+ raw radio observations into model-ready
-signatures through a medallion architecture:
+The training pipeline transforms 22B+ raw radio observations into model-ready signatures in
+two stages — **`bronze → gold`**, with no intermediate layer:
 
 - **Bronze**: Raw ingest from WSPR, RBN, contest logs, PSK Reporter
-- **Silver**: CUDA-accelerated embeddings with solar enrichment
-- **Gold**: Aggregated signatures — grid-pair, band, time, solar, SNR
+- **Signatures**: Aggregated per grid-pair, band, hour, month, joined to solar state
+- **Gold**: Sampled training sets drawn from bronze ⋈ solar
+
+A silver layer was documented for months and never carried the pipeline; it was
+[retired 2026-09-22](methodology/silver_layer.md). Every gold and signatures table derives
+from `wspr.bronze` directly.
 
 Read more: [Data Pipeline](methodology/data_pipeline.md) |
 [Training](methodology/training.md)

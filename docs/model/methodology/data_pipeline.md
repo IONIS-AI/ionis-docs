@@ -54,8 +54,13 @@ This matches the Kp publication cadence from GFZ Potsdam.
 Generates float4 embeddings from WSPR+solar data:
 
 - **Input**: `wspr.bronze` + `solar.bronze`
-- **Output**: `wspr.silver` (4.4B embeddings, 41 GiB)
-- **Throughput**: 4.43B embeddings in 45m13s
+- **Output**: none at present — `wspr.silver` was dropped 2026-09-22
+- **Throughput**: 4.43B embeddings in 45m13s (2026-02-07 QA run)
+
+!!! warning "Not part of the pipeline"
+    This engine is unpackaged, hand-run, and has no consumer. No gold or signatures table
+    derives from it; every one of them reads `wspr.bronze` directly. See
+    [Silver Layer](silver_layer.md) for the retirement note.
 
 ## RBN Ingestion
 
@@ -150,17 +155,25 @@ Each dataset can be independently snapshotted, replicated (`zfs send`), and quot
 
 ## ClickHouse Tables
 
+Measured against `10.60.1.1` on **2026-09-22**. Counts move; the lineage in
+`ionis-core/docs/DATA-DICTIONARY.md` does not, and that file is authoritative for what each
+table is and what derives it.
+
 | Table | Rows | Size | Purpose |
 |-------|------|------|---------|
-| `wspr.bronze` | 10.94B | 191 GiB | Raw WSPR spots |
-| `rbn.bronze` | 2.26B | 45.3 GiB | Raw RBN CW/RTTY spots |
-| `contest.bronze` | 234M | 4.1 GiB | Parsed contest QSOs (15 contests) |
-| `wspr.silver` | 4.4B | 41 GiB | CUDA float4 embeddings |
-| `wspr.signatures_v2_terrestrial` | 93.6M | 2.3 GiB | Aggregated signatures (training source, balloon-filtered) |
-| `wspr.callsign_grid` | 38.6K | — | Rosetta Stone: callsign → grid lookup |
-| `wspr.gold_continuous` | 10M | 218 MiB | IFW-weighted training set |
-| `wspr.gold_stratified` | 10M | 167 MiB | SSN-stratified training set |
-| `wspr.gold_v6` | 10M | 240 MiB | V6 training set (continuous + kp_penalty) |
-| `pskr.bronze` | 514M+ | — | PSK Reporter reception spots (accumulating since 2026-02-10) |
-| `solar.bronze` | 77K | 868 KiB | SSN, SFI, Kp daily/3-hourly |
-| `solar.dscovr` | 15K | — | DSCOVR L1 solar wind (Bz, speed, density) |
+| `wspr.bronze` | 12.68 billion | 225.67 GiB | Raw WSPR spots — wsprnet CSV archives + `wspr.live` |
+| `pskr.bronze` | 7.10 billion | 96.81 GiB | Raw PSK Reporter reception spots (MQTT, since 2026-02-10) |
+| `rbn.bronze` | 2.37 billion | 48.38 GiB | Raw RBN CW/RTTY skimmer spots |
+| `contest.bronze` | 234.28 million | 4.11 GiB | Parsed contest QSOs from Cabrillo logs |
+| `solar.iri_lookup` | 319.46 million | 3.60 GiB | Pre-computed IRI ionospheric model output |
+| `wspr.signatures_v2_terrestrial` | 93.60 million | 2.25 GiB | Aggregated signatures, balloon-filtered — **the training source** |
+| `wspr.signatures_v1` | 93.62 million | 2.20 GiB | Aggregated signatures from bronze ⋈ solar |
+| `rbn.signatures` | 67.35 million | 1.28 GiB | RBN signatures from bronze ⋈ solar |
+| `wspr.gold_v6` | 10.00 million | 238.92 MiB | V6 training set (continuous + kp_penalty) |
+| `wspr.gold_continuous` | 10.00 million | 218.02 MiB | IFW-weighted training set |
+| `wspr.gold_stratified` | 10.00 million | 167.42 MiB | SSN-stratified training set |
+| `pskr.signatures` | 8.45 million | 145.18 MiB | PSKR signatures — **covers month 2 of 8 collected; regeneration pending** |
+| `contest.signatures` | 5.74 million | 90.33 MiB | Contest signatures from bronze ⋈ solar |
+| `wspr.callsign_grid` | 3.68 million | 58.88 MiB | Rosetta Stone: callsign → grid lookup |
+| `solar.dscovr` | 226.59 thousand | 6.60 MiB | DSCOVR/ACE L1 solar wind, 1-minute |
+| `solar.bronze` | 78.33 thousand | 901.57 KiB | SSN, SFI, Kp — daily / 3-hourly |
