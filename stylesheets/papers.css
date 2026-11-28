@@ -1,0 +1,176 @@
+/* ============================================================
+   IONIS Research Papers — Frontiers-style article layout
+   Scoped to .paper-article wrapper (papers section only)
+   ============================================================ */
+
+/* Article container — constrain width, center */
+.paper-article {
+  max-width: 820px;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+
+/* --- Header Block --- */
+.paper-header {
+  border-bottom: 3px solid var(--md-primary-fg-color);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.paper-header .paper-title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 0.25rem 0;
+  color: var(--md-default-fg-color);
+}
+
+.paper-header .paper-subtitle {
+  font-size: 1.15rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--md-default-fg-color--light);
+  margin: 0 0 1.25rem 0;
+}
+
+.paper-header .paper-authors {
+  font-size: 0.95rem;
+  margin: 0 0 0.25rem 0;
+  color: var(--md-default-fg-color);
+}
+
+.paper-header .paper-affiliation {
+  font-size: 0.85rem;
+  color: var(--md-default-fg-color--light);
+  margin: 0 0 0.5rem 0;
+}
+
+.paper-header .paper-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--md-default-fg-color--lighter);
+  margin-top: 0.75rem;
+}
+
+.paper-header .paper-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* --- Abstract Block --- */
+.paper-abstract {
+  background: var(--md-code-bg-color);
+  border-left: 4px solid var(--md-primary-fg-color);
+  padding: 1.25rem 1.5rem;
+  margin: 0 0 2rem 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.paper-abstract .abstract-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-primary-fg-color);
+  margin: 0 0 0.5rem 0;
+}
+
+.paper-abstract p {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  margin: 0;
+  color: var(--md-default-fg-color);
+}
+
+/* --- Keywords --- */
+.paper-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 2.5rem 0;
+}
+
+.paper-keywords .kw-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--md-default-fg-color--light);
+  margin-right: 0.25rem;
+  align-self: center;
+}
+
+.paper-keywords .kw-tag {
+  font-size: 0.75rem;
+  background: var(--md-code-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 3px;
+  padding: 0.15rem 0.5rem;
+  color: var(--md-default-fg-color--light);
+}
+
+/* --- Section headings — article style --- */
+.paper-article h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.paper-article h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+}
+
+.paper-article h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+}
+
+/* --- Body text refinements --- */
+.paper-article p {
+  text-align: justify;
+  hyphens: auto;
+}
+
+.paper-article blockquote {
+  border-left: 3px solid var(--md-primary-fg-color);
+  font-style: italic;
+  color: var(--md-default-fg-color--light);
+}
+
+/* --- Citation block at bottom --- */
+.paper-citation {
+  background: var(--md-code-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  margin-top: 3rem;
+  font-size: 0.85rem;
+}
+
+.paper-citation .cite-label {
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--md-primary-fg-color);
+  margin: 0 0 0.5rem 0;
+}
+
+.paper-citation p {
+  margin: 0;
+  text-align: left;
+  line-height: 1.6;
+}
+
+/* --- Separator between header area and body --- */
+.paper-body-start {
+  border: none;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+  margin: 0 0 2rem 0;
+}
